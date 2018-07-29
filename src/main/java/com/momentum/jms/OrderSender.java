@@ -21,21 +21,21 @@ public class OrderSender {
         ApplicationContext appContext = new ClassPathXmlApplicationContext("beans.xml");
         this.jmsMessageSender = (MomentumMsgSender) appContext.getBean("momentumMsgSender");
         this.queue = new ActiveMQQueue("OrderBroker");
-
     }
-
 
     public void send(Order order) {
 
-        String orderXML = "<trade>\n" +
-                "<buy>true</buy>\n" +
-                "<id>0</id>\n" +
-                "<price>123.0</price>\n" +
-                "<size>1234</size>\n" +
-                "<stock>GOOGL</stock>\n" +
-                "<whenAsDate>2014-07-31T22:33:22.801-04:00</whenAsDate>\n" +
-                "</trade>";
-
+        String orderXML = String.format(
+                "<trade>\n" +
+                "<buy>%s</buy>\n" +
+                "<id>%s</id>\n" +
+                "<price>%s</price>\n" +
+                "<size>%s</size>\n" +
+                "<stock>%s</stock>\n" +
+                "<whenAsDate>%s</whenAsDate>\n" +
+                "</trade>",
+                order.getBuyXML(), order.getIdXML(), order.getPriceXML(),
+                order.getSizeXML(), order.getStockXML(), order.getWhenAsDateXML());
 
         jmsMessageSender.send(queue, orderXML);
 

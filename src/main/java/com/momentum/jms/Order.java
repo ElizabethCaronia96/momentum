@@ -14,6 +14,30 @@ public class Order {
     private String stockXML;
     private String whenAsDateXML;
 
+    public String getBuyXML() {
+        return buyXML;
+    }
+
+    public String getIdXML() {
+        return idXML;
+    }
+
+    public String getPriceXML() {
+        return priceXML;
+    }
+
+    public String getSizeXML() {
+        return sizeXML;
+    }
+
+    public String getStockXML() {
+        return stockXML;
+    }
+
+    public String getWhenAsDateXML() {
+        return whenAsDateXML;
+    }
+
     public Order(boolean buy, float price, int size, String stock) {
 
         if (buy) {
