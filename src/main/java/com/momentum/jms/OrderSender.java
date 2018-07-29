@@ -2,6 +2,7 @@ package com.momentum.jms;
 
 
 import org.apache.activemq.command.ActiveMQQueue;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,28 +17,25 @@ public class OrderSender {
     private MomentumMsgSender jmsMessageSender;
     private Queue queue;
 
-    public OrderSender() {
+    public OrderSender(ApplicationContext appContext) {
 
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("beans.xml");
+        BeanDefinitionRegistry appContextBeanFactory = (BeanDefinitionRegistry) appContext.getAutowireCapableBeanFactory();
+        appContextBeanFactory.removeBeanDefinition("messageListenerContainer");
+
         this.jmsMessageSender = (MomentumMsgSender) appContext.getBean("momentumMsgSender");
         this.queue = new ActiveMQQueue("OrderBroker");
+
     }
 
     public void send(Order order) {
 
-        String orderXML = String.format(
-                "<trade>\n" +
-                "<buy>%s</buy>\n" +
-                "<id>%s</id>\n" +
-                "<price>%s</price>\n" +
-                "<size>%s</size>\n" +
-                "<stock>%s</stock>\n" +
-                "<whenAsDate>%s</whenAsDate>\n" +
-                "</trade>",
+        String orderXML = String.format("<trade><buy>%s</buy><id>%s</id><price>%s</price><size>%s</size><stock>%s</stock><whenAsDate>%s</whenAsDate></trade>",
                 order.getBuyXML(), order.getIdXML(), order.getPriceXML(),
                 order.getSizeXML(), order.getStockXML(), order.getWhenAsDateXML());
 
-        jmsMessageSender.send(queue, orderXML);
+        System.out.println("Sending: " + orderXML);
+
+        jmsMessageSender.send(queue, orderXML, order.getIdXML());
 
     }
 }

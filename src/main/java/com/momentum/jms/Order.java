@@ -22,6 +22,10 @@ public class Order {
         return idXML;
     }
 
+    public void setIdXML(int idXML) {
+        this.idXML = Integer.toString(idXML);
+    }
+
     public String getPriceXML() {
         return priceXML;
     }
@@ -38,7 +42,7 @@ public class Order {
         return whenAsDateXML;
     }
 
-    public Order(boolean buy, float price, int size, String stock) {
+    public Order(boolean buy, double price, int size, String stock) {
 
         if (buy) {
             this.buyXML = "true";
@@ -46,12 +50,12 @@ public class Order {
             this.buyXML = "false";
         }
 
-        this.priceXML = Float.toString(price);
+        this.priceXML = String.format("%.2f", price);
         this.sizeXML = Integer.toString(size);
         this.stockXML = stock;
 
         TimeZone tz = TimeZone.getTimeZone("ETC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         df.setTimeZone(tz);
         this.whenAsDateXML = df.format(new Date());
     }
