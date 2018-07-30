@@ -12,7 +12,7 @@ public class TestOrderSender {
     public static void main(String[] args) {
 
         ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("beans.xml");
-        OrderSender orderSender = new OrderSender(appContext);
+        OrderSender orderSender = new OrderSender();
 
         Random r = new Random();
 
