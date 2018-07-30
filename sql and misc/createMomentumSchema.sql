@@ -1,3 +1,4 @@
+
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: momentum_mysql
@@ -18,7 +19,7 @@
 --
 -- Table structure for table `orders`
 --
-
+use momentum;
 DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -29,6 +30,7 @@ CREATE TABLE `orders` (
   `strategy_id` int(11) NOT NULL,
   `datetime_added` datetime NOT NULL,
   `status` varchar(45) NOT NULL,
+  `num_stocks` int default null,
   `entry_type` varchar(45) DEFAULT NULL,
   `entry_datetime` datetime DEFAULT NULL,
   `entry_price` double DEFAULT NULL,
