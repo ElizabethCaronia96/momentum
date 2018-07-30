@@ -18,7 +18,7 @@ public class TestOrderSender {
 
         List<String> stockList = Arrays.asList("AAPL", "GOOG", "BRK-A", "NSC", "MSFT");
 
-        for (int i = 1; i <= 3000; i++) {
+        for (int i = 1; i <= 100; i++) {
 
             System.out.println("ORDER # " + i);
             double rangeMinDouble = 1.00;
