@@ -1,8 +1,10 @@
 package com.momentum.jms;
 
 
+
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,6 +18,7 @@ public class OrderSender {
 
     private MomentumMsgSender jmsMessageSender;
     private Queue queue;
+
 
     public OrderSender(ApplicationContext appContext) {
 

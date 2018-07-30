@@ -8,6 +8,7 @@ import java.util.TimeZone;
 public class Order {
 
     private String buyXML;
+
     private String idXML;
     private String priceXML;
     private String sizeXML;
@@ -44,18 +45,23 @@ public class Order {
 
     public Order(boolean buy, double price, int size, String stock) {
 
+
         if (buy) {
             this.buyXML = "true";
         } else {
             this.buyXML = "false";
         }
 
+
         this.priceXML = String.format("%.2f", price);
+
         this.sizeXML = Integer.toString(size);
         this.stockXML = stock;
 
         TimeZone tz = TimeZone.getTimeZone("ETC");
+
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
         df.setTimeZone(tz);
         this.whenAsDateXML = df.format(new Date());
     }
