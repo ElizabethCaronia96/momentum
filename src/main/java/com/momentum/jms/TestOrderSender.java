@@ -11,7 +11,7 @@ public class TestOrderSender {
 
     public static void main(String[] args) {
 
-        ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("beans.xml");
+
         OrderSender orderSender = new OrderSender();
 
         Random r = new Random();
@@ -34,16 +34,9 @@ public class TestOrderSender {
             Order newOrder = new Order(true, randPrice, randSize, randStock);
             newOrder.setIdXML(i);
             orderSender.send(newOrder);
-
-            // add delay to sending
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         }
 
 
-        appContext.close();
+        orderSender.close();
     }
 }

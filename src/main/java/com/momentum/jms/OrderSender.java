@@ -1,8 +1,7 @@
 package com.momentum.jms;
 
-
-
 import org.apache.activemq.command.ActiveMQQueue;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 
 import org.springframework.context.ApplicationContext;
@@ -19,9 +18,11 @@ public class OrderSender {
     private MomentumMsgSender jmsMessageSender;
     private Queue queue;
 
+    @Autowired
+    private ClassPathXmlApplicationContext appContext;
 
-    public OrderSender(ApplicationContext appContext) {
-
+    public OrderSender() {
+        
         BeanDefinitionRegistry appContextBeanFactory = (BeanDefinitionRegistry) appContext.getAutowireCapableBeanFactory();
         appContextBeanFactory.removeBeanDefinition("messageListenerContainer");
 
@@ -39,6 +40,12 @@ public class OrderSender {
         System.out.println("Sending: " + orderXML);
 
         jmsMessageSender.send(queue, orderXML, order.getIdXML());
+
+    }
+
+    public void close() {
+
+        appContext.close();
 
     }
 }
