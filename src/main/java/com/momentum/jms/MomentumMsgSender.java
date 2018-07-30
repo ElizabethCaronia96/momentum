@@ -18,12 +18,13 @@ public class MomentumMsgSender {
     private JmsTemplate jmsTemplate;
 
 
-    public void send(final String text) {
+    public void send(final String text, String correlationID) {
 
         this.jmsTemplate.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 Message message = session.createTextMessage(text);
+                message.setJMSCorrelationID(correlationID);
                 return message;
             }
         });
@@ -35,12 +36,13 @@ public class MomentumMsgSender {
     }
 
 
-    public void send(final Destination dest,final String text) {
+    public void send(final Destination dest, final String text, String correlationID) {
 
-        this.jmsTemplate.send(dest,new MessageCreator() {
+        this.jmsTemplate.send(dest, new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 Message message = session.createTextMessage(text);
+                message.setJMSCorrelationID(correlationID);
                 return message;
             }
         });

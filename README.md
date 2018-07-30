@@ -1,2 +1,6 @@
-by elizabeth caronia, karl xu, david chen
+### The Momentum Team
+---
+* Elizabeth Caronia
+* Karl Xu
+* David Chen
 
