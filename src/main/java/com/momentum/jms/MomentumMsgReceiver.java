@@ -43,31 +43,15 @@ public class MomentumMsgReceiver implements SessionAwareMessageListener<TextMess
 
     @Override
     public void onMessage(TextMessage message, Session session) throws JMSException {
-        // This is the received message
 
         System.out.println("Received a msg: " + message.getText());
 
         BrokerReply reply = convertXMLtoBrokerReply(message.getText());
 
 
-
-//        the lines below pretty print an object to see if the XML was actually converted
-
-//        System.out.println("REPLY OBJECT:");
-//        ObjectMapper om = new ObjectMapper();
-//        om.enable(SerializationFeature.INDENT_OUTPUT); //pretty print
-//        String s = null;
-//        try {
-//            s = om.writeValueAsString(reply);
-//            System.out.println(s);
-//
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
-    public BrokerReply convertXMLtoBrokerReply(String XML) {
+    private BrokerReply convertXMLtoBrokerReply(String XML) {
 
         BrokerReply reply = null;
 
@@ -81,5 +65,18 @@ public class MomentumMsgReceiver implements SessionAwareMessageListener<TextMess
         }
 
         return reply;
+    }
+
+    public void printBrokerReplyProperties(BrokerReply reply) {
+        ObjectMapper om = new ObjectMapper();
+        om.enable(SerializationFeature.INDENT_OUTPUT);
+        String s = null;
+        try {
+            s = om.writeValueAsString(reply);
+            System.out.println(s);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }
