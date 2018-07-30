@@ -35,9 +35,9 @@ public class MomentumMsgSender {
     }
 
 
-    public void send(final Destination dest,final String text) {
+    public void send(final Destination dest, final String text) {
 
-        this.jmsTemplate.send(dest,new MessageCreator() {
+        this.jmsTemplate.send(dest, new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 Message message = session.createTextMessage(text);
