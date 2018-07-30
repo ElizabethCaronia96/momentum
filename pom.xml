@@ -10,7 +10,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.momentum.AppConfig</start-class>
+        <start-class>com.momentum.rest.spring.boot.AppConfig</start-class>
     </properties>
 
     <parent>
@@ -72,6 +72,10 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>

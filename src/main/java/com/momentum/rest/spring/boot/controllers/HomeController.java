@@ -1,4 +1,4 @@
-package com.momentum.rest.controllers;
+package com.momentum.rest.spring.boot.controllers;
 
 
 import org.springframework.stereotype.Controller;

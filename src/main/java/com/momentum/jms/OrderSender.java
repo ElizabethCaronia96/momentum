@@ -20,7 +20,7 @@ public class OrderSender {
     private ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("beans.xml") ;
 
     public OrderSender() {
-
+        
         BeanDefinitionRegistry appContextBeanFactory = (BeanDefinitionRegistry) appContext.getAutowireCapableBeanFactory();
         appContextBeanFactory.removeBeanDefinition("messageListenerContainer");
 
