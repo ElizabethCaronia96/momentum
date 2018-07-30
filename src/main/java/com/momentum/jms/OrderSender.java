@@ -17,9 +17,7 @@ public class OrderSender {
 
     private MomentumMsgSender jmsMessageSender;
     private Queue queue;
-
-    @Autowired
-    private ClassPathXmlApplicationContext appContext;
+    private ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("beans.xml") ;
 
     public OrderSender() {
 
