@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAutoConfiguration()
 //@EnableJpaRepositories
 @ComponentScan
-@Import(SwaggerConfig.class)
+@EntityScan("com.momentum.rest.entities")
 public class AppConfig {
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
