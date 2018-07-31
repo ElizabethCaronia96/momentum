@@ -2,77 +2,94 @@ package com.momentum.algo;
 
 import java.util.ArrayList;
 
-public class AlgoBollBands {
+public class AlgoBollingerBands {
 
     SMAWithSD smaWithSD;
 
-    double purchasePrice;
-    double currentPrice;
+    int tradeCounter;
+    ArrayList<Double> buyPrices;
+    ArrayList<Double> sellPrices;
+    /**
+     * The stock price of the first executed buy or sell trade. Total profit/loss accumulated over the strategy
+     * is measured against this price for the strategy exit condition.
+     */
+    double initialPrice;
+    double profit;
 
     /**
      * Executes the two SMA strategy for a trade request.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
-     * @param smaRange the range of the SMA.
+     * @param smaPeriod the time period of the SMA.
      * @param stdDevMult the multiple of the standard deviation that sets the low and high bands about the SMA.
      * @param exitPercent the profit or loss percent for the exit condition.
      */
-    public void executeStrategy(String orderType, int smaRange, double stdDevMult, double exitPercent) {
+    public void executeStrategy(String orderType, int smaPeriod, double stdDevMult, double exitPercent) {
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
         }
 
-        smaWithSD = new SMAWithSD(smaRange);
+        smaWithSD = new SMAWithSD(smaPeriod);
 
         smaWithSD.initialize(getPastPrices());
 
-        boolean crossed = false;
-        double newPrice = 0.0;
+        boolean exit = false;
+        tradeCounter = 0;
+        profit = 0.0;
 
-        while(!crossed) {
+        // loop on exit condition
+        while(!exit) {
 
-            newPrice = getNewPrice();
-            smaWithSD.update(newPrice);
+            boolean crossed = false;
+            double newPrice = 0.0;
 
-            crossed = hasCrossed(orderType, newPrice, stdDevMult);
-        }
+            // loop on stock price hitting low or high band
+            // TODO: force bollinger bands strategy to alternate between buy and sell trades
+            while(!crossed) {
 
-        purchasePrice = newPrice;
+                newPrice = getNewPrice();
+                smaWithSD.update(newPrice);
 
-        if(purchasePrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
-            placeOrder("Buy", purchasePrice);
-            exitStrategy("Sell", exitPercent);
-        }
-        else {
-            placeOrder("Sell", purchasePrice);
-            exitStrategy("Buy", exitPercent);
+                crossed = hasCrossed(orderType, newPrice, stdDevMult);
+            }
+
+            // execute trade
+            if(newPrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
+                placeOrder("Buy", newPrice);
+                buyPrices.add(newPrice);
+            }
+            else {
+                placeOrder("Sell", newPrice);
+                sellPrices.add(newPrice);
+            }
+
+            tradeCounter++;
+            if(tradeCounter == 1) {
+                initialPrice = newPrice;
+            }
+            if(tradeCounter % 2 == 0) {
+                profit += (sellPrices.get(tradeCounter/2) - buyPrices.get(tradeCounter/2));
+            }
+
+            exit = exitCondition(exitPercent);
         }
     }
 
     /**
      * Executes the exit condition for a trade request.
-     * @param orderType "Auto" or "Buy" or "Sell" order type.
      * @param exitPercent the profit or loss percent for the exit condition.
+     * @return true if the strategy exit condition is reached.
+     *         false otherwise.
      */
-    public void exitStrategy(String orderType, double exitPercent) {
+    public boolean exitCondition(double exitPercent) {
 
-        boolean exit = false;
+        if(Math.abs(profit) >= initialPrice * exitPercent) {
 
-        while(!exit) {
-
-            currentPrice = getNewPrice();
-
-            if(currentPrice * (1.00 + exitPercent) >= purchasePrice) {
-                exit = true;
-            }
-            else if(currentPrice * (1.00 - exitPercent) <= purchasePrice) {
-                exit = true;
-            }
+            return true;
         }
-
-        placeOrder(orderType, currentPrice);
+        return false;
     }
 
     /**

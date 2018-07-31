@@ -6,17 +6,17 @@ import java.util.LinkedList;
 public class SMAWithSD {
 
     LinkedList<Double> queue;
-    int range;
+    int period;
     double average;
     double stdDev;
 
     /**
-     * Constructor initializing the queue of stock prices and the SMA range.
-     * @param range the SMA range.
+     * Constructor initializing the queue of stock prices and the SMA time period.
+     * @param period the SMA time period.
      */
-    public SMAWithSD(int range) {
+    public SMAWithSD(int period) {
         queue = new LinkedList<Double>();
-        this.range = range;
+        this.period = period;
     }
 
     /**
@@ -25,12 +25,12 @@ public class SMAWithSD {
      */
     public void initialize(ArrayList<Double> pastPrices) {
 
-        if(range != pastPrices.size()) {
+        if(period != pastPrices.size()) {
             System.out.println("ERROR: Size of list containing past stock prices does not match SMA range.");
             return;
         }
 
-        while(queue.size() < range) {
+        while(queue.size() < period) {
 
             for(Double price : pastPrices) {
 
@@ -57,12 +57,12 @@ public class SMAWithSD {
     }
 
     /**
-     * Updates the SMA with the new stock price and calculates the average and standard deviation.
+     * Updates the SMA with the new stock price and calculates the average and standard deviation efficiently using the old and new prices.
      * @param newPrice the new stock price.
      */
     public void update(double newPrice) {
 
-        if(queue.size() < range) {
+        if(queue.size() < period) {
 
             queue.add(newPrice);
 
