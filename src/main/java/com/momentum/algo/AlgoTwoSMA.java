@@ -49,27 +49,13 @@ public class AlgoTwoSMA {
 
         purchasePrice = newPrice;
 
-        if(orderType.equalsIgnoreCase("Auto")) {
-
-            if(shortSMA.average >= longSMA.average) {
-                placeOrder("Buy", purchasePrice);
-                exitStrategy("Sell", exitPercent);
-            }
-            else {
-                placeOrder("Sell", purchasePrice);
-                exitStrategy("Buy", exitPercent);
-            }
+        if(shortSMA.average >= longSMA.average) {
+            placeOrder("Buy", purchasePrice);
+            exitStrategy("Sell", exitPercent);
         }
         else {
-
-            placeOrder(orderType, purchasePrice);
-
-            if(orderType.equalsIgnoreCase("Buy")) {
-                exitStrategy("Sell", exitPercent);
-            }
-            else {
-                exitStrategy("Buy", exitPercent);
-            }
+            placeOrder("Sell", purchasePrice);
+            exitStrategy("Buy", exitPercent);
         }
     }
 
@@ -98,6 +84,7 @@ public class AlgoTwoSMA {
     }
 
     /**
+     * This method is called to get the past stock prices needed to calculate the short SMA and long SMA when the strategy is first executed.
      * @return the past stock prices needed to initialize the SMA.
      */
     public ArrayList<Double> getPastPrices() {
@@ -107,6 +94,7 @@ public class AlgoTwoSMA {
     }
 
     /**
+     * This method is called to get the new stock price.
      * @return the new stock price needed to update the SMA.
      */
     public double getNewPrice() {
@@ -128,6 +116,7 @@ public class AlgoTwoSMA {
     }
 
     /**
+     * This method is called to check if the strategy has triggered (short SMA has crossed the long SMA).
      * @param orderType "Auto" or "Buy" or "Sell" order type.
      * @return true for order type "Auto" if the short SMA has crossed the long SMA.
      *         true for order type "Buy" if the short SMA has crossed above the long SMA.
@@ -137,6 +126,7 @@ public class AlgoTwoSMA {
     public boolean hasCrossed(String orderType) {
 
         if(orderType.equalsIgnoreCase("Auto")) {
+
             if(shortSMALower && shortSMA.average >= longSMA.average) {
                 return true;
             }
@@ -145,21 +135,20 @@ public class AlgoTwoSMA {
             }
             return false;
         }
-
         if(orderType.equalsIgnoreCase("Buy")) {
+
             if(shortSMALower && shortSMA.average >= longSMA.average) {
                 return true;
             }
             return false;
         }
-
         if(orderType.equalsIgnoreCase("Sell")) {
+
             if(!shortSMALower && shortSMA.average < longSMA.average) {
                 return true;
             }
             return false;
         }
-
         return false;
     }
 
