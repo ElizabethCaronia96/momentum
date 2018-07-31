@@ -1,0 +1,10 @@
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (1, 92, 17);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (2, 58, 15);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (3, 77, 24);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (4, 87, 21);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (5, 117, 12);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (6, 36, 9);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (7, 59, 25);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (8, 60, 11);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (9, 58, 23);
+insert into strat_2ma (strategy_id, long_avg_range, short_avg_range) values (10, 120, 9);

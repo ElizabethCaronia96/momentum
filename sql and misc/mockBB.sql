@@ -1,0 +1,10 @@
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (1, 55, 2.128);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (2, 258, 2.835);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (3, 45, 2.14);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (4, 266, 1.516);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (5, 216, 2.265);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (6, 128, 1.01);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (7, 46, 1.703);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (8, 120, 1.103);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (9, 176, 1.68);
+insert into strat_bb (strategy_id, moving_avg_range, std_dev_multiple) values (10, 235, 2.852);
