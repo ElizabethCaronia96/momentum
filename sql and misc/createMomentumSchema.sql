@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `momentum_mysql` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `momentum_mysql`;
 
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
@@ -19,18 +21,18 @@
 --
 -- Table structure for table `orders`
 --
-use momentum;
+
 DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `stock` varchar(10) NOT NULL,
+  `num_stocks` int(11) NOT NULL,
   `strategy_type` varchar(10) NOT NULL,
   `strategy_id` int(11) NOT NULL,
   `datetime_added` datetime NOT NULL,
   `status` varchar(45) NOT NULL,
-  `num_stocks` int default null,
   `entry_type` varchar(45) DEFAULT NULL,
   `entry_datetime` datetime DEFAULT NULL,
   `entry_price` double DEFAULT NULL,
@@ -108,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-30 19:29:53
+-- Dump completed on 2018-07-30 20:47:09
