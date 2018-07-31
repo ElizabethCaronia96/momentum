@@ -6,6 +6,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface OrderRepository extends CrudRepository<Order, Integer> {
 
-    public Iterable<Order> findOrderByStrategy_type(@Param("strategy_type") String strategy_type);
+    public Iterable<Order> findOrderByStrategy(@Param("strategy") String strategy);
 
 }

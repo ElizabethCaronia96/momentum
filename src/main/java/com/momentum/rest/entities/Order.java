@@ -14,7 +14,7 @@ import java.util.List;
         {
                 @NamedQuery(name = "Order.getAll",
                         query = "select order_id from Order as o where o.num_stocks = 1000",
-                hints = {@QueryHint(name="org.hibernate.cacheable", value="true")})
+                        hints = {@QueryHint(name="org.hibernate.cacheable", value="true")})
         }
 )
 public class Order  implements Serializable {
@@ -31,10 +31,16 @@ public class Order  implements Serializable {
         this.order_id = order_id;
     }
 
-    @Column(name = "strategy_type")
-    private String strategy_type;
+    @Column(name = "strategy")
+    private String strategy;
 
+    public double getPrice() {
+        return price;
+    }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public int getNum_stocks() {
         return num_stocks;
@@ -46,6 +52,8 @@ public class Order  implements Serializable {
 
 
 
+    @Column(name = "price")
+    private double price;
     @Column(name = "num_stocks")
     private int num_stocks;
 
@@ -54,11 +62,13 @@ public class Order  implements Serializable {
 
     }
 
-    public String getStrategy_type() {
-        return strategy_type;
+    public String getStrategy() {
+        return strategy;
     }
 
-    public void setStrategy_type(String strategy_type) {
-        this.strategy_type = strategy_type;
+    public void setStrategy(String strategy) {
+        this.strategy = strategy;
     }
+
+
 }

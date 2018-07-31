@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:beans="http://www.springframework.org/schema/beans"
@@ -15,8 +16,7 @@
         <constructor-arg index="0" value="tcp://localhost:61616"/>
     </bean>
 
-    <bean id="connectionFactory"
-          class="org.springframework.jms.connection.CachingConnectionFactory">
+    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
         <constructor-arg ref="amqConnectionFactory"/>
     </bean>
 
@@ -31,8 +31,7 @@
         <property name="defaultDestination" ref="defaultDestination"/>
     </bean>
 
-
-    <bean id="messageListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <bean id="messageListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer" primary="true">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="destinationName" value="OrderBroker_Reply"/>
         <property name="messageListener" ref="momentumMsgReceiver"/>
