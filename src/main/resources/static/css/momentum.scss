@@ -1,0 +1,125 @@
+$tan: #f7f1d1;
+$gray: #9aa09d;
+$blue-one: #2788ba; // main blue
+$blue-two: #3657af; // secondary blue
+$blue-three: #4a81fd; // tertiary blue
+
+
+// BACKGROUND BEGIN
+
+.bg-neg-45deg {
+  background: rgb(39,136,186);
+  background: -moz-linear-gradient(45deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  background: -webkit-linear-gradient(45deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  background: linear-gradient(45deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#276eba",endColorstr="#3657af",GradientType=1);
+}
+
+.bg-90deg {
+  background: rgb(39,136,186);
+  background: -moz-linear-gradient(90deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  background: -webkit-linear-gradient(90deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  background: linear-gradient(90deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#276eba",endColorstr="#3657af",GradientType=1);
+}
+
+.bg-135deg {
+  background: rgb(39,136,186);
+  background: -moz-linear-gradient(135deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  background: -webkit-linear-gradient(135deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  background: linear-gradient(135deg, rgba(39,136,186,1) 0%, rgba(54,87,175,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#276eba",endColorstr="#3657af",GradientType=1);
+}
+// BACKGROUND END
+
+
+
+
+
+// FONTS BEGIN
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+//font-family: 'Roboto', sans-serif;
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+.font-small {
+  font-size: 75%;
+}
+
+a {
+  color: $blue-one;
+  text-decoration: none;
+
+  &:hover, &:active {
+    color: black;
+    text-decoration: none;
+  }
+
+}
+
+// FONTS END
+
+$nav-padding: 25px 30px;
+$content-padding: 25px 50px;
+
+#navigation {
+  background-color: white;
+  padding: $nav-padding;
+  height: 100vh;
+
+  i {
+    margin-right: 10px;
+  }
+}
+
+.content {
+  box-shadow: inset 5px 0 30px rgba(0, 0, 0, 0.075);
+  //background-color: $blue-one;
+  @extend .bg-neg-45deg;
+  padding: $content-padding;
+}
+
+.sub-title {
+
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: 1px dotted white;
+
+}
+
+.strategy-card {
+  margin-bottom: 30px;
+
+  .strategy-card-info {
+    border: 1px white solid;
+    padding: 20px 0 20px 20px;
+    border-radius: 15px 0 0 15px;
+    background-color: white;
+
+    .main-info {
+      color: $blue-one;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sub-info {
+      color: $gray;
+      text-align: center;
+    }
+  }
+
+  .strategy-card-graph {
+    border: 1px white solid;
+    border-radius: 0 15px 15px 0;
+    padding: 20px 20px 20px 0;
+  }
+
+
+}

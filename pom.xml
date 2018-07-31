@@ -91,6 +91,13 @@
             <artifactId>json-path</artifactId>
         </dependency>
 
+        <!-- COMMENT OUT IN PROD - USED TO REBUILD WEB APP AFTER HTML/CSS/JS CHANGES -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 

@@ -1,4 +1,4 @@
-package com.momentum.rest.spring.boot.controllers;
+package com.momentum.rest.springboot.controllers;
 
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;

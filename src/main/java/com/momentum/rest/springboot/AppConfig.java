@@ -1,4 +1,4 @@
-package com.momentum.rest.spring.boot;
+package com.momentum.rest.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

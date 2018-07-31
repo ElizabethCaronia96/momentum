@@ -1,4 +1,4 @@
-package com.momentum.rest.spring.boot.repos;
+package com.momentum.rest.springboot.repos;
 
 import com.momentum.rest.entities.Order;
 import org.springframework.data.repository.CrudRepository;
