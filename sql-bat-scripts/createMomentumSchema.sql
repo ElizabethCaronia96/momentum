@@ -1,11 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `momentum_mysql` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `momentum_mysql`;
-
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: momentum_mysql
+-- Host: 127.0.0.1    Database: momentum_mysql
 -- ------------------------------------------------------
--- Server version	5.7.14-log
+-- Server version	5.5.5-10.1.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,18 +39,25 @@ CREATE TABLE `orders` (
   `exit_datetime` datetime DEFAULT NULL,
   `exit_price` double DEFAULT NULL,
   `profit_loss_percent` double DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `strategy` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Table structure for table `prices`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `prices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prices` (
+  `stock` varchar(50) NOT NULL,
+  `price` double NOT NULL,
+  `datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `strat_2ma`
@@ -65,17 +71,8 @@ CREATE TABLE `strat_2ma` (
   `long_avg_range` int(11) NOT NULL,
   `short_avg_range` int(11) NOT NULL,
   PRIMARY KEY (`strategy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `strat_2ma`
---
-
-LOCK TABLES `strat_2ma` WRITE;
-/*!40000 ALTER TABLE `strat_2ma` DISABLE KEYS */;
-/*!40000 ALTER TABLE `strat_2ma` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `strat_bb`
@@ -89,17 +86,8 @@ CREATE TABLE `strat_bb` (
   `moving_avg_range` int(11) NOT NULL,
   `std_dev_multiple` double NOT NULL,
   PRIMARY KEY (`strategy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `strat_bb`
---
-
-LOCK TABLES `strat_bb` WRITE;
-/*!40000 ALTER TABLE `strat_bb` DISABLE KEYS */;
-/*!40000 ALTER TABLE `strat_bb` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -110,4 +98,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-30 20:47:09
+-- Dump completed on 2018-07-31 13:55:40
