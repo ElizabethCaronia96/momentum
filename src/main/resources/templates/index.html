@@ -1,16 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Vue.js Test</title>
+    <meta charset="UTF-8">
+    <title>Momentum Algo Trading</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/momentum.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 </head>
 <body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2" id="navigation">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h3 class="font-weight-bold">Momentum</h3>
+                    <h6 class="font-small font-weight-light text-uppercase">Trading Platform</h6>
+                </div>
+            </div>
 
-<div id="app">{{ message }}</div>
+            <div class="row">
+                <div class="col-12 text-uppercase font-small my-3">
+                    <p><a href="https://google.com"><i class="fw fas fa-tachometer-alt"></i>Dashboard</a></p>
+                </div>
+                <div class="col-12 text-uppercase font-small my-3">
+                    <p><a href="https://google.com"><i class="fw fas fa-chart-line"></i>Positions</a></p>
+                </div>
+                <div class="col-12 text-uppercase font-small my-3">
+                    <p><a href="https://google.com"><i class="fw fas fa-chart-pie"></i>Analytics</a></p>
+                </div>
+                <div class="col-12 text-uppercase font-small my-3">
+                    <p><a href="https://google.com"><i class="fw fas fa-cog"></i>Configure</a></p>
+                </div>
+                <div class="col-12 text-uppercase font-small my-3">
+                    <p><a href="https://google.com"><i class="fw fas fa-info-circle"></i>Info</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-10 content">
 
-<div id="app-2">
-	<span v-bind:title="message">Hover your mouse over me for a few seconds to see my dynamically bound title!</span>
+            <!--DASHBOARD-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h1 class="font-weight-bold text-white">Dashboard</h1>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col-12">
+                    <h4 class="font-weight-light font-small text-white">YOUR STRATEGIES</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row strategy-cards">
+
+
+                        <!-- STRAT CARD -->
+                        <div class="col-12 strategy-card">
+                            <div class="row">
+                                <div class="col-5 strategy-card-info">
+                                    <div class="row">
+                                        <div class="col-4 my-4">
+                                            <h6 class="main-info">GOOGLE</h6>
+                                            <p class="font-small sub-info">STOCK</p>
+                                        </div>
+                                        <div class="col-4 my-4">
+                                            <h6 class="main-info">1000</h6>
+                                            <p class="font-small sub-info">QTY.</p>
+                                        </div>
+                                        <div class="col-4 my-4">
+                                            <h6 class="main-info">2MV</h6>
+                                            <p class="font-small sub-info">STRATEGY</p>
+                                        </div>
+                                        <div class="col-4 my-4">
+                                            <h6 class="main-info">50</h6>
+                                            <p class="font-small sub-info">SHORT HOLD</p>
+                                        </div>
+                                        <div class="col-4 my-4">
+                                            <h6 class="main-info">100</h6>
+                                            <p class="font-small sub-info">LONG HOLD</p>
+                                        </div>
+                                        <div class="col-4 my-4">
+                                            <h6 class="main-info">4.23%</h6>
+                                            <p class="font-small sub-info">P/L</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-7 strategy-card-graph">
+                                    <img src="/images/stock.png" alt="">
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- STRAT CARD -->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col-12">
+                    <h4 class="font-weight-light font-small text-white">EXITED STRATEGIES</h4>
+                </div>
+            </div>
+
+            <!--POSITIONS-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h1 class="font-weight-bold text-white">Positions</h1>
+                </div>
+            </div>
+
+            <!--ANALYTICS-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h1 class="font-weight-bold text-white">Analytics</h1>
+                </div>
+            </div>
+
+            <!--CONFIGURE-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h1 class="font-weight-bold text-white">Configure</h1>
+                </div>
+            </div>
+
+            <!--INFO-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <h1 class="font-weight-bold text-white">Info</h1>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
 </div>
 
 </body>
@@ -18,12 +147,13 @@
 <!--vue.js prod version - uncomment only for release-->
 <!--<script src="/js/vue.min.js"></script>-->
 
-
 <!--vue.js dev version-->
 <script src="/js/vue.js"></script>
+<!--bootstrap js-->
+<script src="/js/bootstrap.bundle.min.js"></script>
+<!--jquery js-->
+<script src="/js/jquery-3.3.1.min.js"></script>
 <!--our js-->
 <script src="/js/momentum.js"></script>
-
-
 
 </html>

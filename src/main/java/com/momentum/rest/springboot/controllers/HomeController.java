@@ -1,4 +1,4 @@
-package com.momentum.rest.spring.boot.controllers;
+package com.momentum.rest.springboot.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
