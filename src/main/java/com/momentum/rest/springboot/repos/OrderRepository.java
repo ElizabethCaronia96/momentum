@@ -3,11 +3,14 @@ package com.momentum.rest.springboot.repos;
 import com.momentum.rest.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 //TODO probably should be deleted now that its jpa
  /*   public Iterable<Order> findOrderByStock(@Param("stock") String stock);
@@ -40,6 +43,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 */
 
     public List<Order> findAllByOrderId(@Param("order_id") Integer orderId);
-    public List<Order> findAllByStock(@Param("stock") String stock);
-   
+    public List<Order> findAllByStrategyId(@Param("strategy_id") Integer strategyId);
+
 }

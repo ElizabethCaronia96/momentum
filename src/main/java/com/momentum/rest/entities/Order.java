@@ -25,153 +25,17 @@ import java.util.TimeZone;
 )
 public class Order  implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_id")
     private int orderId;
 
-    public int getOrder_id() {
+
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrder_id(int order_id) {
-        this.orderId = order_id;
-    }
-
-
-    @Column(name = "num_stocks")
-
-    private Integer  numstocks;
-
-
-    @Column(name="status") private String status;
-    @Column(name="stock") private String stock;
-
-    public void setNumstocks(Integer numstocks) {
-        this.numstocks = numstocks;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStock() {
-        return stock;
-    }
-
-    public void setStock(String stock) {
-        this.stock = stock;
-    }
-
-    public String getStrategyType() {
-        return strategyType;
-    }
-
-    public void setStrategyType(String strategyType) {
-        this.strategyType = strategyType;
-    }
-
-    public Integer getStrategyId() {
-        return strategyId;
-    }
-
-    public void setStrategyId(Integer strategyId) {
-        this.strategyId = strategyId;
-    }
-
-    public Timestamp getDatetimeAdded() {
-        return datetimeAdded;
-    }
-
-    public void setDatetimeAdded(Timestamp datetimeAdded) {
-        this.datetimeAdded = datetimeAdded;
-    }
-
-    public String getEntryTime() {
-        return entryType;
-    }
-
-    public void setEntryTime(String entryTime) {
-        this.entryType = entryTime;
-    }
-
-    public Timestamp getEntrydatetime() {
-        return entryDatetime;
-    }
-
-    public void setEntrydatetime(Timestamp entryDatetime) {
-        this.entryDatetime = entryDatetime;
-    }
-
-    public Double getEntryprice() {
-        return entryPrice;
-    }
-
-    public void setEntryprice(Double entryprice) {
-        this.entryPrice = entryprice;
-    }
-
-    public String getExittype() {
-        return exitType;
-    }
-
-    public void setExittype(String exittype) {
-        this.exitType = exittype;
-    }
-
-    public Timestamp getExitDatetime() {
-        return exitDatetime;
-    }
-
-    public void setExitDatetime(Timestamp exitDatetime) {
-        this.exitDatetime = exitDatetime;
-    }
-
-    public Double getExitPrice() {
-        return exitPrice;
-    }
-
-    public void setExitPrice(Double exitPrice) {
-        this.exitPrice = exitPrice;
-    }
-
-    public Double getProfitLossPercent() {
-        return profitLossPercent;
-    }
-
-    public void setProfitLossPercent(Double profitLossPercent) {
-        this.profitLossPercent = profitLossPercent;
-    }
-
-    @Column(name="strateg_type") private String strategyType;
-    @Column( name = "strategy_id") private Integer strategyId;
-    @Column( name = "datetime_added") private Timestamp datetimeAdded;
-    @Column( name = "entry_type") private String entryType;
-    @Column( name ="entry_datetime") private Timestamp entryDatetime;
-    @Column( name = "entry_price") private Double entryPrice;
-    @Column( name = "exit_type") private  String exitType;
-    @Column( name = "exit_datetime") private Timestamp exitDatetime;
-    @Column( name = "exit_price") private Double exitPrice;
-    @Column( name = "profit_loss_percent") private Double profitLossPercent;
-
-   
-    public Integer getNumstocks() {
-        return numstocks;
-    }
-
-    public void setNumstocks(int num_stocks) {
-        this.numstocks = num_stocks;
-    }
-
-
-
-
-
-    public Order() {
-
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getStrategy_id() {
@@ -180,5 +44,63 @@ public class Order  implements Serializable {
 
     public void setStrategy_id(Integer strategy_id) {
         this.strategyId = strategy_id;
+    }
+
+    public Timestamp getCrossStartDate() {
+        return crossStartDate;
+    }
+
+    public void setCrossStartDate(Timestamp crossStartDate) {
+        this.crossStartDate = crossStartDate;
+    }
+
+    public Double getCrossStartPrice() {
+        return crossStartPrice;
+    }
+
+    public void setCrossStartPrice(Double crossStartPrice) {
+        this.crossStartPrice = crossStartPrice;
+    }
+
+    public String getCrossEndType() {
+        return crossEndType;
+    }
+
+    public void setCrossEndType(String crossEndType) {
+        this.crossEndType = crossEndType;
+    }
+
+    public Timestamp getCrossEndDate() {
+        return crossEndDate;
+    }
+
+    public void setCrossEndDate(Timestamp crossEndDate) {
+        this.crossEndDate = crossEndDate;
+    }
+
+    public Double getCrossEndPrice() {
+        return crossEndPrice;
+    }
+
+    public void setCrossEndPrice(Double crossEndPrice) {
+        this.crossEndPrice = crossEndPrice;
+    }
+
+    @Column(name="strategy_id") private Integer strategyId;
+    @Column(name="crossover_start_type") private String crossStartType;
+
+    @Column(name="crossover_start_datetime") private Timestamp crossStartDate;
+    @Column(name="crossover_start_price") private Double crossStartPrice;
+    @Column(name="crossover_end_type") private     String crossEndType;
+    @Column(name="crossover_end_datetime") private  Timestamp crossEndDate;
+    @Column(name="crossover_end_price") private Double crossEndPrice;
+
+
+    public String getCrossStartType() {
+        return crossStartType;
+    }
+
+    public void setCrossStartType(String crossStartType) {
+        this.crossStartType = crossStartType;
     }
 }
