@@ -29,7 +29,7 @@ public class AlgoTwoMovingAverages {
     double profit;
 
     /**
-     * Executes the two SMA strategy for a trade request.
+     * Executes the Two Moving Averages strategy.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.

@@ -5,6 +5,11 @@ import java.util.ArrayList;
 
 public class AlgoPriceBreakout {
 
+    /**
+     * Executes the Price Breakout strategy.
+     * @param period the open/close high/low time period.
+     * @param exitPercent the profit or loss percent for the exit condition.
+     */
     public void executeStrategy(int period, double exitPercent) {
 
         ArrayList<Double> previousPrices = null;
@@ -76,6 +81,7 @@ public class AlgoPriceBreakout {
 
     /**
      * This method is called to get all the prices within the next fixed time period.
+     * @param period the time period in which to get all the stock prices.
      * @return the prices in the time period.
      */
     public ArrayList<Double> getPricesInNextPeriod(int period) {
@@ -93,16 +99,31 @@ public class AlgoPriceBreakout {
         return 0.0;
     }
 
+    /**
+     * Gets the open price for a time period.
+     * @param prices the list of prices.
+     * @return the open price.
+     */
     public double getOpen(ArrayList<Double> prices) {
 
         return prices.get(0);
     }
 
+    /**
+     * Gets the close price for a time period.
+     * @param prices the list of prices.
+     * @return the close price.
+     */
     public double getClose(ArrayList<Double> prices) {
 
         return prices.get(prices.size() - 1);
     }
 
+    /**
+     * Gets the high price for a time period.
+     * @param prices the list of prices.
+     * @return the high price.
+     */
     public double getHigh(ArrayList<Double> prices) {
 
         double max = 0.0;
@@ -117,6 +138,11 @@ public class AlgoPriceBreakout {
         return max;
     }
 
+    /**
+     * Gets the low price for a time period.
+     * @param prices the list of prices.
+     * @return the low price.
+     */
     public double getLow(ArrayList<Double> prices) {
 
         double min = Double.MAX_VALUE;
