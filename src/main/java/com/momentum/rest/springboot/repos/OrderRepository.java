@@ -8,32 +8,20 @@ import java.sql.Timestamp;
 
 public interface OrderRepository extends CrudRepository<Order, Integer> {
 
-    public Iterable<Order> findOrderByStock(@Param("stock") String stock);
+    Iterable<Order> findOrderByStrategyId(@Param("strategy_id") int strategyId);
 
-    public Iterable<Order> findOrderByNumstocks(@Param("num_stocks") Integer numstocks);
+    Iterable<Order> findOrderByCrossoverStartType(@Param("crossover_start_type") String crossoverStartType);
 
-    public Iterable<Order> findOrderByStrategyId(@Param("strategy_id") Integer strategyId);
+    Iterable<Order> findOrderByCrossoverStartDatetime(@Param("crossover_start_datetime") Timestamp crossoverStartDatetime);
 
-    public Iterable<Order> findOrderByStrategyType(@Param("strateg_type") String strategyType);
+    Iterable<Order> findOrderByCrossoverStartPrice(@Param("crossover_start_price") double crossoverStartPrice);
 
-    public Iterable<Order> findOrderByDatetimeAdded(@Param("datetime_added")Timestamp datetimeAdded);
+    Iterable<Order> findOrderByCrossoverEndType(@Param("crossover_end_type") String crossoverEndType);
 
-    public Iterable<Order> findOrderByStatus(@Param("status") String status);
+    Iterable<Order> findOrderByCrossoverEndDatetime(@Param("crossover_end_datetime") Timestamp crossoverEndDatetime);
 
-    public Iterable<Order> findOrderByEntryDatetime(@Param("entry_datetime") Timestamp entryDatetime);
+    Iterable<Order> findOrderByCrossoverEndPrice(@Param("crossover_end_price") double crossoverEndPrice);
 
-    public Iterable<Order> findOrderByEntryPrice(@Param("entry_price")Double entryPrice);
-
-    public Iterable<Order> findOrderByEntryType(@Param("entry_type") String entryType);
-
-    public Iterable<Order> findOrderByExitType(@Param("exit_type") String exitType);
-
-    public Iterable<Order> findOrderByExitDatetime(@Param("exit_datetime") Timestamp exitDatetime);
-
-    public Iterable<Order> findOrderByExitPrice(@Param("exit_price")Double exitPrice);
-
-
-
-
+    Iterable<Order> findOrderByProfitLoss(@Param("profit_loss") double profitLoss);
 
 }

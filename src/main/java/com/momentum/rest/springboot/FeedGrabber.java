@@ -18,38 +18,27 @@ import java.util.List;
 @Service
 public class FeedGrabber {
 
-    public static void main(String[] args) throws IOException { //test
-        FeedGrabber f = new FeedGrabber();
-        f.grabFeedPrices();
-    }
-
     @Scheduled(fixedRate = 1000) // this is in milliseconds
     public void grabFeedPrices() throws IOException {
 
-        System.out.println("i am running every 1 second");
+        String[] stocksToCheck = {"AAPL", "GOOG", "BRK-A", "NSC", "MSFT", "OTHER"};
+        String requestURL = "http://feed.conygre.com:8080/MockYahoo/quotes.csv?s=%s&f=p0";
+        String joinedStocksString = String.join(",", stocksToCheck);
+        String finalrequestURL = String.format(requestURL, joinedStocksString);
 
-//
-//        // hard coded list of stocks to check -- use the DB to grab stocks we need to check
-//        String[] stocksToCheck = {"goog", "aapl", "msft", "random", "nsc", "brk-a"};
-//
-//        String requestURL = "http://feed.conygre.com:8080/MockYahoo/quotes.csv?s=%s&f=p0";
-//        String joinedStocksString = String.join(",", stocksToCheck);
-//        String finalrequestURL = String.format(requestURL, joinedStocksString);
-//
-//        Date dt = new java.util.Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//        String currentTime = sdf.format(dt);
-//
-//        System.out.println("i call the feed every second.");
-//
-//        List<Double> priceResults = makeFeedPricesRequest(finalrequestURL);
-//
-//        for (int i = 0; i < stocksToCheck.length; i++) {
-//            // add this to the database
-//
-//            System.out.println(stocksToCheck[i] + "\t" + priceResults.get(i));
-//        }
+        Date dt = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String currentTime = sdf.format(dt);
+
+        List<Double> priceResults = makeFeedPricesRequest(finalrequestURL);
+
+        for (int i = 0; i < stocksToCheck.length; i++) {
+            // add this to the database
+            // COLUMNS:
+            // STOCK | PRICE | DATETIME
+
+            System.out.println(stocksToCheck[i] + "\t" + priceResults.get(i) + "\t" + currentTime);
+        }
 
     }
 

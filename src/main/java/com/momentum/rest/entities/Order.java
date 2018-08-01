@@ -1,181 +1,111 @@
 package com.momentum.rest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.annotation.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
-@Entity@Table(name="orders")
+@Entity
+@Table(name = "orders")
+public class Order implements Serializable {
 
-@NamedQueries(
-        {
-                @NamedQuery(name = "Order.getAll",
-                        query = "select order_id from Order as o",
-                         hints = {@QueryHint(name="org.hibernate.cacheable", value="true")})
-        }
-)
-public class Order  implements Serializable {
+
+    public Order() {}
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_id")
-    private int order_id;
+    private int orderID;
+    @Column(name = "strategy_id")
+    private int strategyId;
+    @Column(name = "crossover_start_type")
+    private String crossoverStartType;
+    @Column(name = "crossover_start_datetime")
+    private Timestamp crossoverStartDatetime;
+    @Column(name = "crossover_start_price")
+    private double crossoverStartPrice;
+    @Column(name = "crossover_end_type")
+    private String crossoverEndType;
+    @Column(name = "crossover_end_datetime")
+    private Timestamp crossoverEndDatetime;
+    @Column(name = "crossover_end_price")
+    private Double crossoverEndPrice;
+    @Column(name = "profit_loss")
+    private Double profitLoss;
 
-    public int getOrder_id() {
-        return order_id;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
-
-    @Column(name = "num_stocks")
-
-    private Integer  numstocks;
-
-
-    @Column(name="status") private String status;
-    @Column(name="stock") private String stock;
-
-    public void setNumstocks(Integer numstocks) {
-        this.numstocks = numstocks;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStock() {
-        return stock;
-    }
-
-    public void setStock(String stock) {
-        this.stock = stock;
-    }
-
-    public String getStrategyType() {
-        return strategyType;
-    }
-
-    public void setStrategyType(String strategyType) {
-        this.strategyType = strategyType;
-    }
-
-    public Integer getStrategyId() {
+    public int getStrategyId() {
         return strategyId;
     }
 
-    public void setStrategyId(Integer strategyId) {
+    public void setStrategyId(int strategyId) {
         this.strategyId = strategyId;
     }
 
-    public Timestamp getDatetimeAdded() {
-        return datetimeAdded;
+    public String getCrossoverStartType() {
+        return crossoverStartType;
     }
 
-    public void setDatetimeAdded(Timestamp datetimeAdded) {
-        this.datetimeAdded = datetimeAdded;
+    public void setCrossoverStartType(String crossoverStartType) {
+        this.crossoverStartType = crossoverStartType;
     }
 
-    public String getEntryTime() {
-        return entryType;
+    public Timestamp getCrossoverStartDatetime() {
+        return crossoverStartDatetime;
     }
 
-    public void setEntryTime(String entryTime) {
-        this.entryType = entryTime;
+    public void setCrossoverStartDatetime(Timestamp crossoverStartDatetime) {
+        this.crossoverStartDatetime = crossoverStartDatetime;
     }
 
-    public Timestamp getEntrydatetime() {
-        return entryDatetime;
+    public double getCrossoverStartPrice() {
+        return crossoverStartPrice;
     }
 
-    public void setEntrydatetime(Timestamp entryDatetime) {
-        this.entryDatetime = entryDatetime;
+    public void setCrossoverStartPrice(double crossoverStartPrice) {
+        this.crossoverStartPrice = crossoverStartPrice;
     }
 
-    public Double getEntryprice() {
-        return entryPrice;
+    public String getCrossoverEndType() {
+        return crossoverEndType;
     }
 
-    public void setEntryprice(Double entryprice) {
-        this.entryPrice = entryprice;
+    public void setCrossoverEndType(String crossoverEndType) {
+        this.crossoverEndType = crossoverEndType;
     }
 
-    public String getExittype() {
-        return exitType;
+    public Timestamp getCrossoverEndDatetime() {
+        return crossoverEndDatetime;
     }
 
-    public void setExittype(String exittype) {
-        this.exitType = exittype;
+    public void setCrossoverEndDatetime(Timestamp crossoverEndDatetime) {
+        this.crossoverEndDatetime = crossoverEndDatetime;
     }
 
-    public Timestamp getExitDatetime() {
-        return exitDatetime;
+    public double getCrossoverEndPrice() {
+        return crossoverEndPrice;
     }
 
-    public void setExitDatetime(Timestamp exitDatetime) {
-        this.exitDatetime = exitDatetime;
+    public void setCrossoverEndPrice(double crossoverEndPrice) {
+        this.crossoverEndPrice = crossoverEndPrice;
     }
 
-    public Double getExitPrice() {
-        return exitPrice;
+    public double getProfitLoss() {
+        return profitLoss;
     }
 
-    public void setExitPrice(Double exitPrice) {
-        this.exitPrice = exitPrice;
-    }
+    @JsonIgnore
+    public void setProfitLoss(Double profitLoss) {
 
-    public Double getProfitLossPercent() {
-        return profitLossPercent;
-    }
+        this.profitLoss = profitLoss;
 
-    public void setProfitLossPercent(Double profitLossPercent) {
-        this.profitLossPercent = profitLossPercent;
-    }
-
-    @Column(name="strateg_type") private String strategyType;
-    @Column( name = "strategy_id") private Integer strategyId;
-    @Column( name = "datetime_added") private Timestamp datetimeAdded;
-    @Column( name = "entry_type") private String entryType;
-    @Column( name ="entry_datetime") private Timestamp entryDatetime;
-    @Column( name = "entry_price") private Double entryPrice;
-    @Column( name = "exit_type") private  String exitType;
-    @Column( name = "exit_datetime") private Timestamp exitDatetime;
-    @Column( name = "exit_price") private Double exitPrice;
-    @Column( name = "profit_loss_percent") private Double profitLossPercent;
-
-   
-    public Integer getNumstocks() {
-        return numstocks;
-    }
-
-    public void setNumstocks(int num_stocks) {
-        this.numstocks = num_stocks;
-    }
-
-
-
-
-
-    public Order() {
-
-    }
-
-
-    public Integer getStrategy_id() {
-        return strategyId;
-    }
-
-    public void setStrategy_id(Integer strategy_id) {
-        this.strategyId = strategy_id;
     }
 }
