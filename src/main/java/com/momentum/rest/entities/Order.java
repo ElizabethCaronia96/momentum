@@ -11,10 +11,18 @@ import java.sql.Timestamp;
 public class Order implements Serializable {
 
 
-    public Order() {}
+    public Order() {
+    }
+
+    public Order(int strategyId, String crossoverStartType, Timestamp crossoverStartDatetime, double crossoverStartPrice) {
+        this.strategyId = strategyId;
+        this.crossoverStartType = crossoverStartType;
+        this.crossoverStartDatetime = crossoverStartDatetime;
+        this.crossoverStartPrice = crossoverStartPrice;
+    }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private int orderID;
     @Column(name = "strategy_id")

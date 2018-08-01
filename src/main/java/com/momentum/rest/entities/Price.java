@@ -4,33 +4,37 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "prices")
+@Entity @Table(name = "prices")
+
 
 public class Price implements Serializable {
 
-    public Price() {}
+    public Price() {
+    }
+
+    public Price(String stock, double price, Timestamp datetime) {
+        this.stock = stock;
+        this.price = price;
+        this.datetime = datetime;
+    }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "price_id")
-    private int price_id;
-
+    private int priceID;
     @Column(name = "stock")
     private String stock;
-
     @Column(name = "price")
     private double price;
-
     @Column(name = "datetime")
     private Timestamp datetime;
 
-    public int getPrice_id() {
-        return price_id;
+    public int getPriceID() {
+        return priceID;
     }
 
-    public void setPrice_id(int price_id) {
-        this.price_id = price_id;
+    public void setPriceID(int priceID) {
+        this.priceID = priceID;
     }
 
     public String getStock() {
@@ -56,6 +60,4 @@ public class Price implements Serializable {
     public void setDatetime(Timestamp datetime) {
         this.datetime = datetime;
     }
-
-
 }
