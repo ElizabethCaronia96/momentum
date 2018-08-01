@@ -8,14 +8,18 @@ import javax.annotation.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Entity@Table(name="orders")
 
 @NamedQueries(
         {
                 @NamedQuery(name = "Order.getAll",
-                        query = "select order_id from Order as o",
+                        query = "select orderId from Order as o",
                          hints = {@QueryHint(name="org.hibernate.cacheable", value="true")})
         }
 )
@@ -23,14 +27,14 @@ public class Order  implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "order_id")
-    private int order_id;
+    private int orderId;
 
     public int getOrder_id() {
-        return order_id;
+        return orderId;
     }
 
     public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+        this.orderId = order_id;
     }
 
 
@@ -169,7 +173,6 @@ public class Order  implements Serializable {
     public Order() {
 
     }
-
 
     public Integer getStrategy_id() {
         return strategyId;
