@@ -2,85 +2,110 @@ package com.momentum.algo;
 
 import java.util.ArrayList;
 
-public class AlgoTwoSMA {
+public class AlgoTwoMovingAverages {
 
     SMA shortSMA;
     SMA longSMA;
 
-    boolean shortSMALower;
+    boolean shortSMAIsLower;
 
-    double purchasePrice;
-    double currentPrice;
+    /**
+     * The number of trades that have been executed.
+     */
+    int tradeCounter;
+    /**
+     * The price of every buy and sell trade is added to these lists.
+     */
+    ArrayList<Double> buyPrices;
+    ArrayList<Double> sellPrices;
+    /**
+     * The stock price of the first executed buy or sell trade. Total profit/loss accumulated over the strategy
+     * is measured against this price for the strategy exit condition.
+     */
+    double initialPrice;
+    /**
+     * The total profit accumulated over the strategy lifetime.
+     */
+    double profit;
 
     /**
      * Executes the two SMA strategy for a trade request.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
-     * @param shortSMARange the range of the short SMA.
-     * @param longSMARange the range of the long SMA.
+     * @param shortSMAPeriod the time period of the short SMA.
+     * @param longSMAPeriod the time period of the long SMA.
      * @param exitPercent the profit or loss percent for the exit condition.
      */
-    public void executeStrategy(String orderType, int shortSMARange, int longSMARange, double exitPercent) {
+    public void executeStrategy(String orderType, int shortSMAPeriod, int longSMAPeriod, double exitPercent) {
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
         }
 
-        shortSMA = new SMA(shortSMARange);
-        longSMA = new SMA(longSMARange);
+        shortSMA = new SMA(shortSMAPeriod);
+        longSMA = new SMA(longSMAPeriod);
 
         shortSMA.initialize(getPastPrices());
         longSMA.initialize(getPastPrices());
 
-        boolean crossed = false;
-        double newPrice = 0.0;
+        boolean exit = false;
+        tradeCounter = 0;
+        profit = 0.0;
 
-        while(!crossed) {
+        // loop on exit condition
+        while(!exit) {
 
-            setSMAComparison();
+            boolean crossed = false;
+            double newPrice = 0.0;
 
-            newPrice = getNewPrice();
-            shortSMA.update(newPrice);
-            longSMA.update(newPrice);
+            // loop on short sma crossing long sma
+            while(!crossed) {
 
-            crossed = hasCrossed(orderType);
-        }
+                setSMAComparison();
 
-        purchasePrice = newPrice;
+                newPrice = getNewPrice();
+                shortSMA.update(newPrice);
+                longSMA.update(newPrice);
 
-        if(shortSMA.average >= longSMA.average) {
-            placeOrder("Buy", purchasePrice);
-            exitStrategy("Sell", exitPercent);
-        }
-        else {
-            placeOrder("Sell", purchasePrice);
-            exitStrategy("Buy", exitPercent);
+                crossed = hasCrossed(orderType);
+            }
+
+            // execute trade
+            if(shortSMA.average >= longSMA.average) {
+                placeOrder("Buy", newPrice);
+                buyPrices.add(newPrice);
+            }
+            else {
+                placeOrder("Sell", newPrice);
+                sellPrices.add(newPrice);
+            }
+
+            tradeCounter++;
+            if(tradeCounter == 1) {
+                initialPrice = newPrice;
+            }
+            if(tradeCounter % 2 == 0) {
+                profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
+            }
+
+            exit = exitCondition(exitPercent);
         }
     }
 
     /**
      * Executes the exit condition for a trade request.
-     * @param orderType "Auto" or "Buy" or "Sell" order type.
      * @param exitPercent the profit or loss percent for the exit condition.
+     * @return true if the strategy exit condition is reached.
+     *         false otherwise
      */
-    public void exitStrategy(String orderType, double exitPercent) {
+    public boolean exitCondition(double exitPercent) {
 
-        boolean exit = false;
+        if(Math.abs(profit) >= initialPrice * exitPercent) {
 
-        while(!exit) {
-
-            currentPrice = getNewPrice();
-
-            if(currentPrice * (1.00 + exitPercent) >= purchasePrice) {
-                exit = true;
-            }
-            else if(currentPrice * (1.00 - exitPercent) <= purchasePrice) {
-                exit = true;
-            }
+            return true;
         }
-
-        placeOrder(orderType, currentPrice);
+        return false;
     }
 
     /**
@@ -108,10 +133,10 @@ public class AlgoTwoSMA {
     public void setSMAComparison() {
 
         if(shortSMA.average < longSMA.average) {
-            shortSMALower = true;
+            shortSMAIsLower = true;
         }
         else {
-            shortSMALower = false;
+            shortSMAIsLower = false;
         }
     }
 
@@ -127,24 +152,24 @@ public class AlgoTwoSMA {
 
         if(orderType.equalsIgnoreCase("Auto")) {
 
-            if(shortSMALower && shortSMA.average >= longSMA.average) {
+            if(shortSMAIsLower && shortSMA.average >= longSMA.average) {
                 return true;
             }
-            if(!shortSMALower && shortSMA.average < longSMA.average) {
+            if(!shortSMAIsLower && shortSMA.average < longSMA.average) {
                 return true;
             }
             return false;
         }
         if(orderType.equalsIgnoreCase("Buy")) {
 
-            if(shortSMALower && shortSMA.average >= longSMA.average) {
+            if(shortSMAIsLower && shortSMA.average >= longSMA.average) {
                 return true;
             }
             return false;
         }
         if(orderType.equalsIgnoreCase("Sell")) {
 
-            if(!shortSMALower && shortSMA.average < longSMA.average) {
+            if(!shortSMAIsLower && shortSMA.average < longSMA.average) {
                 return true;
             }
             return false;

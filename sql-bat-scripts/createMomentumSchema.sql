@@ -26,22 +26,16 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `stock` varchar(10) NOT NULL,
-  `num_stocks` int(11) NOT NULL,
-  `strategy_type` varchar(10) NOT NULL,
   `strategy_id` int(11) NOT NULL,
-  `datetime_added` datetime NOT NULL,
-  `status` varchar(45) NOT NULL,
-  `entry_type` varchar(45) DEFAULT NULL,
-  `entry_datetime` datetime DEFAULT NULL,
-  `entry_price` double DEFAULT NULL,
-  `exit_type` varchar(45) DEFAULT NULL,
-  `exit_datetime` datetime DEFAULT NULL,
-  `exit_price` double DEFAULT NULL,
-  `profit_loss_percent` double DEFAULT NULL,
-  `price` double DEFAULT NULL,
-  `strategy` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`order_id`)
+  `crossover_start_type` varchar(45) NOT NULL,
+  `crossover_start_datetime` datetime NOT NULL,
+  `crossover_start_price` double NOT NULL,
+  `crossover_end_type` varchar(45) DEFAULT NULL,
+  `crossover_end_datetime` datetime DEFAULT NULL,
+  `crossover_end_price` double DEFAULT NULL,
+  `profit_loss` double DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `order_strategy_link_idx` (`strategy_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -70,6 +64,7 @@ CREATE TABLE `strat_2ma` (
   `strategy_id` int(11) NOT NULL AUTO_INCREMENT,
   `long_avg_range` int(11) NOT NULL,
   `short_avg_range` int(11) NOT NULL,
+  `percent_to_exit` double NOT NULL,
   PRIMARY KEY (`strategy_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -88,6 +83,28 @@ CREATE TABLE `strat_bb` (
   PRIMARY KEY (`strategy_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `strategies`
+--
+
+DROP TABLE IF EXISTS `strategies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `strategies` (
+  `strategy_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(45) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  `stock` varchar(45) NOT NULL,
+  `size` int(11) NOT NULL,
+  `status` varchar(45) NOT NULL,
+  `added_time` datetime NOT NULL,
+  `entry_time` datetime DEFAULT NULL,
+  `exit_time` datetime DEFAULT NULL,
+  `profit_loss` double DEFAULT NULL,
+  PRIMARY KEY (`strategy_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -98,4 +115,4 @@ CREATE TABLE `strat_bb` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-31 13:55:40
+-- Dump completed on 2018-08-01 10:55:01
