@@ -94,7 +94,7 @@ public class AlgoTwoMovingAverages {
     }
 
     /**
-     * Executes the exit condition for a trade request.
+     * This method is called to check if the exit condition for the strategy is reached.
      * @param exitPercent the profit or loss percent for the exit condition.
      * @return true if the strategy exit condition is reached.
      *         false otherwise
