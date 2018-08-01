@@ -9,7 +9,13 @@ public class AlgoTwoMovingAverages {
 
     boolean shortSMAIsLower;
 
+    /**
+     * The number of trades that have been executed.
+     */
     int tradeCounter;
+    /**
+     * The price of every buy and sell trade is added to these lists.
+     */
     ArrayList<Double> buyPrices;
     ArrayList<Double> sellPrices;
     /**
@@ -17,6 +23,9 @@ public class AlgoTwoMovingAverages {
      * is measured against this price for the strategy exit condition.
      */
     double initialPrice;
+    /**
+     * The total profit accumulated over the strategy lifetime.
+     */
     double profit;
 
     /**
@@ -77,7 +86,7 @@ public class AlgoTwoMovingAverages {
                 initialPrice = newPrice;
             }
             if(tradeCounter % 2 == 0) {
-                profit += (sellPrices.get(tradeCounter/2) - buyPrices.get(tradeCounter/2));
+                profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
             }
 
             exit = exitCondition(exitPercent);
@@ -88,7 +97,7 @@ public class AlgoTwoMovingAverages {
      * Executes the exit condition for a trade request.
      * @param exitPercent the profit or loss percent for the exit condition.
      * @return true if the strategy exit condition is reached.
-     *         false otherwise.
+     *         false otherwise
      */
     public boolean exitCondition(double exitPercent) {
 

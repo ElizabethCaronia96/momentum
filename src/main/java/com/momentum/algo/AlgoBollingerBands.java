@@ -6,7 +6,20 @@ public class AlgoBollingerBands {
 
     SMAWithSD smaWithSD;
 
+    /**
+     * The number of trades that have been executed.
+     */
     int tradeCounter;
+    /**
+     * This variable can take on the values: "Auto" or "Buy" or "Sell"
+     * "Auto" means a trade has not been executed yet.
+     * "Buy" means the last trade was a buy order.
+     * "Sell" means the last trade was a sell order.
+     */
+    String lastTrade;
+    /**
+     * The price of every buy and sell trade is added to these lists.
+     */
     ArrayList<Double> buyPrices;
     ArrayList<Double> sellPrices;
     /**
@@ -14,6 +27,9 @@ public class AlgoBollingerBands {
      * is measured against this price for the strategy exit condition.
      */
     double initialPrice;
+    /**
+     * The total profit accumulated over the strategy lifetime.
+     */
     double profit;
 
     /**
@@ -37,6 +53,7 @@ public class AlgoBollingerBands {
 
         boolean exit = false;
         tradeCounter = 0;
+        lastTrade = "Auto";
         profit = 0.0;
 
         // loop on exit condition
@@ -46,7 +63,6 @@ public class AlgoBollingerBands {
             double newPrice = 0.0;
 
             // loop on stock price hitting low or high band
-            // TODO: force bollinger bands strategy to alternate between buy and sell trades
             while(!crossed) {
 
                 newPrice = getNewPrice();
@@ -57,10 +73,12 @@ public class AlgoBollingerBands {
 
             // execute trade
             if(newPrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
+                lastTrade = "Buy";
                 placeOrder("Buy", newPrice);
                 buyPrices.add(newPrice);
             }
             else {
+                lastTrade = "Sell";
                 placeOrder("Sell", newPrice);
                 sellPrices.add(newPrice);
             }
@@ -70,7 +88,7 @@ public class AlgoBollingerBands {
                 initialPrice = newPrice;
             }
             if(tradeCounter % 2 == 0) {
-                profit += (sellPrices.get(tradeCounter/2) - buyPrices.get(tradeCounter/2));
+                profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
             }
 
             exit = exitCondition(exitPercent);
@@ -116,19 +134,35 @@ public class AlgoBollingerBands {
      * @param orderType "Auto" or "Buy" or "Sell" order type.
      * @param newPrice the new stock price to check against the low and high bands.
      * @param stdDevMult the multiple of the standard deviation that sets the low and high bands about the SMA.
-     * @return true for order type "Auto" if the stock price hits the low band or the high band.
+     * @return true for order type "Auto" and lastTrade = "Auto" if the stock price hits the low band or the high band.
+     *         true for order type "Auto" and lastTrade = "Buy" if the stock price hits the high band.
+     *         true for order type "Auto" and lastTrade = "Sell" if the stock price hits the low band.
      *         true for order type "Buy" if the stock price hits the low band.
      *         true for order type "Sell" if the stock price hits the high band.
      *         false otherwise.
      */
     public boolean hasCrossed(String orderType, Double newPrice, Double stdDevMult) {
 
-        if(orderType.equalsIgnoreCase("Auto")) {
+        if(orderType.equalsIgnoreCase("Auto") && lastTrade.equalsIgnoreCase("Auto")) {
 
             if(newPrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
                 return true;
             }
             if(newPrice >= smaWithSD.average + smaWithSD.stdDev * stdDevMult) {
+                return true;
+            }
+            return false;
+        }
+        if(orderType.equalsIgnoreCase("Auto") && lastTrade.equalsIgnoreCase("Buy")) {
+
+            if(newPrice >= smaWithSD.average + smaWithSD.stdDev * stdDevMult) {
+                return true;
+            }
+            return false;
+        }
+        if(orderType.equalsIgnoreCase("Auto") && lastTrade.equalsIgnoreCase("Sell")) {
+
+            if(newPrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
                 return true;
             }
             return false;

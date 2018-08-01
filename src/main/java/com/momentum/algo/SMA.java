@@ -5,8 +5,17 @@ import java.util.LinkedList;
 
 public class SMA {
 
+    /**
+     * Holds all stock prices over the time period of the moving average.
+     */
     LinkedList<Double> queue;
+    /**
+     * The time period of the moving average.
+     */
     int period;
+    /**
+     * The value of the moving average.
+     */
     double average;
 
     /**
