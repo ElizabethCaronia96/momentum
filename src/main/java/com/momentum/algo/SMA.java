@@ -2,6 +2,7 @@ package com.momentum.algo;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SMA {
 
@@ -31,7 +32,7 @@ public class SMA {
      * Initializes the SMA with the past stock prices and calculates the average.
      * @param pastPrices the past stock prices.
      */
-    public void initialize(ArrayList<Double> pastPrices) {
+    public void initialize(List<Double> pastPrices) {
 
         if(period != pastPrices.size()) {
             System.out.println("ERROR: Size of list containing past stock prices does not match SMA range.");
@@ -58,7 +59,11 @@ public class SMA {
      * Updates the SMA with the new stock price and calculates the average efficiently using the old and new prices.
      * @param newPrice the new stock price.
      */
-    public void update(double newPrice) {
+    public void update(Double newPrice) {
+
+        if(Double.compare(queue.peek(), newPrice) == 0) {
+            return;
+        }
 
         if(queue.size() < period) {
 

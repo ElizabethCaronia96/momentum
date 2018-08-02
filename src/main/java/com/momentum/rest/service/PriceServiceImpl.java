@@ -34,12 +34,11 @@ public class PriceServiceImpl implements PriceService{
 
     public List<Double> getLastNPricesOfStock(String stock, int n) {
 
-
         String q = String.format("SELECT p.price FROM Price p WHERE p.stock=\'%s\' ORDER BY p.priceID DESC", stock);
         Query query = em.createQuery(q).setMaxResults(n);
 
-        List prices = query.getResultList();
-        List pricesFinal = Lists.reverse(prices);
+        List<Double> prices = query.getResultList();
+        List<Double> pricesFinal = Lists.reverse(prices);
 
         return pricesFinal;
     }

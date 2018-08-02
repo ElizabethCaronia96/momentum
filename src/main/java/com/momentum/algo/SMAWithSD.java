@@ -72,7 +72,11 @@ public class SMAWithSD {
      * Updates the SMA with the new stock price and calculates the average and standard deviation efficiently using the old and new prices.
      * @param newPrice the new stock price.
      */
-    public void update(double newPrice) {
+    public void update(Double newPrice) {
+
+        if(Double.compare(queue.peek(), newPrice) == 0) {
+            return;
+        }
 
         if(queue.size() < period) {
 

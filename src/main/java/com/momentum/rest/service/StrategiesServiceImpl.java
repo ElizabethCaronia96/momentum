@@ -1,9 +1,12 @@
 package com.momentum.rest.service;
 
 import com.google.common.collect.Lists;
+import com.momentum.rest.dao.BBRepository;
 import com.momentum.rest.dao.StrategiesRepository;
+import com.momentum.rest.dao.TwoMARepository;
 import com.momentum.rest.entities.Order;
 import com.momentum.rest.entities.Strategies;
+import com.momentum.rest.entities.TwoMA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StrategiesServiceImpl implements StrategiesService{
@@ -23,6 +26,12 @@ public class StrategiesServiceImpl implements StrategiesService{
 
     @Autowired
     private StrategiesRepository stratRepo;
+
+    @Autowired
+    private TwoMARepository twoMARepo;
+
+    @Autowired
+    private BBRepository bbRepo;
 
     @Override
     public List<Strategies> getStratByStrategyId(int strategyId) {
@@ -73,15 +82,56 @@ public class StrategiesServiceImpl implements StrategiesService{
     public List<Strategies> getStratByProfitLoss(Double profitLoss) {
         return null;
     }
+/*
 
-    @Override
-    public List<Strategies> getAllActive() {
+    public List<Integer, String, String, Integer, Integer, Double> getAllActive2MA() {
 
-            String q = String.format("SELECT s. FROM Strategies s WHERE s.status<>\'finished\' ORDER BY s.strategy_id DESC");
+        String q = String.format("select s.strategyId, s.type, s.stock, tMA.longAvgRange, tMA.shortAvgRange, tMA.percentToExit from Strategies s left outer join TwoMA tMA on s.typeId = tMa.strategyId where  s.type = \'2ma\' and s.status<>\'finished\' order by s.addedTime asc ");
             Query query = em.createQuery(q);
-
+        List<Integer, String, String, Integer, Integer, Double> activeBB = query.getResultList();
             return query.getResultList();
 
 
+    }
+
+    public List<Integer, String, String, Integer, Integer, Double> getAllActiveBB() {
+        Collection<Integer, String, String, Integer, Integer, Double> activeBB = new Collection<Integer>();
+        String q = String.format("select s.strategyId, s.type, s.stock, bb.movingAvgRange, bb.stdDevMultiple from Strategies s left outer join BB bb on s.typeId = bb.strategyId where  s.type = \'bb\' and s.status<>\'finished\' order by s.addedTime asc");
+        Query query = em.createQuery(q);
+        activeBB.addAll(query.getResultList());
+        return activeBB;
+    } */
+
+@Override
+    public Map<Strategies, Object> getAllActive() {
+        String[] possibleStatii = {"pending", "in entry", "in close"};
+        ArrayList<Strategies> allActive = new ArrayList<>();
+        for (String s : possibleStatii) {
+            allActive.addAll(stratRepo.findStrategiesByStatus(s));
+
+        }
+        return getAllActiveHelper(allActive);
+
+    }
+
+    public Map<Strategies, Object> getAllActiveHelper(List<Strategies> allActive) {
+        Map map = new HashMap<Strategies, TwoMA>();
+        for (Strategies a : allActive) {
+            if (a.getType().equals("2ma")) {
+             //   System.out.println("2ma");
+                map.put(a, twoMARepo.findTwoMAByStrategyId(a.getTypeId()));
+            }
+            else {
+              //  System.out.println("bb");
+                map.put(a, bbRepo.findBBByStrategyId(a.getTypeId()));
+            }
+
+        }
+        return map;
+    }
+
+    @Override
+    public List<Strategies> getAllStrats(){
+        return  stratRepo.findAll();
     }
 }

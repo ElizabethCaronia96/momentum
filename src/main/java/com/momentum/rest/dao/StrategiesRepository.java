@@ -23,4 +23,6 @@ public interface StrategiesRepository extends JpaRepository<Strategies, Integer>
     public List<Strategies> findStrategiesByExitTime(@Param("exit_Time") Timestamp exitTime);
     public List<Strategies> findStrategiesByProfitLoss(@Param("profit_loss") Double profitLoss);
 
+
+
 }
