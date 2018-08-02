@@ -46,15 +46,15 @@ public class AlgoRunner {
 
         ExecutorService pool = Executors.newFixedThreadPool(MAX_THREADS);
 
+        // id's of running strategies
+        List<Integer> runningStrategies = new ArrayList<Integer>();
+
         boolean exitMomentum = false;
 
         while (!exitMomentum) {
 
             // strategies in db
             Map<Strategies, Object> strategiesMap = ss.getAllActive();
-
-            // id's of running strategies
-            List<Integer> runningStrategies = new ArrayList<Integer>();
 
             // iterate through strategies in db
             for (Map.Entry<Strategies, Object> entry : strategiesMap.entrySet()) {
