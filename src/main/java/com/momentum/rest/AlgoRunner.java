@@ -1,18 +1,29 @@
 package com.momentum.rest;
 
 
-import com.momentum.algo.AlgoBollingerBands;
 import com.momentum.algo.AlgoTwoMovingAverages;
-import com.momentum.rest.entities.BB;
-import com.momentum.rest.entities.Strategies;
 import com.momentum.rest.entities.TwoMA;
+import com.momentum.rest.entities.BB;
+
+import com.momentum.rest.entities.Order;
+
+import com.momentum.rest.entities.Strategies;
+import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
 import com.momentum.rest.service.StrategiesService;
+import org.apache.activemq.transport.tcp.TimeStampStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.momentum.algo.AlgoBollingerBands;
+
+import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
+
+import java.sql.Timestamp;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -26,7 +37,6 @@ public class AlgoRunner {
 
     @Autowired
     private StrategiesService ss;
-
 
     static final int MAX_THREADS = 10;
 
@@ -72,7 +82,7 @@ public class AlgoRunner {
                         TwoMA strat = ((TwoMA) (entry.getValue()));
                         int shortSMAPeriod = strat.getShortAvgRange();
                         int longSMAPeriod = strat.getLongAvgRange();
-                        double exitPercent = strat.getPercentToExit();
+                        double exitPercent = strat.getPercentToExit() / 100.0;
 
                         Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent);
                     } else if (entry.getValue().getClass() == BB.class) {
@@ -82,7 +92,7 @@ public class AlgoRunner {
                         BB strat = ((BB) (entry.getValue()));
                         int smaPeriod = strat.getMovingAvgRange();
                         double stdDevMult = strat.getStdDevMultiple();
-                        double exitPercent = strat.getPercentToExit();
+                        double exitPercent = strat.getPercentToExit() / 100.0;
 
                         Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent);
                     }
@@ -95,6 +105,37 @@ public class AlgoRunner {
 }
 
 
+
+
+
+
+
+        /*
+        int threadCount = 0;
+
+        boolean exitTradePlatform = false;
+
+        while(!exitTradePlatform) {
+
+            ss.getAllStrats();
+
+            AlgoTwoMovingAverages thread1 = new AlgoTwoMovingAverages(orderType, stock, shortSMAPeriod, longSMAPeriod, exitPercent);
+            thread1.start();
+
+
+
+
+    /*  @Scheduled(fixedRate = 250) // this is in milliseconds
+      public void algorithmChecker() {
+
+          System.out.println("Algorithm check executed.");
+         // List prices = ps.getLastNPricesOfStock("GOOG", 20);
+      }
+  */
+
+
+        //loop thru strats, if no thread, create thread of strategy
+
 //    @PostConstruct
 //    public void runOnce() {
 //        Map<Strategies, Object> relist = ss.getAllActive();
@@ -106,8 +147,9 @@ public class AlgoRunner {
 //    }
 
 
-// function call for each thread
 
-// example function {
-// initialize ur queues for this straegy
-// inside this thread, u call price service's get last N prices of stock
+        // function call for each thread
+
+        // example function {
+        // initialize ur queues for this straegy
+        // inside this thread, u call price service's get last N prices of stock

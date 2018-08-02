@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @EnableAutoConfiguration
-@ComponentScan(basePackages = "com.momentum.rest")
+@ComponentScan(basePackages = "com.momentum")
 @EntityScan("com.momentum.rest.entities")
 @EnableScheduling
 public class AppConfig {
