@@ -7,6 +7,8 @@ import com.momentum.rest.dao.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,6 +18,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orRp;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void doSomething() {
@@ -36,6 +41,17 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getAllOrders() {
         return orRp.findAll();
     }
+
+    public List<Order> getAllOpenPositions() {
+
+        String q = "SELECT o FROM Order o WHERE o.crossoverEndType IS NULL ORDER BY o.orderId";
+        Query query = em.createQuery(q);
+
+        List orders = query.getResultList();
+        return orders;
+    }
+
+
 
   /*  @Override
     public List<Order> insertStrategyId(Integer id) {
