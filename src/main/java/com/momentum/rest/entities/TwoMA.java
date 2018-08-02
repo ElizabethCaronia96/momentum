@@ -20,12 +20,12 @@ public class TwoMA {
         this.longAvgRange = longAvgRange;
     }
 
-    public Integer getShortRangeAvg() {
-        return shortRangeAvg;
+    public Integer getShortAvgRange() {
+        return shortAvgRange;
     }
 
-    public void setShortRangeAvg(Integer shortRangeAvg) {
-        this.shortRangeAvg = shortRangeAvg;
+    public void setShortAvgRange(Integer shortAvgRange) {
+        this.shortAvgRange = shortAvgRange;
     }
 
     public Double getPercentToExit() {
@@ -45,7 +45,7 @@ public class TwoMA {
     private Integer longAvgRange;
 
     @Column(name="short_avg_range")
-    private Integer shortRangeAvg;
+    private Integer shortAvgRange;
 
     @Column(name="percent_to_exit")
     private Double percentToExit;
