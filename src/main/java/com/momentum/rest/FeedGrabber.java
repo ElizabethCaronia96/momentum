@@ -3,11 +3,9 @@ package com.momentum.rest;
 import com.momentum.rest.entities.Price;
 import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import com.momentum.rest.dao.PriceRepository;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,17 +25,18 @@ public class FeedGrabber {
     @Scheduled(fixedRate = 1000) // this is in milliseconds
     public void grabFeedPrices() throws IOException {
 
+        Date dt = new Date();
+        Timestamp timestamp = new Timestamp(dt.getTime());
+        System.out.println(String.format("[%s]: Adding new prices from feed.", timestamp));
+
         String[] stocksToCheck = {"AAPL", "GOOG", "BRK-A", "NSC", "MSFT", "OTHER"};
         String requestURL = "http://feed.conygre.com:8080/MockYahoo/quotes.csv?s=%s&f=p0";
         String joinedStocksString = String.join(",", stocksToCheck);
         String finalrequestURL = String.format(requestURL, joinedStocksString);
 
-        Date dt = new Date();
-        Timestamp timestamp = new Timestamp(dt.getTime());
 
         List<Double> priceResults = makeFeedPricesRequest(finalrequestURL);
 
-        System.out.println(String.format("[%s]: Adding new prices from feed.", timestamp));
 
         for (int i = 0; i < stocksToCheck.length; i++) {
             Price newPrice = new Price(stocksToCheck[i], priceResults.get(i), timestamp);

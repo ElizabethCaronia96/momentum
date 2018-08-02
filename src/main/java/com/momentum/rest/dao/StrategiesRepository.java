@@ -17,7 +17,8 @@ public interface StrategiesRepository extends JpaRepository<Strategies, Integer>
     public List<Strategies> findStrategiesByTypeId(@Param("type_id") Integer typeId);
     public List<Strategies> findStrategiesByStock(@Param("stock") String stock);
     public List<Strategies> findStrategiesBySize(@Param("size") Integer size);
-    public List<Strategies> findStrategiesByStatus(@Param("status")String  status);
+    public List<Strategies> findStrategiesByStatus(@Param("status")String status);
+    public List<Strategies> findStrategiesByStatusOrderByAddedTime(@Param("status")String status);
     public List<Strategies> findStrategiesByAddedTime(@Param("added_time") Timestamp addedTime);
     public List<Strategies> findStrategiesByEntryTime(@Param("entry_Time") Timestamp entryTime);
     public List<Strategies> findStrategiesByExitTime(@Param("exit_Time") Timestamp exitTime);
