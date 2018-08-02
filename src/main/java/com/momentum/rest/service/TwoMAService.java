@@ -9,7 +9,7 @@ public interface TwoMAService {
 
     public List<TwoMA> getTwoMAByStrategyID( int strategyId);
     public List<TwoMA> getTwoMAByLongAvgRange(Integer longAvgRange);
-    public List<TwoMA> getwoMAByShortRangeAvg( Integer shortRangeAvg);
+    public List<TwoMA> getwoMAByShortAvgRange( Integer shortAvgRange);
     public List<TwoMA> getTwoMAByPercentToExit(Double percentToExit);
 
 }

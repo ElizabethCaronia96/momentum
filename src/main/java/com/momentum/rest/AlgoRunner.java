@@ -33,6 +33,7 @@ public class AlgoRunner {
     @Scheduled(fixedRate = 1000000) // this is in milliseconds
     public void algorithmChecker() {
 
+
         ExecutorService pool = Executors.newFixedThreadPool(MAX_THREADS);
 
         // id's of running strategies
