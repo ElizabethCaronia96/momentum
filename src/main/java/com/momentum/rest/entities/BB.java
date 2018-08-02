@@ -39,4 +39,17 @@ public class BB {
 
     @Column(name="std_dev_multiple")
     private Double stdDevMultiple;
+
+    @Column(name="percent_to_exit")
+    private Double percentToExit;
+
+    public Double getPercentToExit() {
+        return percentToExit;
+    }
+
+    public void setPercentToExit(Double percentToExit) {
+        this.percentToExit = percentToExit;
+    }
+
+
 }

@@ -10,11 +10,4 @@ public class HomeController {
     public String index() {
         return "index.html";
     }
-
-    @RequestMapping("/greeting")
-    @ResponseBody
-    public String greeting(@RequestParam(name="strategy_type", required=true, defaultValue="2mv") String strategyType){
-        return "greeting "+strategyType;
-    }
-
 }
