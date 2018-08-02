@@ -102,7 +102,7 @@ public class StrategiesServiceImpl implements StrategiesService{
         return activeBB;
     } */
 
-@Override
+    @Override
     public Map<Strategies, Object> getAllActive() {
         String[] possibleStatii = {"pending", "in entry", "in close"};
         ArrayList<Strategies> allActive = new ArrayList<>();
@@ -115,7 +115,7 @@ public class StrategiesServiceImpl implements StrategiesService{
     }
 
     public Map<Strategies, Object> getAllActiveHelper(List<Strategies> allActive) {
-        Map map = new HashMap<Strategies, TwoMA>();
+        Map map = new HashMap<Strategies, Object>();
         for (Strategies a : allActive) {
             if (a.getType().equals("2ma")) {
              //   System.out.println("2ma");
@@ -123,6 +123,8 @@ public class StrategiesServiceImpl implements StrategiesService{
             }
             else {
               //  System.out.println("bb");
+                System.out.println(bbRepo.findBBByStrategyId(a.getTypeId()));
+
                 map.put(a, bbRepo.findBBByStrategyId(a.getTypeId()));
             }
 

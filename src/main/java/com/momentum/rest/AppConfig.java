@@ -14,8 +14,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class AppConfig {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AppConfig.class, args);
-
-
-
     }
 }

@@ -10,13 +10,12 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-public interface BBRepository extends JpaRepository<Order, Integer> {
+public interface BBRepository extends JpaRepository<BB, Integer> {
 
 
-    public List<Order> findAllByOrderId(@Param("order_id") Integer orderId);
-    public List<Order> findAllByStrategyId(@Param("strategy_id") Integer strategyId);
-    public List<BB> findBBByStrategyId(@Param("strategy_id") int strategyId)
-;
+    public List<BB> findBBByStrategyId(@Param("strategy_id") int strategyId);
+
+
  /*   public List<Order> saveEntryPrice(@Param("entry_price") Double entryPrice);
     public List<Order> saveEntryDatetime(@Param("entry_datetime") Timestamp entryDatetime);
 
