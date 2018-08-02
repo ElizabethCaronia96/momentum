@@ -23,23 +23,21 @@ public class AlgoRunner {
     @Autowired
     private StrategiesService ss;
 
-    /*  @Scheduled(fixedRate = 250) // this is in milliseconds
-      public void algorithmChecker() {
-
-          System.out.println("Algorithm check executed.");
-         // List prices = ps.getLastNPricesOfStock("GOOG", 20);
-      }
-  */
-    @PostConstruct
-    public void runOnce() {
-        Map<Strategies, Object> relist = ss.getAllActive();
-        for (Map.Entry<Strategies, Object> entry : relist.entrySet()) {
-            // System.out.println("should have everything");
-            System.out.println(entry.getKey() + " / " + entry.getValue());
-        }
-
-
+    @Scheduled(fixedRate = 250) // this is in milliseconds
+    public void algorithmChecker() {
+        System.out.println("Algorithm check executed.");
+        // List prices = ps.getLastNPricesOfStock("GOOG", 20);
     }
+
+//    @PostConstruct
+//    public void runOnce() {
+//        Map<Strategies, Object> relist = ss.getAllActive();
+//        for (Map.Entry<Strategies, Object> entry : relist.entrySet()) {
+//            // System.out.println("should have everything");
+//            System.out.println(entry.getKey() + " / " + entry.getValue());
+//        }
+//
+//    }
 
 
 }
