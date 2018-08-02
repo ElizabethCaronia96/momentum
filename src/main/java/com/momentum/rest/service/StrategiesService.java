@@ -3,8 +3,11 @@ package com.momentum.rest.service;
 import com.momentum.rest.entities.Strategies;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 public interface StrategiesService {
     public List<Strategies> getStratByStrategyId(int strategyId);
@@ -22,4 +25,5 @@ public interface StrategiesService {
 
     public List<Strategies> getAllStrats();
 
+   public Map<Strategies, Object> getAllDone();
 }

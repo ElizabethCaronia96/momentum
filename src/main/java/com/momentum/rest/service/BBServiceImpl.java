@@ -3,6 +3,7 @@ package com.momentum.rest.service;
 import com.momentum.rest.dao.BBRepository;
 import com.momentum.rest.entities.BB;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,4 +32,16 @@ public class BBServiceImpl implements BBService {
     public List<BB> getBBByPercentToExit(Double percentToExit) {
         return bbRepo.findBBByPercentToExit(percentToExit);
     }
+=======
+
+import java.util.List;
+
+public class BBServiceImpl {
+    @Autowired
+    private BBRepository bbRepo;
+    public List<BB> getBBbyId(int strategyId)
+    {
+        return bbRepo.findBBByStrategyId(strategyId);
+    }
+>>>>>>> 7a45dcaac37674aaf94cb5e167a6d30677053a7e
 }

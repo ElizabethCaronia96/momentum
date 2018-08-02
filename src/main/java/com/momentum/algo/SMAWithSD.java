@@ -2,6 +2,7 @@ package com.momentum.algo;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SMAWithSD {
 
@@ -35,7 +36,7 @@ public class SMAWithSD {
      * Initializes the SMA with the past stock prices and calculates the average and standard deviation.
      * @param pastPrices the past stock prices.
      */
-    public void initialize(ArrayList<Double> pastPrices) {
+    public void initialize(List<Double> pastPrices) {
 
         if(period != pastPrices.size()) {
             System.out.println("ERROR: Size of list containing past stock prices does not match SMA range.");

@@ -1,8 +1,15 @@
 package com.momentum.algo;
 
-import java.util.ArrayList;
+import com.momentum.rest.service.PriceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class AlgoBollingerBands {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AlgoBollingerBands implements Runnable {
+
+    @Autowired
+    private PriceService ps;
 
     SMAWithSD smaWithSD;
 
@@ -32,6 +39,21 @@ public class AlgoBollingerBands {
      */
     double profit;
 
+    String orderType;
+    String stock;
+    int smaPeriod;
+    double stdDevMult;
+    double exitPercent;
+
+    public AlgoBollingerBands(String orderType, String stock, int smaPeriod, double stdDevMult, double exitPercent) {
+
+        this.orderType = orderType;
+        this.stock = stock;
+        this.smaPeriod = smaPeriod;
+        this.stdDevMult = stdDevMult;
+        this.exitPercent = exitPercent;
+    }
+
     /**
      * Executes the Bollinger Bands strategy.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
@@ -41,7 +63,7 @@ public class AlgoBollingerBands {
      * @param stdDevMult the multiple of the standard deviation that sets the low and high bands about the SMA.
      * @param exitPercent the profit or loss percent for the exit condition.
      */
-    public void executeStrategy(String orderType, int smaPeriod, double stdDevMult, double exitPercent) {
+    public void run() {
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
@@ -49,7 +71,8 @@ public class AlgoBollingerBands {
 
         smaWithSD = new SMAWithSD(smaPeriod);
 
-        smaWithSD.initialize(getPastPrices());
+        List<Double> initialSMAPrices = ps.getLastNPricesOfStock(stock, smaPeriod);
+        smaWithSD.initialize(initialSMAPrices);
 
         boolean exit = false;
         tradeCounter = 0;
@@ -65,8 +88,8 @@ public class AlgoBollingerBands {
             // loop on stock price hitting low or high band
             while(!crossed) {
 
-                newPrice = getNewPrice();
-                smaWithSD.update(newPrice);
+                newPrice = (double)(ps.getLastNPricesOfStock(stock, 1).get(0));
+                smaWithSD.update(new Double(newPrice));
 
                 crossed = hasCrossed(orderType, newPrice, stdDevMult);
             }
