@@ -43,3 +43,10 @@ Table Name: bb
 1|20|2
 2|12|2.2
 3|15|1.65
+
+
+Order statuses can be:
+pending
+in entry: made first crossover
+in close: made second crossover
+finished
