@@ -2,6 +2,8 @@ package com.momentum.rest.springboot.controllers;
 
 import com.momentum.rest.entities.Order;
 import com.momentum.rest.springboot.repos.OrderRepository;
+import com.momentum.rest.springboot.services.OrderService;
+import com.momentum.rest.springboot.services.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
@@ -20,21 +22,23 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private OrderRepository orRp;
+    private OrderServiceImpl service;
 
     @RequestMapping("/")
     public String index() {
         return "index.html";
     }
 
-    public void doSomething(){
-        List<Order> orders = orRp.findAllByOrderId(1001);
-        System.out.println(orders);
-    }
 
-    @GetMapping("orders")
+  /*  @GetMapping("orders")
     public ResponseEntity<List<Order>> getAllOrders(){
         List<Order> list = orRp.findAllByOrderId(1001);
         return new ResponseEntity<List<Order>>(list, HttpStatus.OK);
-    }
+    } */
+
+  @RequestMapping(method=RequestMethod.GET)
+    void findAll() {
+      service.doSomething();
+  }
+
 }

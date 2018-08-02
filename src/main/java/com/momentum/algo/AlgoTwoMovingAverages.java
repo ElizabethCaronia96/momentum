@@ -1,9 +1,17 @@
 package com.momentum.algo;
 
+import com.momentum.rest.springboot.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
+@Service
 public class AlgoTwoMovingAverages {
-
+@Autowired
+        private OrderService service2mv;
     SMA shortSMA;
     SMA longSMA;
 
@@ -90,7 +98,10 @@ public class AlgoTwoMovingAverages {
             }
 
             exit = exitCondition(exitPercent);
+            //this kinda stuff
+            service2mv.insertEndDatetime(Timestamp.valueOf("2018-08-01 08:33:00.0"));
         }
+
     }
 
     /**
