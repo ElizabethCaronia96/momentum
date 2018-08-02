@@ -15,7 +15,6 @@ public interface BBRepository extends JpaRepository<BB, Integer> {
 
     public List<BB> findBBByStrategyId(@Param("strategy_id") int strategyId);
 
-
  /*   public List<Order> saveEntryPrice(@Param("entry_price") Double entryPrice);
     public List<Order> saveEntryDatetime(@Param("entry_datetime") Timestamp entryDatetime);
 
