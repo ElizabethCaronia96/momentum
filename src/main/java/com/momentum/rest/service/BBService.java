@@ -1,9 +1,5 @@
 package com.momentum.rest.service;
-
-
-import com.momentum.rest.dao.BBRepository;
 import com.momentum.rest.entities.BB;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,5 +7,9 @@ import java.util.List;
 @Service
 public interface BBService {
 
-    public List<BB> getBBByStrategyId(int strategyId);
+    public List<BB> getBBByStrategyID(int strategyId);
+    public List<BB> getBBByMovingAvgRange(Integer movingAvgRange);
+    public List<BB> getwoMAByStdDevMultiple(Double stdDevMultiple);
+    public List<BB> getBBByPercentToExit(Double percentToExit);
+
 }

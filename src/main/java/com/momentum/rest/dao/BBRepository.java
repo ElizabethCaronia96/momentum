@@ -2,6 +2,7 @@ package com.momentum.rest.dao;
 
 import com.momentum.rest.entities.BB;
 import com.momentum.rest.entities.Order;
+import com.momentum.rest.entities.TwoMA;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,19 +15,9 @@ public interface BBRepository extends JpaRepository<BB, Integer> {
 
 
     public List<BB> findBBByStrategyId(@Param("strategy_id") int strategyId);
-
- /*   public List<Order> saveEntryPrice(@Param("entry_price") Double entryPrice);
-    public List<Order> saveEntryDatetime(@Param("entry_datetime") Timestamp entryDatetime);
-
-    public List<Order> saveStrategyId(@Param("strategy_id") Integer strategyId);
-    public List<Order> saveCrossStartType(@Param("crossover_start_type") String crossStartType);
-
-    public List<Order> saveCrossStartDatetime(@Param("crossover_start_datetime") Timestamp crossStartDate);
-    public List<Order> saveCrossStartPrice(@Param("crossover_start_price") Double crossStartPrice);
-    public List<Order> saveCrossEndDatetime(@Param("crossover_end_datetime") Timestamp crossEndDate);
-    public List<Order> saveCrossEndPrice(@Param("crossover_end_price") Double crossEndPrice);
-    public List<Order> saveCrossEndType(@Param("crossover_end_type") String type);
-*/
+    public List<BB> findBBByMovingAvgRange(@Param("moving_avg_range") Integer movingAvgRange);
+    public List<BB> findBBByStdDevMultiple(@Param("std_dev_multiple") Double stdDevMultiple);
+    public List<BB> findBBByPercentToExit(@Param("percent_to_exit") Double percentToExit);
 
 
 

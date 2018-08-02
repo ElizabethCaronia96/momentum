@@ -60,7 +60,6 @@ public class AlgoTwoMovingAverages implements Runnable {
      * @param longSMAPeriod the time period of the long SMA.
      * @param exitPercent the profit or loss percent for the exit condition.
      */
-
     public void run() {
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
