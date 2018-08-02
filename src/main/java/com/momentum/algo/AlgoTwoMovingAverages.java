@@ -1,17 +1,9 @@
 package com.momentum.algo;
 
-import com.momentum.rest.springboot.services.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
-@Service
 public class AlgoTwoMovingAverages {
-@Autowired
-        private OrderService service2mv;
+
     SMA shortSMA;
     SMA longSMA;
 
@@ -24,8 +16,8 @@ public class AlgoTwoMovingAverages {
     /**
      * The price of every buy and sell trade is added to these lists.
      */
-    ArrayList<Double> buyPrices;
-    ArrayList<Double> sellPrices;
+    ArrayList<Double> buyPrices = new ArrayList<Double>();
+    ArrayList<Double> sellPrices = new ArrayList<Double>();
     /**
      * The stock price of the first executed buy or sell trade. Total profit/loss accumulated over the strategy
      * is measured against this price for the strategy exit condition.
@@ -54,8 +46,8 @@ public class AlgoTwoMovingAverages {
         shortSMA = new SMA(shortSMAPeriod);
         longSMA = new SMA(longSMAPeriod);
 
-        shortSMA.initialize(getPastPrices());
-        longSMA.initialize(getPastPrices());
+        shortSMA.initialize(getPastPrices(shortSMAPeriod));
+        longSMA.initialize(getPastPrices(longSMAPeriod));
 
         boolean exit = false;
         tradeCounter = 0;
@@ -98,10 +90,9 @@ public class AlgoTwoMovingAverages {
             }
 
             exit = exitCondition(exitPercent);
-            //this kinda stuff
-            service2mv.insertEndDatetime(Timestamp.valueOf("2018-08-01 08:33:00.0"));
         }
 
+        System.out.println("The trading strategy generated a profit of: $" + profit);
     }
 
     /**
@@ -123,10 +114,9 @@ public class AlgoTwoMovingAverages {
      * This method is called to get the past stock prices needed to calculate the short SMA and long SMA when the strategy is first executed.
      * @return the past stock prices needed to initialize the SMA.
      */
-    public ArrayList<Double> getPastPrices() {
+    public ArrayList<Double> getPastPrices(int period) {
 
-        ArrayList<Double> array = new ArrayList<Double>();
-        return array;
+        return TestAlgoTwoMovingAverages.dummyPastPrices(period);
     }
 
     /**
@@ -135,7 +125,7 @@ public class AlgoTwoMovingAverages {
      */
     public double getNewPrice() {
 
-        return 0.0;
+        return TestAlgoTwoMovingAverages.dummyNewPrice();
     }
 
     /**
@@ -196,5 +186,6 @@ public class AlgoTwoMovingAverages {
     public void placeOrder(String orderType, double price) {
 
         // place the trade order here
+        System.out.println(orderType + " order for: $" + price);
     }
 }

@@ -1,4 +1,4 @@
-package com.momentum.rest.springboot.services;
+package com.momentum.rest.service;
 
 import com.momentum.rest.entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;

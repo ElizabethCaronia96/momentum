@@ -1,27 +1,28 @@
-package com.momentum.rest.springboot;
+package com.momentum.rest;
 
-import com.momentum.rest.springboot.services.OrderService;
+import com.momentum.rest.entities.Price;
+import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
+import com.momentum.rest.dao.PriceRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class FeedGrabber {
 
-@Autowired
-private OrderService os;
+    @Autowired
+    private PriceService ps;
 
     @Scheduled(fixedRate = 1000) // this is in milliseconds
     public void grabFeedPrices() throws IOException {
@@ -32,17 +33,15 @@ private OrderService os;
         String finalrequestURL = String.format(requestURL, joinedStocksString);
 
         Date dt = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        String currentTime = sdf.format(dt);
+        Timestamp timestamp = new Timestamp(dt.getTime());
 
         List<Double> priceResults = makeFeedPricesRequest(finalrequestURL);
 
-        for (int i = 0; i < stocksToCheck.length; i++) {
-            // add this to the database
-            // COLUMNS:
-            // STOCK | PRICE | DATETIME
+        System.out.println(String.format("[%s]: Adding new prices from feed.", timestamp));
 
-            System.out.println(stocksToCheck[i] + "\t" + priceResults.get(i) + "\t" + currentTime);
+        for (int i = 0; i < stocksToCheck.length; i++) {
+            Price newPrice = new Price(stocksToCheck[i], priceResults.get(i), timestamp);
+            ps.addNewPrice(newPrice);
         }
 
     }

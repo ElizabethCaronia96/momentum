@@ -1,106 +1,119 @@
 package com.momentum.rest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.annotation.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
 
-@Entity@Table(name="orders")
+@Entity
+@Table(name = "orders")
+public class Order implements Serializable {
 
-@NamedQueries(
-        {
-                @NamedQuery(name = "Order.getAll",
-                        query = "select orderId from Order as o",
-                         hints = {@QueryHint(name="org.hibernate.cacheable", value="true")})
-        }
-)
-public class Order  implements Serializable {
+
+    public Order() {
+    }
+
+    public Order(int strategyId, String crossoverStartType, Timestamp crossoverStartDatetime, double crossoverStartPrice) {
+        this.strategyId = strategyId;
+        this.crossoverStartType = crossoverStartType;
+        this.crossoverStartDatetime = crossoverStartDatetime;
+        this.crossoverStartPrice = crossoverStartPrice;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private int orderId;
+    private int orderID;
+    @Column(name = "strategy_id")
+    private int strategyId;
+    @Column(name = "crossover_start_type")
+    private String crossoverStartType;
+    @Column(name = "crossover_start_datetime")
+    private Timestamp crossoverStartDatetime;
+    @Column(name = "crossover_start_price")
+    private double crossoverStartPrice;
+    @Column(name = "crossover_end_type")
+    private String crossoverEndType;
+    @Column(name = "crossover_end_datetime")
+    private Timestamp crossoverEndDatetime;
+    @Column(name = "crossover_end_price")
+    private Double crossoverEndPrice;
+    @Column(name = "profit_loss")
+    private Double profitLoss;
 
-
-    public int getOrderId() {
-        return orderId;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
-    public Integer getStrategy_id() {
+    public int getStrategyId() {
         return strategyId;
     }
 
-    public void setStrategy_id(Integer strategy_id) {
-        this.strategyId = strategy_id;
+    public void setStrategyId(int strategyId) {
+        this.strategyId = strategyId;
     }
 
-    public Timestamp getCrossStartDate() {
-        return crossStartDate;
+    public String getCrossoverStartType() {
+        return crossoverStartType;
     }
 
-    public void setCrossStartDate(Timestamp crossStartDate) {
-        this.crossStartDate = crossStartDate;
+    public void setCrossoverStartType(String crossoverStartType) {
+        this.crossoverStartType = crossoverStartType;
     }
 
-    public Double getCrossStartPrice() {
-        return crossStartPrice;
+    public Timestamp getCrossoverStartDatetime() {
+        return crossoverStartDatetime;
     }
 
-    public void setCrossStartPrice(Double crossStartPrice) {
-        this.crossStartPrice = crossStartPrice;
+    public void setCrossoverStartDatetime(Timestamp crossoverStartDatetime) {
+        this.crossoverStartDatetime = crossoverStartDatetime;
     }
 
-    public String getCrossEndType() {
-        return crossEndType;
+    public double getCrossoverStartPrice() {
+        return crossoverStartPrice;
     }
 
-    public void setCrossEndType(String crossEndType) {
-        this.crossEndType = crossEndType;
+    public void setCrossoverStartPrice(double crossoverStartPrice) {
+        this.crossoverStartPrice = crossoverStartPrice;
     }
 
-    public Timestamp getCrossEndDate() {
-        return crossEndDate;
+    public String getCrossoverEndType() {
+        return crossoverEndType;
     }
 
-    public void setCrossEndDate(Timestamp crossEndDate) {
-        this.crossEndDate = crossEndDate;
+    public void setCrossoverEndType(String crossoverEndType) {
+        this.crossoverEndType = crossoverEndType;
     }
 
-    public Double getCrossEndPrice() {
-        return crossEndPrice;
+    public Timestamp getCrossoverEndDatetime() {
+        return crossoverEndDatetime;
     }
 
-    public void setCrossEndPrice(Double crossEndPrice) {
-        this.crossEndPrice = crossEndPrice;
+    public void setCrossoverEndDatetime(Timestamp crossoverEndDatetime) {
+        this.crossoverEndDatetime = crossoverEndDatetime;
     }
 
-    @Column(name="strategy_id") private Integer strategyId;
-    @Column(name="crossover_start_type") private String crossStartType;
-
-    @Column(name="crossover_start_datetime") private Timestamp crossStartDate;
-    @Column(name="crossover_start_price") private Double crossStartPrice;
-    @Column(name="crossover_end_type") private     String crossEndType;
-    @Column(name="crossover_end_datetime") private  Timestamp crossEndDate;
-    @Column(name="crossover_end_price") private Double crossEndPrice;
-
-
-    public String getCrossStartType() {
-        return crossStartType;
+    public double getCrossoverEndPrice() {
+        return crossoverEndPrice;
     }
 
-    public void setCrossStartType(String crossStartType) {
-        this.crossStartType = crossStartType;
+    public void setCrossoverEndPrice(double crossoverEndPrice) {
+        this.crossoverEndPrice = crossoverEndPrice;
+    }
+
+    public double getProfitLoss() {
+        return profitLoss;
+    }
+
+    @JsonIgnore
+    public void setProfitLoss(Double profitLoss) {
+
+        this.profitLoss = profitLoss;
+
     }
 }
