@@ -49,20 +49,21 @@ public class AlgoRunner {
 
         boolean exitMomentum = false;
 
+        Map<Strategies, Object> allstrategiesMap = ss.getAllActive();
+
+
+        Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
+        Strategies key = tmp_entry.getKey();
+        Object value = tmp_entry.getValue();
+        Map<Strategies, Object> strategiesMap = new HashMap<>();
+        strategiesMap.put(key, value);
+
         while (!exitMomentum) {
 
-            System.out.println("we are in algo checker while loop" + runningStrategies);
+            //System.out.println("we are in algo checker while loop" + runningStrategies);
             // strategies in db
-            Map<Strategies, Object> allstrategiesMap = ss.getAllActive();
 
-
-            Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
-            Strategies key = tmp_entry.getKey();
-            Object value = tmp_entry.getValue();
-            Map<Strategies, Object> strategiesMap = new HashMap<>();
-            strategiesMap.put(key, value);
-
-            System.out.println("our map with 1 thing in it hopefully " + strategiesMap);
+           // System.out.println("our map with 1 thing in it hopefully " + strategiesMap);
 
             // iterate through strategies in db
             for (Map.Entry<Strategies, Object> entry : strategiesMap.entrySet()) {
@@ -85,8 +86,15 @@ public class AlgoRunner {
                 if (!alreadyRunning) {
 
                     System.out.println("this strat not running - make thread");
+                    System.out.println(entry.getKey().getClass());
+                  //  List<Object> temp = entry.getValue();
+                    Object obj = entry.getValue();
+                    System.out.println(obj.getClass());
+                    System.out.println(obj.toString());
+                    System.out.println(entry.getKey());
+                    System.out.println(entry.getValue());
 
-                    if (entry.getValue().getClass() == TwoMA.class) {
+                    if (entry.getValue() instanceof TwoMA) {
 
                         String stock = entry.getKey().getStock();
 
@@ -98,7 +106,7 @@ public class AlgoRunner {
 
 
                         Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent);
-                    } else if (entry.getValue().getClass() == BB.class) {
+                    } else if (entry.getValue() instanceof BB) {
 
                         String stock = entry.getKey().getStock();
 
