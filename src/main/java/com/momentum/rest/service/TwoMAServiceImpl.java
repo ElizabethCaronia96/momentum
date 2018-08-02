@@ -23,8 +23,8 @@ public class TwoMAServiceImpl implements TwoMAService {
     }
 
     @Override
-    public List<TwoMA> getwoMAByShortRangeAvg(Integer shortRangeAvg) {
-        return twoRepo.findTwoMAByShortRangeAvg(shortRangeAvg);
+    public List<TwoMA> getwoMAByShortAvgRange(Integer shortAvgRange) {
+        return twoRepo.findTwoMAByShortAvgRange(shortAvgRange);
     }
 
     @Override
