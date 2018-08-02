@@ -13,11 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,12 +29,10 @@ public class AlgoRunner {
     @Autowired
     private StrategiesService ss;
 
-
     static final int MAX_THREADS = 10;
 
     @Scheduled(fixedRate = 1000000) // this is in milliseconds
     public void algorithmChecker() {
-
 
         ExecutorService pool = Executors.newFixedThreadPool(MAX_THREADS);
 
@@ -48,8 +43,18 @@ public class AlgoRunner {
 
         while (!exitMomentum) {
 
+            System.out.println("we are in algo checker while loop" + runningStrategies);
             // strategies in db
-            Map<Strategies, Object> strategiesMap = ss.getAllActive();
+            Map<Strategies, Object> allstrategiesMap = ss.getAllActive();
+
+
+            Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
+            Strategies key = tmp_entry.getKey();
+            Object value = tmp_entry.getValue();
+            Map<Strategies, Object> strategiesMap = new HashMap<>();
+            strategiesMap.put(key, value);
+
+            System.out.println("our map with 1 thing in it hopefully " + strategiesMap);
 
             // iterate through strategies in db
             for (Map.Entry<Strategies, Object> entry : strategiesMap.entrySet()) {
@@ -71,6 +76,8 @@ public class AlgoRunner {
                 // if strategy is not already running, send it to thread pool
                 if (!alreadyRunning) {
 
+                    System.out.println("this strat not running - make thread");
+
                     if (entry.getValue().getClass() == TwoMA.class) {
 
                         String stock = entry.getKey().getStock();
@@ -79,7 +86,7 @@ public class AlgoRunner {
                         int shortSMAPeriod = strat.getShortAvgRange();
                         int longSMAPeriod = strat.getLongAvgRange();
                         double exitPercent = strat.getPercentToExit();
-
+                        System.out.println("Running twoMA algo for strat id " + entry.getKey().getStrategyId());
                         Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent);
                     } else if (entry.getValue().getClass() == BB.class) {
 
@@ -89,7 +96,7 @@ public class AlgoRunner {
                         int smaPeriod = strat.getMovingAvgRange();
                         double stdDevMult = strat.getStdDevMultiple();
                         double exitPercent = strat.getPercentToExit();
-
+                        System.out.println("Running BB algo for strat id " + entry.getKey().getStrategyId());
                         Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent);
                     }
 
