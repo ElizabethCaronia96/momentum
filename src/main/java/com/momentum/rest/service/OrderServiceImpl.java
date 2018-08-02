@@ -51,6 +51,18 @@ public class OrderServiceImpl implements OrderService {
         return orders;
     }
 
+    //to update a property of an order, please take the order, order.setProperty(new thing) , and then call updateOrder(order), which will save it
+    @Override
+    public void updateOrder(Order orderr) {
+
+        orRp.save(orderr);
+    }
+
+    @Override
+    public void addOrder(Order order) {
+        orRp.save(order);
+    }
+
 
 
   /*  @Override

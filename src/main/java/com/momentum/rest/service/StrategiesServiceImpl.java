@@ -113,6 +113,17 @@ public class StrategiesServiceImpl implements StrategiesService{
         return getAllActiveHelper(allActive);
 
     }
+    @Override
+    public Map<Strategies, Object> getAllDone() {
+
+        ArrayList<Strategies> allActive = new ArrayList<>();
+
+        allActive.addAll(stratRepo.findStrategiesByStatus("finished"));
+
+
+        return getAllActiveHelper(allActive);
+
+    }
 
     public Map<Strategies, Object> getAllActiveHelper(List<Strategies> allActive) {
         Map map = new HashMap<Strategies, Object>();
