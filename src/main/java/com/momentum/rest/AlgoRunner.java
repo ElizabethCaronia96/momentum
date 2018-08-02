@@ -1,6 +1,7 @@
 package com.momentum.rest;
 
 
+import com.momentum.rest.entities.Strategies;
 import com.momentum.rest.service.PriceService;
 import com.momentum.rest.service.StrategiesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,11 @@ public class AlgoRunner {
 
     @PostConstruct
     public void runOnce(){
-            ss.getAllActive();
+         //   ss.getAllActive();
+           List<Strategies> relist =  ss.getAllStrats();
+           for(Strategies r: relist){
+               System.out.println("s id "+ r.getStrategyId()+" time "+r.getAddedTime());
+           }
     }
 
 

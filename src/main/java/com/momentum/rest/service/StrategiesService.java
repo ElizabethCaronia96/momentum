@@ -19,5 +19,6 @@ public interface StrategiesService {
 
     public List<Strategies> getAllActive();
 
+    public List<Strategies> getAllStrats();
 
 }

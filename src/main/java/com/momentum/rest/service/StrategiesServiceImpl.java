@@ -77,11 +77,15 @@ public class StrategiesServiceImpl implements StrategiesService{
     @Override
     public List<Strategies> getAllActive() {
 
-            String q = String.format("SELECT s. FROM Strategies s WHERE s.status<>\'finished\' ORDER BY s.strategy_id DESC");
+            String q = String.format("SELECT s.strategyId FROM Strategies s WHERE s.status<>\'finished\' ORDER BY s.strategy_id DESC");
             Query query = em.createQuery(q);
 
             return query.getResultList();
 
 
+    }
+
+    public List<Strategies> getAllStrats(){
+        return  stratRepo.findAll();
     }
 }
