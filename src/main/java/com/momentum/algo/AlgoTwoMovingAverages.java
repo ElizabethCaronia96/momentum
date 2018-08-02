@@ -1,8 +1,15 @@
 package com.momentum.algo;
 
+import com.momentum.rest.service.PriceService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class AlgoTwoMovingAverages {
+
+    @Autowired
+    private PriceService ps;
 
     SMA shortSMA;
     SMA longSMA;
@@ -16,8 +23,8 @@ public class AlgoTwoMovingAverages {
     /**
      * The price of every buy and sell trade is added to these lists.
      */
-    ArrayList<Double> buyPrices = new ArrayList<Double>();
-    ArrayList<Double> sellPrices = new ArrayList<Double>();
+    List<Double> buyPrices = new ArrayList<Double>();
+    List<Double> sellPrices = new ArrayList<Double>();
     /**
      * The stock price of the first executed buy or sell trade. Total profit/loss accumulated over the strategy
      * is measured against this price for the strategy exit condition.
@@ -33,11 +40,13 @@ public class AlgoTwoMovingAverages {
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
+     * @param stock the name of the stock being traded.
      * @param shortSMAPeriod the time period of the short SMA.
      * @param longSMAPeriod the time period of the long SMA.
      * @param exitPercent the profit or loss percent for the exit condition.
      */
-    public void executeStrategy(String orderType, int shortSMAPeriod, int longSMAPeriod, double exitPercent) {
+
+    public void executeStrategy(String orderType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent) {
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
@@ -46,8 +55,15 @@ public class AlgoTwoMovingAverages {
         shortSMA = new SMA(shortSMAPeriod);
         longSMA = new SMA(longSMAPeriod);
 
-        shortSMA.initialize(getPastPrices(shortSMAPeriod));
-        longSMA.initialize(getPastPrices(longSMAPeriod));
+        List<Double> initialLongSMAPrices = ps.getLastNPricesOfStock(stock, longSMAPeriod);
+        List<Double> initialShortSMAPrices = new ArrayList<Double>();
+        for(int i = longSMAPeriod - shortSMAPeriod; i < longSMAPeriod; i++) {
+
+            initialShortSMAPrices.add(new Double(initialLongSMAPrices.get(i)));
+        }
+
+        shortSMA.initialize(initialShortSMAPrices);
+        longSMA.initialize(initialLongSMAPrices);
 
         boolean exit = false;
         tradeCounter = 0;
@@ -64,9 +80,9 @@ public class AlgoTwoMovingAverages {
 
                 setSMAComparison();
 
-                newPrice = getNewPrice();
-                shortSMA.update(newPrice);
-                longSMA.update(newPrice);
+                newPrice = (double)(ps.getLastNPricesOfStock(stock, 1).get(0));
+                shortSMA.update(new Double(newPrice));
+                longSMA.update(new Double(newPrice));
 
                 crossed = hasCrossed(orderType);
             }
