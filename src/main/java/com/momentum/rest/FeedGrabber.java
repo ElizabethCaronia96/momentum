@@ -24,7 +24,7 @@ public class FeedGrabber {
     @Autowired
     private PriceService ps;
 
-    @Scheduled(fixedRate = 1000000) // this is in milliseconds
+    @Scheduled(fixedRate = 1000) // this is in milliseconds
     public void grabFeedPrices() throws IOException {
 
         String[] stocksToCheck = {"AAPL", "GOOG", "BRK-A", "NSC", "MSFT", "OTHER"};

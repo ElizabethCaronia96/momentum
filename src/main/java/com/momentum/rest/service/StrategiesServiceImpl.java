@@ -134,7 +134,7 @@ public class StrategiesServiceImpl implements StrategiesService{
             }
             else {
               //  System.out.println("bb");
-                System.out.println(bbRepo.findBBByStrategyId(a.getTypeId()));
+//                System.out.println(bbRepo.findBBByStrategyId(a.getTypeId()));
 
                 map.put(a, bbRepo.findBBByStrategyId(a.getTypeId()));
             }
