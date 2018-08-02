@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 
 USE `momentum_mysql`;
+>>>>>>> 7a45dcaac37674aaf94cb5e167a6d30677053a7e
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: momentum_mysql
@@ -82,6 +85,7 @@ CREATE TABLE `strat_bb` (
   `strategy_id` int(11) NOT NULL AUTO_INCREMENT,
   `moving_avg_range` int(11) NOT NULL,
   `std_dev_multiple` double NOT NULL,
+  `percent_to_exit` double NOT NULL,
   PRIMARY KEY (`strategy_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -117,4 +121,4 @@ CREATE TABLE `strategies` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-01 19:35:51
+-- Dump completed on 2018-08-02 16:25:51

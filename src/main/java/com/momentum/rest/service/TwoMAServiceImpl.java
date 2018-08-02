@@ -11,6 +11,7 @@ import java.util.List;
 public class TwoMAServiceImpl implements TwoMAService {
     @Autowired
     private TwoMARepository twoRepo;
+
     @Override
     public List<TwoMA> getTwoMAByStrategyID(int strategyId) {
         return twoRepo.findTwoMAByStrategyId(strategyId);

@@ -18,7 +18,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-
     @GetMapping(path="/open-pos")
     @ResponseBody
     public List<Order> getOpenPositions() {

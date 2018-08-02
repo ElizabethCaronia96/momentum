@@ -38,6 +38,13 @@ public class AlgoRunner {
     @Autowired
     private StrategiesService ss;
 
+<<<<<<< HEAD
+    @Scheduled(fixedRate = 250) // this is in milliseconds
+    public void algorithmChecker() {
+        System.out.println("Algorithm check executed.");
+        // List prices = ps.getLastNPricesOfStock("GOOG", 20);
+    }
+=======
 
     static final int MAX_THREADS = 10;
 
@@ -136,6 +143,17 @@ public class AlgoRunner {
 
 
         //loop thru strats, if no thread, create thread of strategy
+>>>>>>> 7a45dcaac37674aaf94cb5e167a6d30677053a7e
+
+//    @PostConstruct
+//    public void runOnce() {
+//        Map<Strategies, Object> relist = ss.getAllActive();
+//        for (Map.Entry<Strategies, Object> entry : relist.entrySet()) {
+//            // System.out.println("should have everything");
+//            System.out.println(entry.getKey() + " / " + entry.getValue());
+//        }
+//
+//    }
 
 
 
