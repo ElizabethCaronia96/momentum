@@ -15,5 +15,7 @@ public class AppConfig {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AppConfig.class, args);
 
+
+
     }
 }

@@ -24,7 +24,7 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private int orderID;
+    private int orderId;
     @Column(name = "strategy_id")
     private int strategyId;
     @Column(name = "crossover_start_type")
@@ -43,11 +43,11 @@ public class Order implements Serializable {
     private Double profitLoss;
 
     public int getOrderID() {
-        return orderID;
+        return orderId;
     }
 
     public void setOrderID(int orderID) {
-        this.orderID = orderID;
+        this.orderId = orderID;
     }
 
     public int getStrategyId() {
