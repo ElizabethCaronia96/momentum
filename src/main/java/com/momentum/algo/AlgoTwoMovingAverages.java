@@ -29,7 +29,7 @@ public class AlgoTwoMovingAverages {
     double profit;
 
     /**
-     * Executes the two SMA strategy for a trade request.
+     * Executes the Two Moving Averages strategy.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
@@ -94,7 +94,7 @@ public class AlgoTwoMovingAverages {
     }
 
     /**
-     * Executes the exit condition for a trade request.
+     * This method is called to check if the exit condition for the strategy is reached.
      * @param exitPercent the profit or loss percent for the exit condition.
      * @return true if the strategy exit condition is reached.
      *         false otherwise

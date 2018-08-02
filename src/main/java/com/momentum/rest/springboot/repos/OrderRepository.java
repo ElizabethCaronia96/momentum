@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.List;
 
+public interface OrderRepository extends CrudRepository<Order, Integer> {
+
+    Iterable<Order> findOrderByStrategyId(@Param("strategy_id") int strategyId);
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 //TODO probably should be deleted now that its jpa
@@ -29,17 +32,19 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     public Iterable<Order> findOrderByEntryPrice(@Param("entry_price")Double entryPrice);
 
-    public Iterable<Order> findOrderByEntryType(@Param("entry_type") String entryType);
+    Iterable<Order> findOrderByCrossoverStartType(@Param("crossover_start_type") String crossoverStartType);
 
-    public Iterable<Order> findOrderByExitType(@Param("exit_type") String exitType);
+    Iterable<Order> findOrderByCrossoverStartDatetime(@Param("crossover_start_datetime") Timestamp crossoverStartDatetime);
 
-    public Iterable<Order> findOrderByExitDatetime(@Param("exit_datetime") Timestamp exitDatetime);
+    Iterable<Order> findOrderByCrossoverStartPrice(@Param("crossover_start_price") double crossoverStartPrice);
 
-    public Iterable<Order> findOrderByExitPrice(@Param("exit_price")Double exitPrice);
+    Iterable<Order> findOrderByCrossoverEndType(@Param("crossover_end_type") String crossoverEndType);
 
-    public Iterable<Integer> findEntryPriceByOrderId(@Param("order_id") Integer orderId);
+    Iterable<Order> findOrderByCrossoverEndDatetime(@Param("crossover_end_datetime") Timestamp crossoverEndDatetime);
 
+    Iterable<Order> findOrderByCrossoverEndPrice(@Param("crossover_end_price") double crossoverEndPrice);
 
+    Iterable<Order> findOrderByProfitLoss(@Param("profit_loss") double profitLoss);
 */
 
     public List<Order> findAllByOrderId(@Param("order_id") Integer orderId);
