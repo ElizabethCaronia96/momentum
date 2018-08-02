@@ -28,6 +28,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findOrdersByProfitLoss(@Param("profit_loss") double profitLoss);
 
+
+
   /*  List<Order> saveOrderByProfitLoss(@Param("profit_loss") double profitLoss);
 
     List<Order> saveOrdersByStrategyId(@Param("strategy_id") int strategyId);

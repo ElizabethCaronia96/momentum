@@ -86,6 +86,7 @@ public class Order implements Serializable {
         return crossoverEndType;
     }
 
+    @JsonIgnore
     public void setCrossoverEndType(String crossoverEndType) {
         this.crossoverEndType = crossoverEndType;
     }
@@ -94,6 +95,7 @@ public class Order implements Serializable {
         return crossoverEndDatetime;
     }
 
+    @JsonIgnore
     public void setCrossoverEndDatetime(Timestamp crossoverEndDatetime) {
         this.crossoverEndDatetime = crossoverEndDatetime;
     }
@@ -102,6 +104,7 @@ public class Order implements Serializable {
         return crossoverEndPrice;
     }
 
+    @JsonIgnore
     public void setCrossoverEndPrice(double crossoverEndPrice) {
         this.crossoverEndPrice = crossoverEndPrice;
     }
