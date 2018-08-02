@@ -16,20 +16,11 @@ public interface OrderService {
     List<Order> getAllOrders();
     List<Order> getAllOpenPositions();
 
-  /*  List<Order> insertStrategyId(Integer id );
+   void updateOrder(Order orderr);
 
-    List<Order> insertStartPrice(Double price);
+   void addOrder(Order order);
 
-    List<Order> insertStartDatetime(Timestamp date);
+ //   void insertEndType(String type, Order o);
 
-
-    List<Order> insertStartType(String type);
-
-    List<Order> insertEndPrice(Double price);
-
-    List<Order> insertEndDatetime(Timestamp date);
-
- //   List<Order> insertEndType(String type, Order o);
-*/
 
 }

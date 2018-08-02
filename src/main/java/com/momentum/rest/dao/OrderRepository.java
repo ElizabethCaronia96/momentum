@@ -28,25 +28,24 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findOrdersByProfitLoss(@Param("profit_loss") double profitLoss);
 
+    Order findOrderByStrategyId(@Param("strategy_id") int strategyId);
+
+    Order findOrderByCrossoverStartType(@Param("crossover_start_type") String crossoverStartType);
+
+    Order findOrderByCrossoverStartDatetime(@Param("crossover_start_datetime") Timestamp crossoverStartDatetime);
+
+    Order findOrderByCrossoverStartPrice(@Param("crossover_start_price") double crossoverStartPrice);
+
+    Order findOrderByCrossoverEndType(@Param("crossover_end_type") String crossoverEndType);
+
+    Order findOrderByCrossoverEndDatetime(@Param("crossover_end_datetime") Timestamp crossoverEndDatetime);
+
+    Order findOrderByCrossoverEndPrice(@Param("crossover_end_price") double crossoverEndPrice);
+
+    Order findOrderByProfitLoss(@Param("profit_loss") double profitLoss);
 
 
-  /*  List<Order> saveOrderByProfitLoss(@Param("profit_loss") double profitLoss);
 
-    List<Order> saveOrdersByStrategyId(@Param("strategy_id") int strategyId);
-
-   List<Order> saveOrdersByCrossoverStartType(@Param("crossover_start_type") String crossoverStartType);
-
-    List<Order> saveOrdersByCrossoverStartDatetime(@Param("crossover_start_datetime") Timestamp crossoverStartDatetime);
-
-    List<Order> saveOrdersByCrossoverStartPrice(@Param("crossover_start_price") double crossoverStartPrice);
-
-//    List<Order> saveOrdersByCrossoverEndType(@Param("crossover_end_type") String crossoverEndType, @Param("strategy_id") int strategy_id);
-
-    List<Order> saveOrdersByCrossoverEndDatetime(@Param("crossover_end_datetime") Timestamp crossoverEndDatetime);
-
-    List<Order> saveOrdersByCrossoverEndPrice(@Param("crossover_end_price") double crossoverEndPrice);
-
-*/
 
 
 }

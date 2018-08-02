@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `momentum_mysql` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
 USE `momentum_mysql`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
@@ -66,7 +66,7 @@ CREATE TABLE `strat_2ma` (
   `strategy_id` int(11) NOT NULL AUTO_INCREMENT,
   `long_avg_range` int(11) NOT NULL,
   `short_avg_range` int(11) NOT NULL,
-  `percent_to_exit` double NOT NULL,
+  `percent_to_exit` double NOT NULL default 1.0,
   PRIMARY KEY (`strategy_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
