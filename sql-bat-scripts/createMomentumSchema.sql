@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `momentum_mysql` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
 USE `momentum_mysql`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
