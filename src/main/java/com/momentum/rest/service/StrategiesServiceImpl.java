@@ -1,11 +1,20 @@
-package com.momentum.rest.springboot.services;
+package com.momentum.rest.service;
 
+import com.google.common.collect.Lists;
+import com.momentum.rest.entities.Order;
 import com.momentum.rest.entities.Strategies;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.sql.Timestamp;
 import java.util.List;
 
 public class StrategiesServiceImpl implements StrategiesService{
+
+    @PersistenceContext
+    private EntityManager em;
     @Override
     public List<Strategies> getStratByStrategyId(int strategyId) {
         return null;
@@ -58,6 +67,12 @@ public class StrategiesServiceImpl implements StrategiesService{
 
     @Override
     public List<Strategies> getAllActive() {
-        return null;
+
+            String q = String.format("SELECT * FROM Strategies s WHERE s.status<>\'finished\' ORDER BY s.strategy_id DESC");
+            Query query = em.createQuery(q);
+
+            return query.getResultList();
+
+
     }
 }
