@@ -14,7 +14,7 @@ public class BBServiceImpl implements BBService {
     private BBRepository bbRepo;
 
     @Override
-    public List<BB> getBBByStrategyID(int strategyId) {
+    public BB getBBByStrategyID(int strategyId) {
 
         return bbRepo.findBBByStrategyId(strategyId);
     }

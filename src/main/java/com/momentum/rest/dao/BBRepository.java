@@ -14,7 +14,7 @@ import java.util.List;
 public interface BBRepository extends JpaRepository<BB, Integer> {
 
 
-    public List<BB> findBBByStrategyId(@Param("strategy_id") int strategyId);
+    public BB findBBByStrategyId(@Param("strategy_id") int strategyId);
     public List<BB> findBBByMovingAvgRange(@Param("moving_avg_range") Integer movingAvgRange);
     public List<BB> findBBByStdDevMultiple(@Param("std_dev_multiple") Double stdDevMultiple);
     public List<BB> findBBByPercentToExit(@Param("percent_to_exit") Double percentToExit);

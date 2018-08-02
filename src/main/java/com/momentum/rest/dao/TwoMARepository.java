@@ -13,7 +13,7 @@ import java.util.List;
 public interface TwoMARepository extends JpaRepository<TwoMA, Integer> {
 
 
-    public List<TwoMA> findTwoMAByStrategyId(@Param("strategy_id") int strategyId);
+    public TwoMA findTwoMAByStrategyId(@Param("strategy_id") int strategyId);
     public List<TwoMA> findTwoMAByLongAvgRange(@Param("long_avg_range") Integer longAvgRange);
     public List<TwoMA> findTwoMAByShortAvgRange(@Param("short_avg_range") Integer shortAveRange);
     public List<TwoMA> findTwoMAByPercentToExit(@Param("percent_to_exit") Double percentToExit);

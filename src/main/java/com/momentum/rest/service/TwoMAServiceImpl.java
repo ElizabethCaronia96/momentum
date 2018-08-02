@@ -13,7 +13,7 @@ public class TwoMAServiceImpl implements TwoMAService {
     private TwoMARepository twoRepo;
 
     @Override
-    public List<TwoMA> getTwoMAByStrategyID(int strategyId) {
+    public TwoMA getTwoMAByStrategyID(int strategyId) {
         return twoRepo.findTwoMAByStrategyId(strategyId);
     }
 
