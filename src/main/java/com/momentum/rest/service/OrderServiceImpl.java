@@ -1,16 +1,13 @@
 package com.momentum.rest.service;
 
-import com.google.common.collect.Lists;
-import com.momentum.rest.entities.Order;
 import com.momentum.rest.dao.OrderRepository;
-
+import com.momentum.rest.entities.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -100,8 +97,6 @@ public class OrderServiceImpl implements OrderService {
         return orRp.saveOrdersByCrossoverEndType(type, o.getStrategyId());
     }
 */
-
-
 
 
 }
