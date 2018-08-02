@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.momentum.rest")
 @EntityScan("com.momentum.rest.entities")
-@EnableScheduling
+//@EnableScheduling
 public class AppConfig {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AppConfig.class, args);
