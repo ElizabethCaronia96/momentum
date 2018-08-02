@@ -39,7 +39,8 @@ a {
 #navigation {
   background-color: white;
   padding: 25px 30px;
-  height: 100vh; }
+  height: 100vh;
+  position: fixed; }
   #navigation i {
     margin-right: 10px; }
 
@@ -53,29 +54,54 @@ a {
   border-radius: 25px;
   border: 1px dotted white; }
 
-.strategy-card {
+.strategy-card-active {
   margin-bottom: 30px; }
-  .strategy-card .strategy-card-info {
+  .strategy-card-active .strategy-card-info {
     border: 1px white solid;
-    padding: 20px 0 20px 20px;
+    padding: 15px 0;
     border-radius: 15px 15px 0 0;
     background-color: white; }
-    .strategy-card .strategy-card-info .main-info {
+    .strategy-card-active .strategy-card-info .main-info {
       color: #2788ba;
       text-align: center;
       font-weight: bold; }
-    .strategy-card .strategy-card-info .sub-info {
+    .strategy-card-active .strategy-card-info .sub-info {
       color: #9aa09d;
       text-align: center; }
-  .strategy-card .strategy-card-graph {
+  .strategy-card-active .strategy-card-graph {
     border: 1px white solid;
     border-radius: 0 0 15px 15px;
-    padding: 20px 20px 20px 0; }
+    padding: 5px 15px; }
+
+.strategy-card-inactive {
+  margin-bottom: 30px; }
+  .strategy-card-inactive .strategy-card-info {
+    border: 1px white solid;
+    padding: 15px 0;
+    border-radius: 15px;
+    background-color: white; }
+    .strategy-card-inactive .strategy-card-info .main-info {
+      color: #2788ba;
+      text-align: center;
+      font-weight: bold; }
+    .strategy-card-inactive .strategy-card-info .sub-info {
+      color: #9aa09d;
+      text-align: center; }
+  .strategy-card-inactive .strategy-card-graph {
+    border: 1px white solid;
+    border-radius: 0 0 15px 15px;
+    padding: 5px 15px; }
 
 .page-section {
   min-height: 100vh; }
 
 canvas {
-  height: 100px; }
+  height: 200px; }
+
+.position-thead {
+  color: #2788ba;
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px 15px 0 0; }
 
 /*# sourceMappingURL=momentum.css.map */

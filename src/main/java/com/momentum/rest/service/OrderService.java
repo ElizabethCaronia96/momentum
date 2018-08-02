@@ -14,6 +14,7 @@ public interface OrderService {
 
 
     List<Order> getAllOrders();
+    List<Order> getAllOpenPositions();
 
   /*  List<Order> insertStrategyId(Integer id );
 

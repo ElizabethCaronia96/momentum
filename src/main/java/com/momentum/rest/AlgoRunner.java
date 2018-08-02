@@ -2,6 +2,8 @@ package com.momentum.rest;
 
 
 import com.momentum.algo.AlgoTwoMovingAverages;
+import com.momentum.rest.entities.Strategies;
+
 import com.momentum.rest.service.PriceService;
 import com.momentum.rest.service.StrategiesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,12 @@ import com.momentum.algo.AlgoBollingerBands;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import java.util.Map;
+
 
 @Service
 public class AlgoRunner {
@@ -23,6 +29,7 @@ public class AlgoRunner {
 
     @Autowired
     private StrategiesService ss;
+
 
     static final int MAX_THREADS = 10;
 
@@ -49,8 +56,15 @@ public class AlgoRunner {
             thread1.start();
 
 
-        }
-        */
+
+    /*  @Scheduled(fixedRate = 250) // this is in milliseconds
+      public void algorithmChecker() {
+
+          System.out.println("Algorithm check executed.");
+         // List prices = ps.getLastNPricesOfStock("GOOG", 20);
+      }
+  */
+
 
 /*      System.out.println("Algorithm check executed.");
         List prices20 = ps.getLastNPricesOfStock("GOOG", 20);
@@ -71,6 +85,9 @@ public class AlgoRunner {
 */
 
 
+    }
+
+
 
         //loop thru strats, if no thread, create thread of strategy
 
@@ -82,5 +99,6 @@ public class AlgoRunner {
         // initialize ur queues for this straegy
         // inside this thread, u call price service's get last N prices of stock
 
-    }
+    
 }
+
