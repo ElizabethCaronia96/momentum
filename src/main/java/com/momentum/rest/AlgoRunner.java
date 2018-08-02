@@ -1,29 +1,18 @@
 package com.momentum.rest;
 
 
+import com.momentum.algo.AlgoBollingerBands;
 import com.momentum.algo.AlgoTwoMovingAverages;
-import com.momentum.rest.entities.TwoMA;
 import com.momentum.rest.entities.BB;
-
-import com.momentum.rest.entities.Order;
-
 import com.momentum.rest.entities.Strategies;
-import com.momentum.rest.service.OrderService;
+import com.momentum.rest.entities.TwoMA;
 import com.momentum.rest.service.PriceService;
 import com.momentum.rest.service.StrategiesService;
-import org.apache.activemq.transport.tcp.TimeStampStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.momentum.algo.AlgoBollingerBands;
-
-import javax.annotation.PostConstruct;
-
 import java.util.ArrayList;
-
-import java.sql.Timestamp;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -38,13 +27,6 @@ public class AlgoRunner {
     @Autowired
     private StrategiesService ss;
 
-<<<<<<< HEAD
-    @Scheduled(fixedRate = 250) // this is in milliseconds
-    public void algorithmChecker() {
-        System.out.println("Algorithm check executed.");
-        // List prices = ps.getLastNPricesOfStock("GOOG", 20);
-    }
-=======
 
     static final int MAX_THREADS = 10;
 
@@ -113,38 +95,6 @@ public class AlgoRunner {
 }
 
 
-
-
-
-
-
-        /*
-        int threadCount = 0;
-
-        boolean exitTradePlatform = false;
-
-        while(!exitTradePlatform) {
-
-            ss.getAllStrats();
-
-            AlgoTwoMovingAverages thread1 = new AlgoTwoMovingAverages(orderType, stock, shortSMAPeriod, longSMAPeriod, exitPercent);
-            thread1.start();
-
-
-
-
-    /*  @Scheduled(fixedRate = 250) // this is in milliseconds
-      public void algorithmChecker() {
-
-          System.out.println("Algorithm check executed.");
-         // List prices = ps.getLastNPricesOfStock("GOOG", 20);
-      }
-  */
-
-
-        //loop thru strats, if no thread, create thread of strategy
->>>>>>> 7a45dcaac37674aaf94cb5e167a6d30677053a7e
-
 //    @PostConstruct
 //    public void runOnce() {
 //        Map<Strategies, Object> relist = ss.getAllActive();
@@ -156,9 +106,8 @@ public class AlgoRunner {
 //    }
 
 
+// function call for each thread
 
-        // function call for each thread
-
-        // example function {
-        // initialize ur queues for this straegy
-        // inside this thread, u call price service's get last N prices of stock
+// example function {
+// initialize ur queues for this straegy
+// inside this thread, u call price service's get last N prices of stock

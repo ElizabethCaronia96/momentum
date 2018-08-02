@@ -11,7 +11,7 @@ public class TestAlgoTwoMovingAverages {
 
     public static void main(String[] args) {
 
-        AlgoTwoMovingAverages test1 = new AlgoTwoMovingAverages();
+//        AlgoTwoMovingAverages test1 = new AlgoTwoMovingAverages();
 //        test1.executeStrategy("Auto", 2, 10, 0.20);
 
 
