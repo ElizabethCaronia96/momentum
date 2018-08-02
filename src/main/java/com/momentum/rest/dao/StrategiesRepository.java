@@ -1,4 +1,4 @@
-package com.momentum.rest.springboot.repos;
+package com.momentum.rest.dao;
 
 import com.momentum.rest.entities.Strategies;
 import org.springframework.data.jpa.repository.JpaRepository;

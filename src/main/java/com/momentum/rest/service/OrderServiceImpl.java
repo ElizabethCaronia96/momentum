@@ -1,11 +1,13 @@
 package com.momentum.rest.service;
 
+import com.google.common.collect.Lists;
 import com.momentum.rest.entities.Order;
 import com.momentum.rest.dao.OrderRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Query;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,40 +37,43 @@ public class OrderServiceImpl implements OrderService {
         return orRp.findAll();
     }
 
-    @Override
+  /*  @Override
     public List<Order> insertStrategyId(Integer id) {
         return orRp.findOrdersByStrategyId(id);
     }
 
     @Override
     public List<Order> insertStartPrice(Double price){
-        return orRp.saveCrossoverStartPrice(price);
+        return orRp.saveOrdersByCrossoverStartPrice(price);
     }
 
     @Override
     public List<Order> insertStartDatetime(Timestamp date){
-        return orRp.saveCrossStartDatetime(date);
+        return orRp.saveOrdersByCrossoverStartDatetime(date);
     }
 
     @Override
     public List<Order> insertStartType(String type){
-        return orRp.saveCrossStartType(type);
+        return orRp.saveOrdersByCrossoverStartType(type);
     }
 
     @Override
     public List<Order> insertEndPrice(Double price) {
-        return orRp.saveCrossEndPrice(price);
+        return orRp.saveOrdersByCrossoverEndPrice(price);
     }
 
     @Override
     public List<Order> insertEndDatetime(Timestamp date) {
-        return orRp.saveCrossEndDatetime(date);
+        return orRp.saveOrdersByCrossoverEndDatetime(date);
     }
 
-    @Override
-    public List<Order> insertEndType(String type,Order o) {
-        return orRp.saveCrossEndType(type, o.getStrategyId());
+/*    @Override
+    public List<Order> insertEndType(String type, Order o) {
+        return orRp.saveOrdersByCrossoverEndType(type, o.getStrategyId());
     }
+*/
+
+
 
 
 }

@@ -15,7 +15,7 @@ public interface OrderService {
 
     List<Order> getAllOrders();
 
-    List<Order> insertStrategyId(Integer id );
+  /*  List<Order> insertStrategyId(Integer id );
 
     List<Order> insertStartPrice(Double price);
 
@@ -28,6 +28,7 @@ public interface OrderService {
 
     List<Order> insertEndDatetime(Timestamp date);
 
-    List<Order> insertEndType(String type);
+ //   List<Order> insertEndType(String type, Order o);
+*/
 
 }

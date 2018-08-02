@@ -1,4 +1,4 @@
-package com.momentum.rest.springboot.repos;
+package com.momentum.rest.dao;
 
 import com.momentum.rest.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +15,7 @@ public interface BBRepository extends JpaRepository<Order, Integer> {
     public List<Order> findAllByOrderId(@Param("order_id") Integer orderId);
     public List<Order> findAllByStrategyId(@Param("strategy_id") Integer strategyId);
 
-    public List<Order> saveEntryPrice(@Param("entry_price") Double entryPrice);
+ /*   public List<Order> saveEntryPrice(@Param("entry_price") Double entryPrice);
     public List<Order> saveEntryDatetime(@Param("entry_datetime") Timestamp entryDatetime);
 
     public List<Order> saveStrategyId(@Param("strategy_id") Integer strategyId);
@@ -26,7 +26,7 @@ public interface BBRepository extends JpaRepository<Order, Integer> {
     public List<Order> saveCrossEndDatetime(@Param("crossover_end_datetime") Timestamp crossEndDate);
     public List<Order> saveCrossEndPrice(@Param("crossover_end_price") Double crossEndPrice);
     public List<Order> saveCrossEndType(@Param("crossover_end_type") String type);
-
+*/
 
 
 

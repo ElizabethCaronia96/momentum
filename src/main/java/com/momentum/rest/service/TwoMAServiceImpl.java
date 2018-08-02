@@ -1,7 +1,7 @@
-package com.momentum.rest.springboot.services;
+package com.momentum.rest.service;
 
 import com.momentum.rest.entities.TwoMA;
-import com.momentum.rest.springboot.repos.TwoMARepository;
+import com.momentum.rest.dao.TwoMARepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
