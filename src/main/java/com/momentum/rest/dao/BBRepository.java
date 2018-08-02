@@ -1,5 +1,6 @@
 package com.momentum.rest.dao;
 
+import com.momentum.rest.entities.BB;
 import com.momentum.rest.entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,8 @@ public interface BBRepository extends JpaRepository<Order, Integer> {
 
     public List<Order> findAllByOrderId(@Param("order_id") Integer orderId);
     public List<Order> findAllByStrategyId(@Param("strategy_id") Integer strategyId);
-
+    public List<BB> findBBByStrategyId(@Param("strategy_id") int strategyId)
+;
  /*   public List<Order> saveEntryPrice(@Param("entry_price") Double entryPrice);
     public List<Order> saveEntryDatetime(@Param("entry_datetime") Timestamp entryDatetime);
 

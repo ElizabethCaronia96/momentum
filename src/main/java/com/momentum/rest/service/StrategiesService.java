@@ -4,6 +4,7 @@ import com.momentum.rest.entities.Strategies;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public interface StrategiesService {
     public List<Strategies> getStratByStrategyId(int strategyId);
@@ -17,7 +18,7 @@ public interface StrategiesService {
     public List<Strategies> getStratByExitTime(Timestamp exitTime);
     public List<Strategies> getStratByProfitLoss( Double profitLoss);
 
-    public List<Strategies> getAllActive();
+    public Map<Strategies, Object> getAllActive();
 
     public List<Strategies> getAllStrats();
 
