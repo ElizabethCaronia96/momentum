@@ -16,7 +16,12 @@ import com.momentum.algo.AlgoBollingerBands;
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.util.List;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import java.util.Map;
+
 
 @Service
 public class AlgoRunner {
