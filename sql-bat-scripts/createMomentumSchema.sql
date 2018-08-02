@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
-USE `momentum_mysql`;
->>>>>>> 7a45dcaac37674aaf94cb5e167a6d30677053a7e
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: momentum_mysql
