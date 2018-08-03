@@ -26,8 +26,8 @@ public class AlgoBollingerBands implements Runnable {
     /**
      * The price of every buy and sell trade is added to these lists.
      */
-    ArrayList<Double> buyPrices;
-    ArrayList<Double> sellPrices;
+    ArrayList<Double> buyPrices = new ArrayList<>();
+    ArrayList<Double> sellPrices = new ArrayList<>();
     /**
      * The stock price of the first executed buy or sell trade. Total profit/loss accumulated over the strategy
      * is measured against this price for the strategy exit condition.
@@ -107,7 +107,13 @@ public class AlgoBollingerBands implements Runnable {
             else {
                 lastTrade = "Sell";
                 placeOrder("Sell", newPrice);
-                sellPrices.add(newPrice);
+                try {
+                    sellPrices.add(newPrice);
+                } catch (NullPointerException e) {
+                    System.out.println("ERROR DUDE!!!!!!!!!!!!!!!!!!!!");
+                    System.out.println(sellPrices);
+                    System.out.println(newPrice);
+                }
             }
 
             tradeCounter++;

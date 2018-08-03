@@ -49,13 +49,13 @@ public class AlgoRunner {
 
         boolean exitMomentum = false;
 
-        Map<Strategies, Object> allstrategiesMap = ss.getAllActive();
+        Map<Strategies, Object> strategiesMap = ss.getAllActive();
 
-        Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
-        Strategies key = tmp_entry.getKey();
-        Object value = tmp_entry.getValue();
-        Map<Strategies, Object> strategiesMap = new HashMap<>();
-        strategiesMap.put(key, value);
+//        Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
+//        Strategies key = tmp_entry.getKey();
+//        Object value = tmp_entry.getValue();
+//        Map<Strategies, Object> strategiesMap = new HashMap<>();
+//        strategiesMap.put(key, value);
 
         while (!exitMomentum) {
 
@@ -85,13 +85,13 @@ public class AlgoRunner {
                 if (!alreadyRunning) {
 
                     System.out.println("this strat not running - make thread");
-                    System.out.println(entry.getKey().getClass());
-                  //  List<Object> temp = entry.getValue();
+//                    System.out.println(entry.getKey().getClass());
+//                    System.out.println(entry.getValue().getClass());
                     Object obj = entry.getValue();
-                    System.out.println(obj.getClass());
-                    System.out.println(obj.toString());
-                    System.out.println(entry.getKey());
-                    System.out.println(entry.getValue());
+//                    System.out.println(obj.getClass());
+//                    System.out.println(obj.toString());
+//                    System.out.println(entry.getKey());
+//                    System.out.println(entry.getValue());
 
                     if (entry.getValue() instanceof TwoMA) {
 

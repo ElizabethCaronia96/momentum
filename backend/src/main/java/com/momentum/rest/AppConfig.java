@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.momentum")
 @EntityScan("com.momentum.rest.entities")
-@EnableScheduling
+//@EnableScheduling
 @Configuration
 public class AppConfig {
 
