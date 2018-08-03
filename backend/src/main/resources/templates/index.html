@@ -49,6 +49,7 @@
             <div class="row mb-2 page-section" id="dashboard-section">
                 <div class="col-12">
                     <h1 class="font-weight-bold text-white">Dashboard</h1>
+                    <p id="jquery-test"></p>
 
                     <div class="row my-4">
                         <div class="col-12">
@@ -59,7 +60,7 @@
                     <!--active-strategies-row-->
                     <div class="row" id="active-strategies-row">
                         <div class="col-12">
-                            <div class="row strategy-cards">
+                            <div class="row" id="strategy-cards">
 
 
                                 <!-- STRAT CARD -->
@@ -190,7 +191,7 @@
                         <div class="col-12">
                             <div class="row position-cards">
 
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="open-pos-table">
                                     <thead class="position-thead">
                                     <tr>
                                         <th scope="col" class="text-center">
@@ -210,32 +211,7 @@
                                         </th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th scope="row" class="text-center text-white">2</th>
-                                        <td class="text-center text-white">1</td>
-                                        <td class="text-center text-white">BUY</td>
-                                        <td class="text-center text-white">03:12:32 PM</td>
-                                        <td class="text-center text-white font-weight-bold">$12.23</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row" class="text-center text-white">2</th>
-                                        <td class="text-center text-white">1</td>
-                                        <td class="text-center text-white">BUY</td>
-                                        <td class="text-center text-white">03:12:32 PM</td>
-                                        <td class="text-center text-white font-weight-bold">$12.23</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row" class="text-center text-white">2</th>
-                                        <td class="text-center text-white">1</td>
-                                        <td class="text-center text-white">BUY</td>
-                                        <td class="text-center text-white">03:12:32 PM</td>
-                                        <td class="text-center text-white font-weight-bold">$12.23</td>
-                                    </tr>
-
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -285,6 +261,8 @@
 <script src="/js/bootstrap.bundle.min.js"></script>
 <!--chart.js-->
 <script src="/js/Chart.bundle.js"></script>
+<!--moment.js-->
+<script src="/js/moment.min.js"></script>
 <!--our js-->
 <script src="/js/momentum.js"></script>
 

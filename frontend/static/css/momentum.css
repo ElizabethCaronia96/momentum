@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
+.bg-neg-45deg, .content {
+  background: #2788ba;
+  background: -moz-linear-gradient(45deg, #2788ba 0%, #3657af 100%);
+  background: -webkit-linear-gradient(45deg, #2788ba 0%, #3657af 100%);
+  background: linear-gradient(45deg, #2788ba 0%, #3657af 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#276eba",endColorstr="#3657af",GradientType=1); }
+
+.bg-90deg {
+  background: #2788ba;
+  background: -moz-linear-gradient(90deg, #2788ba 0%, #3657af 100%);
+  background: -webkit-linear-gradient(90deg, #2788ba 0%, #3657af 100%);
+  background: linear-gradient(90deg, #2788ba 0%, #3657af 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#276eba",endColorstr="#3657af",GradientType=1); }
+
+.bg-135deg {
+  background: #2788ba;
+  background: -moz-linear-gradient(135deg, #2788ba 0%, #3657af 100%);
+  background: -webkit-linear-gradient(135deg, #2788ba 0%, #3657af 100%);
+  background: linear-gradient(135deg, #2788ba 0%, #3657af 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#276eba",endColorstr="#3657af",GradientType=1); }
+
+* {
+  font-family: 'Roboto', sans-serif; }
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0; }
+
+.font-small {
+  font-size: 75%; }
+
+a {
+  color: #2788ba;
+  text-decoration: none; }
+  a:hover, a:active {
+    color: black;
+    text-decoration: none; }
+
+#navigation {
+  background-color: white;
+  padding: 25px 30px;
+  height: 100vh;
+  position: fixed; }
+  #navigation i {
+    margin-right: 10px; }
+
+.content {
+  box-shadow: inset 5px 0 30px rgba(0, 0, 0, 0.075);
+  padding: 25px 50px; }
+
+.sub-title {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: 1px dotted white; }
+
+.strategy-card-active {
+  margin-bottom: 30px; }
+  .strategy-card-active .strategy-card-info {
+    border: 1px white solid;
+    padding: 15px 0;
+    border-radius: 15px 15px 0 0;
+    background-color: white; }
+    .strategy-card-active .strategy-card-info .main-info {
+      color: #2788ba;
+      text-align: center;
+      font-weight: bold; }
+    .strategy-card-active .strategy-card-info .sub-info {
+      color: #9aa09d;
+      text-align: center; }
+  .strategy-card-active .strategy-card-graph {
+    border: 1px white solid;
+    border-radius: 0 0 15px 15px;
+    padding: 5px 15px; }
+
+.strategy-card-inactive {
+  margin-bottom: 30px; }
+  .strategy-card-inactive .strategy-card-info {
+    border: 1px white solid;
+    padding: 15px 0;
+    border-radius: 15px;
+    background-color: white; }
+    .strategy-card-inactive .strategy-card-info .main-info {
+      color: #2788ba;
+      text-align: center;
+      font-weight: bold; }
+    .strategy-card-inactive .strategy-card-info .sub-info {
+      color: #9aa09d;
+      text-align: center; }
+  .strategy-card-inactive .strategy-card-graph {
+    border: 1px white solid;
+    border-radius: 0 0 15px 15px;
+    padding: 5px 15px; }
+
+.page-section {
+  min-height: 100vh; }
+
+canvas {
+  height: 200px; }
+
+.position-thead {
+  color: #2788ba;
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px 15px 0 0; }
+
+/*# sourceMappingURL=momentum.css.map */
