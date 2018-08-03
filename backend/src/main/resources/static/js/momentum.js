@@ -1,8 +1,12 @@
 $(document).ready(function () {
     smoothScroll();
-    plotCharts();
-    initializeActiveStrats();
+
+    initializeAllStrats();
+
     initializeOpenPositions();
+
+
+
 });
 
 function smoothScroll() {
@@ -44,16 +48,15 @@ function smoothScroll() {
         });
 }
 
-function plotCharts() {
+function plotCharts(id) {
 
     Chart.defaults.global.defaultFontFamily = "Roboto";
 
-    var ctx = document.getElementById("canvas").getContext('2d');
+    var ctx = document.getElementById(id).getContext('2d');
 
     var gradientFill = ctx.createLinearGradient(500, 0, 100, 0);
     gradientFill.addColorStop(0, "rgba(255, 255, 255, 0.5)");
     gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.0)");
-
 
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -109,98 +112,166 @@ function plotCharts() {
         }
     });
 
-
-    myChart.data.datasets[0].data.forEach((index, point) => {
-        if (index % 2 === 0) {
-            point.fillColor = "white";
-        } else {
-            point.fillColor = "black";
-        }
-        console.log(point);
-    });
-
-
-
-
-
 }
 
 
-
-function initializeActiveStrats() {
-    var strategyCardsRow = $("#strategy-cards");
+function initializeAllStrats() {
+    var activeStrategyCardsRow = $("#active-strategies-row .strategy-cards");
+    var inactiveStrategyCardsRow = $("#inactive-strategies-row .strategy-cards");
 
     $.ajax({
-        url: "/strategies/open-strat",
+        url: "/api/strategieses?size=50",
         type: 'GET',
-        beforeSend: function () {
-            console.log("Getting list of active strats...");
-        },
-        complete: function () {
-        },
         success: function (result) {
 
-            // get list of all Order objects, loop through and print each out
-            $.each(result, function (index, value) {
+            var listOfStrats = result["_embedded"]["strategieses"];
 
-
+            // get list of all Strategy objects, loop through and print each out
+            $.each(listOfStrats, function (index, value) {
                 var strategyId = value["strategyId"];
                 var stock = value["stock"];
                 var stockSize = value["size"];
+                var stratStatus = value["status"];
                 var stratType = value["type"];
                 var stratTypeID = value["typeId"];
                 var profitLoss = value["profitLoss"];
 
-                if (stratType === "bb") {
-                //    make bb request
+                var movingAvgRange = '';
+                var stdDevMultiple = '';
+                var longAvgRange = '';
+                var shortAvgRange = '';
+                var percentToExit = '';
+                var condInfoMain = '';
+                var condInfoSub = '';
 
+                console.log("Getting strategy {0}, ID {1}...".f(stratType, stratTypeID));
+
+                if (stratType === "bb") {
+                    $.ajax({
+                        url: "/api/bBs/" + stratTypeID,
+                        type: 'GET',
+                        success: function (result) {
+                            movingAvgRange = result["movingAvgRange"];
+                            stdDevMultiple = result["stdDevMultiple"];
+                            percentToExit = result["percentToExit"];
+
+                            condInfoMain = '<h6 class="main-info">{0} ({1})</h6>'.f(movingAvgRange, stdDevMultiple);
+                            condInfoSub = '<p class="font-small sub-info">M. RANGE (σ)</p>'
+
+                            if (stratStatus === "FINISHED") {
+                                addNewInactiveStratCard();
+                            } else {
+                                addNewActiveStratCard();
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "/api/twoMAs/" + stratTypeID,
+                        type: 'GET',
+                        success: function (result) {
+                            longAvgRange = result["longAvgRange"];
+                            shortAvgRange = result["shortAvgRange"];
+                            percentToExit = result["percentToExit"];
+
+                            condInfoMain = '<h6 class="main-info">{0}/{1}</h6>'.f(shortAvgRange, longAvgRange);
+                            condInfoSub = '<p class="font-small sub-info">SHORT/LONG</p>'
+
+                            if (stratStatus === "FINISHED") {
+                                addNewInactiveStratCard();
+                            } else {
+                                addNewActiveStratCard();
+                            }
+                        }
+                    });
+                }
+
+                function addNewActiveStratCard() {
+                    var newActiveStratCard = '<!-- STRAT CARD -->' +
+                        '<div class="col-12 strategy-card-active">' +
+                        '<div class="row">' +
+                        '<div class="col-12 strategy-card-info">' +
+                        '<div class="row">' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">{0}</h6>'.f(strategyId) +
+                        '<p class="font-small sub-info">STRATEGY ID</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">{0}</h6>'.f(stock) +
+                        '<p class="font-small sub-info">STOCK</p>' +
+                        '</div>' +
+                        '<div class="col-1">' +
+                        '<h6 class="main-info">{0}</h6>'.f(stockSize) +
+                        '<p class="font-small sub-info">QTY</p>' +
+                        '</div>' +
+                        '<div class="col-1">' +
+                        '<h6 class="main-info text-uppercase">{0}</h6>'.f(stratType) +
+                        '<p class="font-small sub-info">TYPE</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        condInfoMain +
+                        condInfoSub +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">{0}%</h6>'.f(percentToExit) +
+                        '<p class="font-small sub-info">EXIT %</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info text-success">${0}</h6>'.f(profitLoss) +
+                        '<p class="font-small sub-info">CURRENT P/L</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-12 strategy-card-graph">' +
+                        '<canvas id="canvas-{0}"></canvas>'.f(strategyId) +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<!-- STRAT CARD -->'
+
+                    activeStrategyCardsRow.append(newActiveStratCard);
+                    plotCharts("canvas-{0}".f(strategyId));
                 }
 
 
+                function addNewInactiveStratCard() {
+                    var newInactiveStratCard = '<!-- STRAT CARD -->' +
+                        '<div class="col-12 strategy-card-inactive">' +
+                        '<div class="row">' +
+                        '<div class="col-12 strategy-card-info">' +
+                        '<div class="row">' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">{0}</h6>'.f(stock) +
+                        '<p class="font-small sub-info">STOCK</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">{0}</h6>'.f(stockSize) +
+                        '<p class="font-small sub-info">QTY</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info text-uppercase">{0}</h6>'.f(stratType) +
+                        '<p class="font-small sub-info">STRATEGY</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        condInfoMain +
+                        condInfoSub +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">{0}%</h6>'.f(percentToExit) +
+                        '<p class="font-small sub-info">EXIT %</p>' +
+                        '</div>' +
+                        '<div class="col-2">' +
+                        '<h6 class="main-info">${0}</h6>'.f(profitLoss) +
+                        '<p class="font-small sub-info">FINAL P/L</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<!-- STRAT CARD -->'
 
-                var newStratCard = '<!-- STRAT CARD -->' +
-                    '<div class="col-12 strategy-card-active">' +
-                    '<div class="row">' +
-                    '<div class="col-12 strategy-card-info">' +
-                    '<div class="row">' +
-                    '<div class="col-2">' +
-                    '<h6 class="main-info">{0}</h6>'.f(strategyId) +
-                    '<p class="font-small sub-info">STRATEGY ID</p>' +
-                    '</div>' +
-                    '<div class="col-2">' +
-                    '<h6 class="main-info">{0}</h6>'.f(stock) +
-                    '<p class="font-small sub-info">STOCK</p>' +
-                    '</div>' +
-                    '<div class="col-1">' +
-                    '<h6 class="main-info">{0}</h6>'.f(stockSize) +
-                    '<p class="font-small sub-info">QTY</p>' +
-                    '</div>' +
-                    '<div class="col-1">' +
-                    '<h6 class="main-info">{0}</h6>'.f(stratType) +
-                    '<p class="font-small sub-info">TYPE</p>' +
-                    '</div>' +
-                    '<div class="col-2">' +
-                    '<h6 class="main-info">{0}</h6>' +
-                    '<p class="font-small sub-info">HOLD PERIODS</p>' +
-                    '</div>' +
-                    '<div class="col-2">' +
-                    '<h6 class="main-info">{0}%</h6>' +
-                    '<p class="font-small sub-info">EXIT %</p>' +
-                    '</div>' +
-                    '<div class="col-2">' +
-                    '<h6 class="main-info text-success">${0}</h6>'.f(profitLoss) +
-                    '<p class="font-small sub-info">CURRENT P/L</p>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="col-12 strategy-card-graph">' +
-                    '<canvas id="canvas"></canvas>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<!-- STRAT CARD -->'
-
-                strategyCardsRow.append(newStratCard);
+                    inactiveStrategyCardsRow.append(newInactiveStratCard);
+                }
 
             });
         }
@@ -233,7 +304,7 @@ function initializeOpenPositions() {
                 var crossoverStartDatetime = crossoverStartDatetimeObj.format("MM/DD HH:mm:ss.SSS")
                 var crossoverStartPrice = value["crossoverStartPrice"];
 
-                var newRow ='<tr>' +
+                var newRow = '<tr>' +
                     '<th scope="row" class="text-center text-white">{0}</th>'.f(orderId) +
                     '<td class="text-center text-white">{0}</td>'.f(strategyId) +
                     '<td class="text-center text-white text-uppercase">{0}</td>'.f(crossoverStartType) +

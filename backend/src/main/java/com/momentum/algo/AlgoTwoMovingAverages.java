@@ -64,6 +64,13 @@ public class AlgoTwoMovingAverages implements Runnable {
 
     /**
      * Executes the Two Moving Averages strategy.
+     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
+     *                  "Buy" order type will place only buy trades when the strategy is triggered.
+     *                  "Sell" order type will place only sell trades when the strategy is triggered.
+     * @param stock the name of the stock being traded.
+     * @param shortSMAPeriod the time period of the short SMA.
+     * @param longSMAPeriod the time period of the long SMA.
+     * @param exitPercent the profit or loss percent for the exit condition.
      */
     public void run() {
 

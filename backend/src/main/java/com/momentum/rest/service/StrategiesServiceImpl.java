@@ -82,25 +82,6 @@ public class StrategiesServiceImpl implements StrategiesService{
     public List<Strategies> getStratByProfitLoss(Double profitLoss) {
         return null;
     }
-/*
-
-    public List<Integer, String, String, Integer, Integer, Double> getAllActive2MA() {
-
-        String q = String.format("select s.strategyId, s.type, s.stock, tMA.longAvgRange, tMA.shortAvgRange, tMA.percentToExit from Strategies s left outer join TwoMA tMA on s.typeId = tMa.strategyId where  s.type = \'2ma\' and s.status<>\'finished\' order by s.addedTime asc ");
-            Query query = em.createQuery(q);
-        List<Integer, String, String, Integer, Integer, Double> activeBB = query.getResultList();
-            return query.getResultList();
-
-
-    }
-
-    public List<Integer, String, String, Integer, Integer, Double> getAllActiveBB() {
-        Collection<Integer, String, String, Integer, Integer, Double> activeBB = new Collection<Integer>();
-        String q = String.format("select s.strategyId, s.type, s.stock, bb.movingAvgRange, bb.stdDevMultiple from Strategies s left outer join BB bb on s.typeId = bb.strategyId where  s.type = \'bb\' and s.status<>\'finished\' order by s.addedTime asc");
-        Query query = em.createQuery(q);
-        activeBB.addAll(query.getResultList());
-        return activeBB;
-    } */
 
     @Override
     public Map<Strategies, Object> getAllActive() {
@@ -129,13 +110,9 @@ public class StrategiesServiceImpl implements StrategiesService{
         Map map = new HashMap<Strategies, Object>();
         for (Strategies a : allActive) {
             if (a.getType().equals("2ma")) {
-             //   System.out.println("2ma");
                 map.put(a, twoMARepo.findTwoMAByStrategyId(a.getTypeId()));
             }
             else {
-              //  System.out.println("bb");
-//                System.out.println(bbRepo.findBBByStrategyId(a.getTypeId()));
-
                 map.put(a, bbRepo.findBBByStrategyId(a.getTypeId()));
             }
 
