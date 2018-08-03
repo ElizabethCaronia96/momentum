@@ -1,8 +1,11 @@
 package com.momentum.algo;
 
+import com.momentum.rest.entities.Order;
+import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class AlgoBollingerBands implements Runnable {
 
     SMAWithSD smaWithSD;
 
+    OrderService os;
     /**
      * The number of trades that have been executed.
      */
@@ -56,7 +60,7 @@ public class AlgoBollingerBands implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps The PriceService object for getting prices.
      */
-    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps) {
+    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps, OrderService os) {
 
         this.algoType = algoType;
         this.stock = stock;
@@ -65,6 +69,7 @@ public class AlgoBollingerBands implements Runnable {
         this.exitPercent = exitPercent;
         this.strategyId = strategyId;
         this.ps = ps;
+        this.os = os;
     }
 
     /**
@@ -87,7 +92,7 @@ public class AlgoBollingerBands implements Runnable {
         tradeCounter = 0;
         lastTrade = "Auto";
         profit = 0.0;
-
+        Order order = new Order();
         // loop on exit condition
         while(!exit) {
 
@@ -131,20 +136,21 @@ public class AlgoBollingerBands implements Runnable {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
 
                 if(lastTrade.equalsIgnoreCase("Buy")) {
-                    //Buy
+                    os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
                 }
                 else {
-                    //Sell
+                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit );
                 }
             }
             // enter position
             else {
 
                 if(lastTrade.equalsIgnoreCase("Buy")) {
-                    //Buy
+                    order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
                 }
                 else {
-                    //Sell
+                    order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
+
                 }
             }
 

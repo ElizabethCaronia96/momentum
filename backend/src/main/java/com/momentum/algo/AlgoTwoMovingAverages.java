@@ -1,15 +1,19 @@
 package com.momentum.algo;
 
+import com.momentum.rest.entities.Order;
+import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlgoTwoMovingAverages implements Runnable {
 
     PriceService ps;
+    OrderService os;
 
     SMA shortSMA;
     SMA longSMA;
@@ -53,7 +57,7 @@ public class AlgoTwoMovingAverages implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps the PriceService object for getting prices.
      */
-    public AlgoTwoMovingAverages(String algoType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, int strategyId, PriceService ps) {
+    public AlgoTwoMovingAverages(String algoType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, int strategyId, PriceService ps, OrderService os) {
 
         this.algoType = algoType;
         this.stock = stock;
@@ -62,6 +66,7 @@ public class AlgoTwoMovingAverages implements Runnable {
         this.exitPercent = exitPercent;
         this.strategyId = strategyId;
         this.ps = ps;
+        this.os = os;
     }
 
     /**
@@ -91,6 +96,7 @@ public class AlgoTwoMovingAverages implements Runnable {
         boolean exit = false;
         tradeCounter = 0;
         profit = 0.0;
+        Order order = new Order();
 
         // loop on exit condition
         while(!exit) {
@@ -139,20 +145,20 @@ public class AlgoTwoMovingAverages implements Runnable {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
 
                 if(orderType.equalsIgnoreCase("Buy")) {
-                    //Buy
+                    os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
                 }
                 else {
-                    //Sell
+                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
                 }
             }
             // enter position
             else {
 
                 if(orderType.equalsIgnoreCase("Buy")) {
-                    //Buy
+                    order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
                 }
                 else {
-                    //Sell
+                    order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
                 }
             }
             //todo else statement for odd trades, so insert into DB: type, date, price, on evens all of the above + profit

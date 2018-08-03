@@ -68,11 +68,14 @@ public class OrderServiceImpl implements OrderService {
         return x1;
     }
 
+ 
+
     @Override
-    public void updateOrderFromCross2(Order o, String crossType2, Timestamp crossTime2, Double crossPrice2) {
+    public void updateOrderFromCross2(Order o, String crossType2, Timestamp crossTime2, Double crossPrice2, Double profit_loss) {
         o.setCrossoverEndType(crossType2);
         o.setCrossoverEndDatetime(crossTime2);
         o.setCrossoverEndPrice(crossPrice2);
+        o.setProfitLoss(profit_loss);
         orRp.save(o);
     }
 
