@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -59,6 +60,23 @@ public class OrderServiceImpl implements OrderService {
     public void addOrder(Order order) {
         orRp.save(order);
     }
+
+    @Override
+    public Order createOrderFromCross1(int strategy_id, String crossType, Timestamp crossTime1, Double crossPrice1) {
+        Order x1 = new Order(strategy_id, crossType, crossTime1, crossPrice1);
+        orRp.save(x1);
+        return x1;
+    }
+
+    @Override
+    public void updateOrderFromCross2(Order o, String crossType2, Timestamp crossTime2, Double crossPrice2) {
+        o.setCrossoverEndType(crossType2);
+        o.setCrossoverEndDatetime(crossTime2);
+        o.setCrossoverEndPrice(crossPrice2);
+        orRp.save(o);
+    }
+
+
 
 
 
