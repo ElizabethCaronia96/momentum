@@ -1,6 +1,8 @@
 $(document).ready(function () {
-        smoothScroll();
-        plotCharts();
+    smoothScroll();
+    plotCharts();
+    initializeActiveStrats();
+    initializeOpenPositions();
 });
 
 function smoothScroll() {
@@ -106,21 +108,155 @@ function plotCharts() {
             }
         }
     });
-}
 
-function updatePositions() {
 
-    new Vue({
-        el: '#app',
-        data: {
-            users: []
-        },
-        created () {
-            var vm = this
-            axios.get('https://jsonplaceholder.typicode.com/users')
-                .then(function (response) {
-                    vm.users = response.data
-                })
+    myChart.data.datasets[0].data.forEach((index, point) => {
+        if (index % 2 === 0) {
+            point.fillColor = "white";
+        } else {
+            point.fillColor = "black";
         }
-    })
+        console.log(point);
+    });
+
+
+
+
+
 }
+
+
+
+function initializeActiveStrats() {
+    var strategyCardsRow = $("#strategy-cards");
+
+    $.ajax({
+        url: "/strategies/open-strat",
+        type: 'GET',
+        beforeSend: function () {
+            console.log("Getting list of active strats...");
+        },
+        complete: function () {
+        },
+        success: function (result) {
+
+            // get list of all Order objects, loop through and print each out
+            $.each(result, function (index, value) {
+
+
+                var strategyId = value["strategyId"];
+                var stock = value["stock"];
+                var stockSize = value["size"];
+                var stratType = value["type"];
+                var stratTypeID = value["typeId"];
+                var profitLoss = value["profitLoss"];
+
+                if (stratType === "bb") {
+                //    make bb request
+
+                }
+
+
+
+                var newStratCard = '<!-- STRAT CARD -->' +
+                    '<div class="col-12 strategy-card-active">' +
+                    '<div class="row">' +
+                    '<div class="col-12 strategy-card-info">' +
+                    '<div class="row">' +
+                    '<div class="col-2">' +
+                    '<h6 class="main-info">{0}</h6>'.f(strategyId) +
+                    '<p class="font-small sub-info">STRATEGY ID</p>' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<h6 class="main-info">{0}</h6>'.f(stock) +
+                    '<p class="font-small sub-info">STOCK</p>' +
+                    '</div>' +
+                    '<div class="col-1">' +
+                    '<h6 class="main-info">{0}</h6>'.f(stockSize) +
+                    '<p class="font-small sub-info">QTY</p>' +
+                    '</div>' +
+                    '<div class="col-1">' +
+                    '<h6 class="main-info">{0}</h6>'.f(stratType) +
+                    '<p class="font-small sub-info">TYPE</p>' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<h6 class="main-info">{0}</h6>' +
+                    '<p class="font-small sub-info">HOLD PERIODS</p>' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<h6 class="main-info">{0}%</h6>' +
+                    '<p class="font-small sub-info">EXIT %</p>' +
+                    '</div>' +
+                    '<div class="col-2">' +
+                    '<h6 class="main-info text-success">${0}</h6>'.f(profitLoss) +
+                    '<p class="font-small sub-info">CURRENT P/L</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-12 strategy-card-graph">' +
+                    '<canvas id="canvas"></canvas>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<!-- STRAT CARD -->'
+
+                strategyCardsRow.append(newStratCard);
+
+            });
+        }
+    });
+
+
+}
+
+function initializeOpenPositions() {
+
+    var openPosTableBody = $("#open-pos-table tbody");
+
+    $.ajax({
+        url: "/order/open-pos",
+        type: 'GET',
+        beforeSend: function () {
+            console.log("Getting list of open positions...");
+        },
+        complete: function () {
+        },
+        success: function (result) {
+
+            // get list of all Order objects, loop through and print each out
+            $.each(result, function (index, value) {
+
+                var orderId = value["orderID"];
+                var strategyId = value["strategyId"];
+                var crossoverStartType = value["crossoverStartType"];
+                var crossoverStartDatetimeObj = moment(value["crossoverStartDatetime"]);
+                var crossoverStartDatetime = crossoverStartDatetimeObj.format("MM/DD HH:mm:ss.SSS")
+                var crossoverStartPrice = value["crossoverStartPrice"];
+
+                var newRow ='<tr>' +
+                    '<th scope="row" class="text-center text-white">{0}</th>'.f(orderId) +
+                    '<td class="text-center text-white">{0}</td>'.f(strategyId) +
+                    '<td class="text-center text-white text-uppercase">{0}</td>'.f(crossoverStartType) +
+                    '<td class="text-center text-white">{0}</td>'.f(crossoverStartDatetime) +
+                    '<td class="text-center text-white">${0}</td></tr>'.f(crossoverStartPrice)
+
+                openPosTableBody.append(newRow);
+            });
+        }
+    });
+
+
+}
+
+
+// HELPER METHODS - DO NOT DELETE
+
+String.prototype.format = String.prototype.f = function () {
+    var s = this,
+        i = arguments.length;
+
+    while (i--) {
+        s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+    }
+    return s;
+};

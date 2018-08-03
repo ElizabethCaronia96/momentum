@@ -99,9 +99,16 @@ public class AlgoTwoMovingAverages implements Runnable {
             // loop on short sma crossing long sma
             while(!crossed) {
 
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 setSMAComparison();
 
                 newPrice = (double)(ps.getLastNPricesOfStock(stock, 1).get(0));
+                System.out.println("New stock price added in strategy: " + newPrice);
                 shortSMA.update(new Double(newPrice));
                 longSMA.update(new Double(newPrice));
 
@@ -129,7 +136,7 @@ public class AlgoTwoMovingAverages implements Runnable {
             exit = exitCondition(exitPercent);
         }
 
-        System.out.println("The trading strategy generated a profit per share of: $" + profit);
+        System.out.println("The Two Moving Averages strategy generated a profit per share of: $" + profit);
     }
 
     /**
