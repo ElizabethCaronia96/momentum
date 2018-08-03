@@ -51,7 +51,6 @@ public class AlgoRunner {
 
         Map<Strategies, Object> allstrategiesMap = ss.getAllActive();
 
-
         Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
         Strategies key = tmp_entry.getKey();
         Object value = tmp_entry.getValue();
@@ -105,7 +104,9 @@ public class AlgoRunner {
                         double exitPercent = strat.getPercentToExit() / 100.0;
 
 
-                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent);
+                        System.out.println(stock + "/" + shortSMAPeriod + "/" + longSMAPeriod + "/" + exitPercent);
+                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, ps);
+                        pool.execute(r);
                     } else if (entry.getValue() instanceof BB) {
 
                         String stock = entry.getKey().getStock();
@@ -117,8 +118,10 @@ public class AlgoRunner {
 
                         double exitPercent = strat.getPercentToExit() / 100.0;
 
-                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent);
+                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, ps);
+                        pool.execute(r);
                     }
+
 
                     runningStrategies.add(strategyID);
                 }
