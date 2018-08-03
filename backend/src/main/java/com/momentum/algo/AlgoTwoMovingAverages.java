@@ -2,14 +2,14 @@ package com.momentum.algo;
 
 import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlgoTwoMovingAverages implements Runnable {
 
-    @Autowired
-    private PriceService ps;
+    PriceService ps;
 
     SMA shortSMA;
     SMA longSMA;
@@ -41,13 +41,14 @@ public class AlgoTwoMovingAverages implements Runnable {
     int longSMAPeriod;
     double exitPercent;
 
-    public AlgoTwoMovingAverages(String orderType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent) {
+    public AlgoTwoMovingAverages(String orderType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, PriceService ps) {
 
         this.orderType = orderType;
         this.stock = stock;
         this.shortSMAPeriod = shortSMAPeriod;
         this.longSMAPeriod = longSMAPeriod;
         this.exitPercent = exitPercent;
+        this.ps = ps;
     }
 
     /**
@@ -61,6 +62,9 @@ public class AlgoTwoMovingAverages implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      */
     public void run() {
+        System.out.println(ps.getClass());
+
+        System.out.println("MADE IT TO ALGO");
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");

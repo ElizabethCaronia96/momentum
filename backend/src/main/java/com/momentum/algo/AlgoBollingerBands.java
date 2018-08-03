@@ -8,8 +8,7 @@ import java.util.List;
 
 public class AlgoBollingerBands implements Runnable {
 
-    @Autowired
-    private PriceService ps;
+    PriceService ps;
 
     SMAWithSD smaWithSD;
 
@@ -45,13 +44,14 @@ public class AlgoBollingerBands implements Runnable {
     double stdDevMult;
     double exitPercent;
 
-    public AlgoBollingerBands(String orderType, String stock, int smaPeriod, double stdDevMult, double exitPercent) {
+    public AlgoBollingerBands(String orderType, String stock, int smaPeriod, double stdDevMult, double exitPercent, PriceService ps) {
 
         this.orderType = orderType;
         this.stock = stock;
         this.smaPeriod = smaPeriod;
         this.stdDevMult = stdDevMult;
         this.exitPercent = exitPercent;
+        this.ps = ps;
     }
 
     /**
@@ -64,6 +64,10 @@ public class AlgoBollingerBands implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      */
     public void run() {
+
+        System.out.println(ps.getClass());
+
+        System.out.println("MADE IT TO ALGO");
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
