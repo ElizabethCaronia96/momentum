@@ -21,6 +21,5 @@ public interface OrderService {
    void addOrder(Order order);
 
  //   void insertEndType(String type, Order o);
-
-
+  //  Order createOrderFromCross1(String strategy_id, )
 }

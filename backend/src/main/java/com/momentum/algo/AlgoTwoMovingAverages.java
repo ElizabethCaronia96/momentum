@@ -119,6 +119,7 @@ public class AlgoTwoMovingAverages implements Runnable {
             if(shortSMA.average >= longSMA.average) {
                 placeOrder("Buy", newPrice);
                 buyPrices.add(newPrice);
+
             }
             else {
                 placeOrder("Sell", newPrice);
@@ -128,11 +129,12 @@ public class AlgoTwoMovingAverages implements Runnable {
             tradeCounter++;
             if(tradeCounter == 1) {
                 initialPrice = newPrice;
+
             }
             if(tradeCounter % 2 == 0) {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
             }
-
+//todo else statement for odd trades, so insert into DB: type, date, price, on evens all of the above + profit
             exit = exitCondition(exitPercent);
         }
 
