@@ -35,15 +35,16 @@ public class AlgoTwoMovingAverages implements Runnable {
      */
     double profit;
 
-    String orderType;
+    String algoType;
     String stock;
     int shortSMAPeriod;
     int longSMAPeriod;
     double exitPercent;
+    int strategyId;
 
     /**
      * Constructor.
-     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
+     * @param algoType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
      * @param stock the name of the stock being traded.
@@ -52,13 +53,14 @@ public class AlgoTwoMovingAverages implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps the PriceService object for getting prices.
      */
-    public AlgoTwoMovingAverages(String orderType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, PriceService ps) {
+    public AlgoTwoMovingAverages(String algoType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, int strategyId, PriceService ps) {
 
-        this.orderType = orderType;
+        this.algoType = algoType;
         this.stock = stock;
         this.shortSMAPeriod = shortSMAPeriod;
         this.longSMAPeriod = longSMAPeriod;
         this.exitPercent = exitPercent;
+        this.strategyId = strategyId;
         this.ps = ps;
     }
 
@@ -69,7 +71,7 @@ public class AlgoTwoMovingAverages implements Runnable {
 
         System.out.println("Two Moving Averages strategy initiated.");
 
-        if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
+        if(!algoType.equalsIgnoreCase("Auto") && !algoType.equalsIgnoreCase("Buy") && !algoType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
         }
 
@@ -112,29 +114,48 @@ public class AlgoTwoMovingAverages implements Runnable {
                 shortSMA.update(new Double(newPrice));
                 longSMA.update(new Double(newPrice));
 
-                crossed = hasCrossed(orderType);
+                crossed = hasCrossed(algoType);
             }
 
             // execute trade
+            String orderType = "";
             if(shortSMA.average >= longSMA.average) {
-                placeOrder("Buy", newPrice);
+                orderType = "Buy";
+                placeOrder(orderType, newPrice);
                 buyPrices.add(newPrice);
-
             }
             else {
-                placeOrder("Sell", newPrice);
+                orderType = "Sell";
+                placeOrder(orderType, newPrice);
                 sellPrices.add(newPrice);
             }
 
             tradeCounter++;
             if(tradeCounter == 1) {
                 initialPrice = newPrice;
-
             }
+            // exit position
             if(tradeCounter % 2 == 0) {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
+
+                if(orderType.equalsIgnoreCase("Buy")) {
+                    //Buy
+                }
+                else {
+                    //Sell
+                }
             }
-//todo else statement for odd trades, so insert into DB: type, date, price, on evens all of the above + profit
+            // enter position
+            else {
+
+                if(orderType.equalsIgnoreCase("Buy")) {
+                    //Buy
+                }
+                else {
+                    //Sell
+                }
+            }
+            //todo else statement for odd trades, so insert into DB: type, date, price, on evens all of the above + profit
             exit = exitCondition(exitPercent);
         }
 

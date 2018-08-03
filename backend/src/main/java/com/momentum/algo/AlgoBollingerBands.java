@@ -38,15 +38,16 @@ public class AlgoBollingerBands implements Runnable {
      */
     double profit;
 
-    String orderType;
+    String algoType;
     String stock;
     int smaPeriod;
     double stdDevMult;
     double exitPercent;
+    int strategyId;
 
     /**
      * Constructor.
-     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
+     * @param algoType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
      * @param stock the name of the stock being traded.
@@ -55,13 +56,14 @@ public class AlgoBollingerBands implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps The PriceService object for getting prices.
      */
-    public AlgoBollingerBands(String orderType, String stock, int smaPeriod, double stdDevMult, double exitPercent, PriceService ps) {
+    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps) {
 
-        this.orderType = orderType;
+        this.algoType = algoType;
         this.stock = stock;
         this.smaPeriod = smaPeriod;
         this.stdDevMult = stdDevMult;
         this.exitPercent = exitPercent;
+        this.strategyId = strategyId;
         this.ps = ps;
     }
 
@@ -72,7 +74,7 @@ public class AlgoBollingerBands implements Runnable {
 
         System.out.println("Bollinger Bands strategy initiated.");
 
-        if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
+        if(!algoType.equalsIgnoreCase("Auto") && !algoType.equalsIgnoreCase("Buy") && !algoType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
         }
 
@@ -105,7 +107,7 @@ public class AlgoBollingerBands implements Runnable {
                 System.out.println("New stock price added in strategy: " + newPrice);
                 smaWithSD.update(new Double(newPrice));
 
-                crossed = hasCrossed(orderType, newPrice, stdDevMult);
+                crossed = hasCrossed(algoType, newPrice, stdDevMult);
             }
 
             // execute trade
@@ -124,8 +126,26 @@ public class AlgoBollingerBands implements Runnable {
             if(tradeCounter == 1) {
                 initialPrice = newPrice;
             }
+            // exit position
             if(tradeCounter % 2 == 0) {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
+
+                if(lastTrade.equalsIgnoreCase("Buy")) {
+                    //Buy
+                }
+                else {
+                    //Sell
+                }
+            }
+            // enter position
+            else {
+
+                if(lastTrade.equalsIgnoreCase("Buy")) {
+                    //Buy
+                }
+                else {
+                    //Sell
+                }
             }
 
             exit = exitCondition(exitPercent);
