@@ -35,6 +35,9 @@ public class AlgoRunner {
     private PriceService ps;
 
     @Autowired
+    private OrderService os;
+
+    @Autowired
     private StrategiesService ss;
 
     static final int MAX_THREADS = 10;
@@ -87,6 +90,7 @@ public class AlgoRunner {
                     if (entry.getValue() instanceof TwoMA) {
 
                         String stock = entry.getKey().getStock();
+                        int strategyId = entry.getKey().getStrategyId();
 
                         TwoMA strategy = ( (TwoMA) (entry.getValue()) );
                         int shortSMAPeriod = strategy.getShortAvgRange();
@@ -95,12 +99,13 @@ public class AlgoRunner {
 
                         System.out.println(stock + " / " + shortSMAPeriod + " / " + longSMAPeriod + " / " + exitPercent);
 
-                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, ps);
+                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, strategyId, ps, os);
                         pool.execute(r);
                     }
                     else if (entry.getValue() instanceof BB) {
 
                         String stock = entry.getKey().getStock();
+                        int strategyId = entry.getKey().getStrategyId();
 
                         BB strategy = ( (BB) (entry.getValue()) );
                         int smaPeriod = strategy.getMovingAvgRange();
@@ -109,10 +114,9 @@ public class AlgoRunner {
 
                         System.out.println(stock + " / " + smaPeriod + " / " + stdDevMult + " / " + exitPercent);
 
-                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, ps);
+                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, strategyId, ps, os);
                         pool.execute(r);
                     }
-
 
                     runningStrategies.add(strategyID);
                 }
@@ -153,7 +157,7 @@ public class AlgoRunner {
   */
 
 
-        //loop thru strats, if no thread, create thread of strategy
+//loop thru strats, if no thread, create thread of strategy
 
 //    @PostConstruct
 //    public void runOnce() {
@@ -167,8 +171,8 @@ public class AlgoRunner {
 
 
 
-        // function call for each thread
+// function call for each thread
 
-        // example function {
-        // initialize ur queues for this straegy
-        // inside this thread, u call price service's get last N prices of stock
+// example function {
+// initialize ur queues for this straegy
+// inside this thread, u call price service's get last N prices of stock
