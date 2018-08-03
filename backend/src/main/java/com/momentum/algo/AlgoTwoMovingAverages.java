@@ -41,6 +41,17 @@ public class AlgoTwoMovingAverages implements Runnable {
     int longSMAPeriod;
     double exitPercent;
 
+    /**
+     * Constructor.
+     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
+     *                  "Buy" order type will place only buy trades when the strategy is triggered.
+     *                  "Sell" order type will place only sell trades when the strategy is triggered.
+     * @param stock the name of the stock being traded.
+     * @param shortSMAPeriod the time period of the short SMA.
+     * @param longSMAPeriod the time period of the long SMA.
+     * @param exitPercent the profit or loss percent for the exit condition.
+     * @param ps the PriceService object for getting prices.
+     */
     public AlgoTwoMovingAverages(String orderType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, PriceService ps) {
 
         this.orderType = orderType;
@@ -53,18 +64,10 @@ public class AlgoTwoMovingAverages implements Runnable {
 
     /**
      * Executes the Two Moving Averages strategy.
-     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
-     *                  "Buy" order type will place only buy trades when the strategy is triggered.
-     *                  "Sell" order type will place only sell trades when the strategy is triggered.
-     * @param stock the name of the stock being traded.
-     * @param shortSMAPeriod the time period of the short SMA.
-     * @param longSMAPeriod the time period of the long SMA.
-     * @param exitPercent the profit or loss percent for the exit condition.
      */
     public void run() {
-        System.out.println(ps.getClass());
 
-        System.out.println("MADE IT TO ALGO");
+        System.out.println("Two Moving Averages strategy initiated.");
 
         if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
@@ -126,7 +129,7 @@ public class AlgoTwoMovingAverages implements Runnable {
             exit = exitCondition(exitPercent);
         }
 
-        System.out.println("The trading strategy generated a profit of: $" + profit);
+        System.out.println("The trading strategy generated a profit per share of: $" + profit);
     }
 
     /**
