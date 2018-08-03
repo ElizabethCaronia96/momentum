@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Service
+
 public interface OrderService {
 
     void doSomething();
@@ -21,6 +21,7 @@ public interface OrderService {
    void addOrder(Order order);
 
  //   void insertEndType(String type, Order o);
+ Order createOrderFromCross1(int strategy_id, String crossType1, Timestamp crossTime1, Double crossPrice1);
 
-
+    void updateOrderFromCross2(Order o, String crossType2, Timestamp crossTime2, Double crossPrice2, Double profit);
 }

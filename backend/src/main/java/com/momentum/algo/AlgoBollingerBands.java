@@ -1,8 +1,11 @@
 package com.momentum.algo;
 
+import com.momentum.rest.entities.Order;
+import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,7 @@ public class AlgoBollingerBands implements Runnable {
 
     SMAWithSD smaWithSD;
 
+    OrderService os;
     /**
      * The number of trades that have been executed.
      */
@@ -38,15 +42,16 @@ public class AlgoBollingerBands implements Runnable {
      */
     double profit;
 
-    String orderType;
+    String algoType;
     String stock;
     int smaPeriod;
     double stdDevMult;
     double exitPercent;
+    int strategyId;
 
     /**
      * Constructor.
-     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
+     * @param algoType "Auto" order type will place buy and sell trades when the strategy is triggered.
      *                  "Buy" order type will place only buy trades when the strategy is triggered.
      *                  "Sell" order type will place only sell trades when the strategy is triggered.
      * @param stock the name of the stock being traded.
@@ -55,14 +60,16 @@ public class AlgoBollingerBands implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps The PriceService object for getting prices.
      */
-    public AlgoBollingerBands(String orderType, String stock, int smaPeriod, double stdDevMult, double exitPercent, PriceService ps) {
+    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps, OrderService os) {
 
-        this.orderType = orderType;
+        this.algoType = algoType;
         this.stock = stock;
         this.smaPeriod = smaPeriod;
         this.stdDevMult = stdDevMult;
         this.exitPercent = exitPercent;
+        this.strategyId = strategyId;
         this.ps = ps;
+        this.os = os;
     }
 
     /**
@@ -80,7 +87,7 @@ public class AlgoBollingerBands implements Runnable {
 
         System.out.println("MADE IT TO ALGO");
 
-        if(!orderType.equalsIgnoreCase("Auto") && !orderType.equalsIgnoreCase("Buy") && !orderType.equalsIgnoreCase("Sell")) {
+        if(!algoType.equalsIgnoreCase("Auto") && !algoType.equalsIgnoreCase("Buy") && !algoType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");
         }
 
@@ -93,7 +100,7 @@ public class AlgoBollingerBands implements Runnable {
         tradeCounter = 0;
         lastTrade = "Auto";
         profit = 0.0;
-
+        Order order = new Order();
         // loop on exit condition
         while(!exit) {
 
@@ -103,10 +110,17 @@ public class AlgoBollingerBands implements Runnable {
             // loop on stock price hitting low or high band
             while(!crossed) {
 
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 newPrice = (double)(ps.getLastNPricesOfStock(stock, 1).get(0));
+                System.out.println("New stock price added in strategy: " + newPrice);
                 smaWithSD.update(new Double(newPrice));
 
-                crossed = hasCrossed(orderType, newPrice, stdDevMult);
+                crossed = hasCrossed(algoType, newPrice, stdDevMult);
             }
 
             // execute trade
@@ -125,14 +139,33 @@ public class AlgoBollingerBands implements Runnable {
             if(tradeCounter == 1) {
                 initialPrice = newPrice;
             }
+            // exit position
             if(tradeCounter % 2 == 0) {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
+
+                if(lastTrade.equalsIgnoreCase("Buy")) {
+                    os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
+                }
+                else {
+                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit );
+                }
+            }
+            // enter position
+            else {
+
+                if(lastTrade.equalsIgnoreCase("Buy")) {
+                    order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
+                }
+                else {
+                    order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
+
+                }
             }
 
             exit = exitCondition(exitPercent);
         }
 
-        System.out.println("The trading strategy generated a profit per share of: $" + profit);
+        System.out.println("The Bollinger Bands strategy generated a profit per share of: $" + profit);
     }
 
     /**
