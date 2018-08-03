@@ -40,6 +40,11 @@ public class OrderServiceImpl implements OrderService {
         return orRp.findAll();
     }
 
+    @Override
+    public List<Order> getAllOrdersByStratID(int id) {
+        return orRp.findOrdersByStrategyId(id);
+    }
+
     public List<Order> getAllOpenPositions() {
 
         String q = "SELECT o FROM Order o WHERE o.crossoverEndType IS NULL ORDER BY o.orderId";

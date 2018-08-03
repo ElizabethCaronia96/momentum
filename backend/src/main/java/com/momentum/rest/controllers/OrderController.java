@@ -6,6 +6,7 @@ import com.momentum.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,5 +23,11 @@ public class OrderController {
     @ResponseBody
     public List<Order> getOpenPositions() {
         return orderService.getAllOpenPositions();
+    }
+
+    @GetMapping(path="/strategy-id/{id}")
+    @ResponseBody
+    public List<Order> getAllOrdersByStratID(@PathVariable(value="id") int id) {
+        return orderService.getAllOrdersByStratID(id);
     }
 }
