@@ -87,6 +87,7 @@ public class AlgoRunner {
                     if (entry.getValue() instanceof TwoMA) {
 
                         String stock = entry.getKey().getStock();
+                        int strategyId = entry.getKey().getStrategyId();
 
                         TwoMA strategy = ( (TwoMA) (entry.getValue()) );
                         int shortSMAPeriod = strategy.getShortAvgRange();
@@ -95,12 +96,13 @@ public class AlgoRunner {
 
                         System.out.println(stock + " / " + shortSMAPeriod + " / " + longSMAPeriod + " / " + exitPercent);
 
-                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, ps);
+                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, strategyId, ps);
                         pool.execute(r);
                     }
                     else if (entry.getValue() instanceof BB) {
 
                         String stock = entry.getKey().getStock();
+                        int strategyId = entry.getKey().getStrategyId();
 
                         BB strategy = ( (BB) (entry.getValue()) );
                         int smaPeriod = strategy.getMovingAvgRange();
@@ -109,7 +111,7 @@ public class AlgoRunner {
 
                         System.out.println(stock + " / " + smaPeriod + " / " + stdDevMult + " / " + exitPercent);
 
-                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, ps);
+                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, strategyId, ps);
                         pool.execute(r);
                     }
 
