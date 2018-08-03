@@ -113,7 +113,6 @@ public class AlgoRunner {
                         pool.execute(r);
                     }
 
-
                     runningStrategies.add(strategyID);
                 }
             }

@@ -95,7 +95,14 @@ public class AlgoBollingerBands implements Runnable {
             // loop on stock price hitting low or high band
             while(!crossed) {
 
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 newPrice = (double)(ps.getLastNPricesOfStock(stock, 1).get(0));
+                System.out.println("New stock price added in strategy: " + newPrice);
                 smaWithSD.update(new Double(newPrice));
 
                 crossed = hasCrossed(orderType, newPrice, stdDevMult);
@@ -124,7 +131,7 @@ public class AlgoBollingerBands implements Runnable {
             exit = exitCondition(exitPercent);
         }
 
-        System.out.println("The trading strategy generated a profit per share of: $" + profit);
+        System.out.println("The Bollinger Bands strategy generated a profit per share of: $" + profit);
     }
 
     /**
