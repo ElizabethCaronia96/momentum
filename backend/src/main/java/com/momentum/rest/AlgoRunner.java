@@ -49,33 +49,31 @@ public class AlgoRunner {
 
         boolean exitMomentum = false;
 
-        Map<Strategies, Object> allstrategiesMap = ss.getAllActive();
+        // get all strategies from database
+        Map<Strategies, Object> allStrategiesMap = ss.getAllActive();
 
-        Map.Entry<Strategies,Object> tmp_entry = allstrategiesMap.entrySet().iterator().next();
-        Strategies key = tmp_entry.getKey();
-        Object value = tmp_entry.getValue();
-        Map<Strategies, Object> strategiesMap = new HashMap<>();
+        Map.Entry<Strategies,Object> tempEntry = allStrategiesMap.entrySet().iterator().next();
+        Strategies key = tempEntry.getKey();
+        Object value = tempEntry.getValue();
+
+        Map<Strategies, Object> strategiesMap = new HashMap<Strategies, Object>();
         strategiesMap.put(key, value);
 
+        // Momentum trading platform keeps running
         while (!exitMomentum) {
 
-            //System.out.println("we are in algo checker while loop" + runningStrategies);
-            // strategies in db
-
-           // System.out.println("our map with 1 thing in it hopefully " + strategiesMap);
-
-            // iterate through strategies in db
+            // iterate through strategies in database
             for (Map.Entry<Strategies, Object> entry : strategiesMap.entrySet()) {
 
                 boolean alreadyRunning = false;
 
                 int strategyID = entry.getKey().getStrategyId();
 
-                // iterate through running strategies
-                for (Integer i : runningStrategies) {
+                // test if strategy in database is already running
+                for (Integer id : runningStrategies) {
 
                     // if strategy is already running
-                    if (strategyID == i) {
+                    if (strategyID == id) {
 
                         alreadyRunning = true;
                     }
@@ -84,39 +82,32 @@ public class AlgoRunner {
                 // if strategy is not already running, send it to thread pool
                 if (!alreadyRunning) {
 
-                    System.out.println("this strat not running - make thread");
-                    System.out.println(entry.getKey().getClass());
-                  //  List<Object> temp = entry.getValue();
-                    Object obj = entry.getValue();
-                    System.out.println(obj.getClass());
-                    System.out.println(obj.toString());
-                    System.out.println(entry.getKey());
-                    System.out.println(entry.getValue());
+                    System.out.println("Strategy sent to thread pool: " + entry.getKey() + " / " + entry.getValue());
 
                     if (entry.getValue() instanceof TwoMA) {
 
                         String stock = entry.getKey().getStock();
 
-                        TwoMA strat = ((TwoMA) (entry.getValue()));
-                        int shortSMAPeriod = strat.getShortAvgRange();
-                        int longSMAPeriod = strat.getLongAvgRange();
-                        System.out.println("Running twoMA algo for strat id " + entry.getKey().getStrategyId());
-                        double exitPercent = strat.getPercentToExit() / 100.0;
+                        TwoMA strategy = ( (TwoMA) (entry.getValue()) );
+                        int shortSMAPeriod = strategy.getShortAvgRange();
+                        int longSMAPeriod = strategy.getLongAvgRange();
+                        double exitPercent = strategy.getPercentToExit() / 100.0;
 
+                        System.out.println(stock + " / " + shortSMAPeriod + " / " + longSMAPeriod + " / " + exitPercent);
 
-                        System.out.println(stock + "/" + shortSMAPeriod + "/" + longSMAPeriod + "/" + exitPercent);
                         Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, ps);
                         pool.execute(r);
-                    } else if (entry.getValue() instanceof BB) {
+                    }
+                    else if (entry.getValue() instanceof BB) {
 
                         String stock = entry.getKey().getStock();
 
-                        BB strat = ((BB) (entry.getValue()));
-                        int smaPeriod = strat.getMovingAvgRange();
-                        double stdDevMult = strat.getStdDevMultiple();
-                        System.out.println("Running BB algo for strat id " + entry.getKey().getStrategyId());
+                        BB strategy = ( (BB) (entry.getValue()) );
+                        int smaPeriod = strategy.getMovingAvgRange();
+                        double stdDevMult = strategy.getStdDevMultiple();
+                        double exitPercent = strategy.getPercentToExit() / 100.0;
 
-                        double exitPercent = strat.getPercentToExit() / 100.0;
+                        System.out.println(stock + " / " + smaPeriod + " / " + stdDevMult + " / " + exitPercent);
 
                         Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, ps);
                         pool.execute(r);
@@ -127,6 +118,8 @@ public class AlgoRunner {
                 }
             }
         }
+
+        pool.shutdown();
     }
 }
 
