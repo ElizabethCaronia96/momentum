@@ -30,8 +30,8 @@ public class AlgoBollingerBands implements Runnable {
     /**
      * The price of every buy and sell trade is added to these lists.
      */
-    List<Double> buyPrices = new ArrayList<Double>();
-    List<Double> sellPrices = new ArrayList<Double>();
+    ArrayList<Double> buyPrices = new ArrayList<>();
+    ArrayList<Double> sellPrices = new ArrayList<>();
     /**
      * The stock price of the first executed buy or sell trade. Total profit/loss accumulated over the strategy
      * is measured against this price for the strategy exit condition.
@@ -74,10 +74,18 @@ public class AlgoBollingerBands implements Runnable {
 
     /**
      * Executes the Bollinger Bands strategy.
+     * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
+     *                  "Buy" order type will place only buy trades when the strategy is triggered.
+     *                  "Sell" order type will place only sell trades when the strategy is triggered.
+     * @param smaPeriod the time period of the SMA.
+     * @param stdDevMult the multiple of the standard deviation that sets the low and high bands about the SMA.
+     * @param exitPercent the profit or loss percent for the exit condition.
      */
     public void run() {
 
-        System.out.println("Bollinger Bands strategy initiated.");
+        System.out.println(ps.getClass());
+
+        System.out.println("MADE IT TO ALGO");
 
         if(!algoType.equalsIgnoreCase("Auto") && !algoType.equalsIgnoreCase("Buy") && !algoType.equalsIgnoreCase("Sell")) {
             System.out.println("ERROR: Trade request was not of order type 'Auto' or 'Buy' or 'Sell'.");

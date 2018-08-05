@@ -2,6 +2,7 @@
 .classpath
 .project
 .settings/
+.metadata/
 
 # Intellij
 .idea/
@@ -15,6 +16,7 @@
 log/
 target/
 *.log
+*.log*.gz
 
 # Frontend Stuff
 .DS_Store

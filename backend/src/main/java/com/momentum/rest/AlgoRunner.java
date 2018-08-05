@@ -157,7 +157,7 @@ public class AlgoRunner {
   */
 
 
-        //loop thru strats, if no thread, create thread of strategy
+//loop thru strats, if no thread, create thread of strategy
 
 //    @PostConstruct
 //    public void runOnce() {
@@ -171,8 +171,8 @@ public class AlgoRunner {
 
 
 
-        // function call for each thread
+// function call for each thread
 
-        // example function {
-        // initialize ur queues for this straegy
-        // inside this thread, u call price service's get last N prices of stock
+// example function {
+// initialize ur queues for this straegy
+// inside this thread, u call price service's get last N prices of stock

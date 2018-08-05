@@ -40,6 +40,11 @@ public class OrderServiceImpl implements OrderService {
         return orRp.findAll();
     }
 
+    @Override
+    public List<Order> getAllOrdersByStratID(int id) {
+        return orRp.findOrdersByStrategyId(id);
+    }
+
     public List<Order> getAllOpenPositions() {
 
         String q = "SELECT o FROM Order o WHERE o.crossoverEndType IS NULL ORDER BY o.orderId";
@@ -78,46 +83,5 @@ public class OrderServiceImpl implements OrderService {
         o.setProfitLoss(profit_loss);
         orRp.save(o);
     }
-
-
-
-
-
-  /*  @Override
-    public List<Order> insertStrategyId(Integer id) {
-        return orRp.findOrdersByStrategyId(id);
-    }
-
-    @Override
-    public List<Order> insertStartPrice(Double price){
-        return orRp.saveOrdersByCrossoverStartPrice(price);
-    }
-
-    @Override
-    public List<Order> insertStartDatetime(Timestamp date){
-        return orRp.saveOrdersByCrossoverStartDatetime(date);
-    }
-
-    @Override
-    public List<Order> insertStartType(String type){
-        return orRp.saveOrdersByCrossoverStartType(type);
-    }
-
-    @Override
-    public List<Order> insertEndPrice(Double price) {
-        return orRp.saveOrdersByCrossoverEndPrice(price);
-    }
-
-    @Override
-    public List<Order> insertEndDatetime(Timestamp date) {
-        return orRp.saveOrdersByCrossoverEndDatetime(date);
-    }
-
-/*    @Override
-    public List<Order> insertEndType(String type, Order o) {
-        return orRp.saveOrdersByCrossoverEndType(type, o.getStrategyId());
-    }
-*/
-
 
 }

@@ -1,6 +1,6 @@
 package com.momentum.rest.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -86,7 +86,7 @@ public class Order implements Serializable {
         return crossoverEndType;
     }
 
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setCrossoverEndType(String crossoverEndType) {
         this.crossoverEndType = crossoverEndType;
     }
@@ -95,25 +95,25 @@ public class Order implements Serializable {
         return crossoverEndDatetime;
     }
 
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setCrossoverEndDatetime(Timestamp crossoverEndDatetime) {
         this.crossoverEndDatetime = crossoverEndDatetime;
     }
 
-    public double getCrossoverEndPrice() {
+    public Double getCrossoverEndPrice() {
         return crossoverEndPrice;
     }
 
-    @JsonIgnore
-    public void setCrossoverEndPrice(double crossoverEndPrice) {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public void setCrossoverEndPrice(Double crossoverEndPrice) {
         this.crossoverEndPrice = crossoverEndPrice;
     }
 
-    public double getProfitLoss() {
+    public Double getProfitLoss() {
         return profitLoss;
     }
 
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setProfitLoss(Double profitLoss) {
 
         this.profitLoss = profitLoss;
