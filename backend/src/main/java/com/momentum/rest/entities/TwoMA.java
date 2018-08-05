@@ -37,7 +37,7 @@ public class TwoMA {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="strategy_id")
     private int strategyId;
 

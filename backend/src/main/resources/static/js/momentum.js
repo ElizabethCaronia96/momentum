@@ -6,6 +6,9 @@ $(document).ready(function () {
     initializeOpenPositions();
 
 
+    addNewStratFormInitialization();
+
+
 
 });
 
@@ -48,71 +51,7 @@ function smoothScroll() {
         });
 }
 
-function plotCharts(id) {
 
-    Chart.defaults.global.defaultFontFamily = "Roboto";
-
-    var ctx = document.getElementById(id).getContext('2d');
-
-    var gradientFill = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientFill.addColorStop(0, "rgba(255, 255, 255, 0.5)");
-    gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.0)");
-
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ["9:05", "9:06", "9:07", "9:11", "9:15", "9:32", "9:42", "9:50", "9:53", "9:58", "10:27", "10:33", "10:47", "10:51", "10:58", "10:59", "11:08", "11:21", "11:36", "12:00", "12:09", "12:16", "12:17", "12:25", "12:37", "12:53", "13:46", "13:50", "13:53", "14:05", "14:08", "14:09", "14:13", "14:22", "14:32", "14:33", "14:47", "14:51", "14:56", "15:00", "15:16", "15:31", "15:47", "15:48", "15:50", "16:01", "16:32", "16:52", "16:58", "17:00"],
-            datasets: [{
-                data: [103.88, 104.95, 98.28, 103.01, 101.76, 105.75, 99.8, 101.26, 100.94, 98.23, 103.97, 98.78, 102, 105.58, 104.64, 96.84, 102.74, 96.66, 98.39, 96.4, 98.39, 103.89, 97.33, 101.01, 103.18, 95.11, 97.35, 102.66, 100.12, 105.12, 96.89, 99.5, 103.03, 104.17, 98.83, 96.93, 102.47, 98.67, 105.85, 99.73, 105.23, 98.72, 102.85, 105.92, 102.61, 101.5, 102.32, 96.78, 102.78, 98.71],
-                label: "Price",
-                borderWidth: 1,
-                fill: true,
-                borderColor: "white",
-                backgroundColor: gradientFill
-            }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            elements: {
-                // line: {
-                //     tension: 0 // disables bezier curves
-                // }
-            },
-            legend: {
-                display: false,
-                labels: {
-                    defaultFontFamily: 'Roboto',
-                    fontColor: 'white'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    gridLines: {
-                        color: 'white',
-                        display: false
-                    },
-                    ticks: {
-                        fontColor: "white",
-                        beginAtZero: false
-                    }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        color: 'white',
-                        display: false
-                    },
-                    ticks: {
-                        fontColor: "white",
-                        beginAtZero: false
-                    }
-                }]
-            }
-        }
-    });
-
-}
 
 
 function initializeAllStrats() {
@@ -230,7 +169,7 @@ function initializeAllStrats() {
                         '<!-- STRAT CARD -->'
 
                     activeStrategyCardsRow.append(newActiveStratCard);
-                    plotCharts("canvas-{0}".f(strategyId));
+                    plotCharts(strategyId);
                 }
 
 
@@ -315,8 +254,233 @@ function initializeOpenPositions() {
             });
         }
     });
+}
 
 
+
+
+
+
+
+
+
+function plotCharts(id) {
+
+    Chart.defaults.global.defaultFontFamily = "Roboto";
+    var ctx = document.getElementById('canvas-{0}'.f(id)).getContext('2d');
+
+    var gradientFillBuy = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientFillBuy.addColorStop(0, "rgba(72, 209, 204, 0.0)");
+    gradientFillBuy.addColorStop(1, "rgba(72, 209, 204, 0.2)");
+
+    var gradientFillSell = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientFillSell.addColorStop(0, "rgba(255, 255, 255, 0.2)");
+    gradientFillSell.addColorStop(1, "rgba(255, 255, 255, 0.0)");
+
+    $.ajax({
+        url: "/order/strategy-id/" + id,
+        type: 'GET',
+        success: function (resultList) {
+
+            console.log("Getting orders associated with strategy # " + id);
+            var listOfTimesAndCrossovers = [];
+
+            $.each(resultList, function (index, value) {
+                var crossoverSType = value["crossoverStartType"];
+                var crossoverSTimeObj = moment(value["crossoverStartDatetime"]);
+                var crossoverSTime = crossoverSTimeObj.format("HH:mm:ss")
+                var crossoverSPrice = value["crossoverStartPrice"];
+
+                listOfTimesAndCrossovers.push({"time": crossoverSTime, "type": crossoverSType, "price": crossoverSPrice});
+
+                if (value["crossoverEndType"] !== undefined) {
+                    var crossoverEType = value["crossoverEndType"];
+                    var crossoverETimeObj = moment(value["crossoverEndDatetime"]);
+                    var crossoverETime = crossoverETimeObj.format("HH:mm:ss")
+                    var crossoverEPrice = value["crossoverEndPrice"];
+                    listOfTimesAndCrossovers.push({"time": crossoverETime, "type": crossoverEType, "price": crossoverEPrice});
+                }
+            });
+
+            var sortedCrossOvers = sortByKey(listOfTimesAndCrossovers, "time");
+            var listOfTimes = [];
+            var listOfBuys =[];
+            var listOfSells =[];
+
+            $.each(sortedCrossOvers, function (index, value) {
+                listOfTimes.push(value["time"]);
+                if (value["type"] === "buy") {
+                    listOfBuys.push(value["price"]);
+                    listOfSells.push(null);
+                } else {
+                    listOfBuys.push(null);
+                    listOfSells.push(value["price"]);
+                }
+            });
+
+
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: listOfTimes,
+                    datasets: [
+                        {
+                            data: listOfBuys,
+                            label: "BUY",
+                            borderWidth: 1,
+                            fill: true,
+                            borderColor: "#48D1CC",
+                            backgroundColor: gradientFillBuy
+                        },
+                        {
+                            data: listOfSells,
+                            label: "SELL",
+                            borderWidth: 1,
+                            fill: true,
+                            borderColor: "white",
+                            backgroundColor: gradientFillSell
+                        }
+                    ]
+                },
+                options: {
+                    spanGaps: true,
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        // line: {
+                        //     tension: 0 // disables bezier curves
+                        // }
+                    },
+                    legend: {
+                        display: false,
+                        labels: {
+                            defaultFontFamily: 'Roboto',
+                            fontColor: 'white'
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            gridLines: {
+                                color: 'white',
+                                display: false
+                            },
+                            ticks: {
+                                fontColor: "white",
+                                beginAtZero: false
+                            }
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                color: 'white',
+                                display: false
+                            },
+                            ticks: {
+                                fontColor: "white",
+                                beginAtZero: false
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+        }
+    });
+
+
+}
+
+
+function addNewStratFormInitialization() {
+
+    $( "#addStrategyForm" ).submit(function(event) {
+
+        event.preventDefault();
+
+        var values = {};
+        $.each($(this).serializeArray(), function() {
+            values[this.name] = this.value;
+        });
+
+        var jsonToSend = {};
+        var urlToSend = "";
+
+        if (values["selectStrategy"] === "BB") {
+            console.log("Adding BB strategy to DB...");
+            urlToSend = "/api/bBs";
+            jsonToSend = {
+                "movingAvgRange" : parseInt(values["stratVariableOne"]),
+                "stdDevMultiple" : parseFloat(values["stratVariableTwo"]),
+                "percentToExit" : parseFloat(values["inputExitPercent"])
+            }
+        } else if (values["selectStrategy"] === "2MA") {
+            console.log("Adding 2MA strategy to DB...");
+            urlToSend = "/api/twoMAs";
+            jsonToSend = {
+                "longAvgRange" : parseInt(values["stratVariableOne"]),
+                "shortAvgRange" : parseInt(values["stratVariableTwo"]),
+                "percentToExit" : parseFloat(values["inputExitPercent"])
+            }
+        } else {
+            console.log("Error adding strat to DB. EXITING.");
+            console.log(values);
+            return false;
+        }
+
+        $.ajax({
+            url: urlToSend,
+            type: 'POST',
+            data: JSON.stringify(jsonToSend),
+            contentType: "application/json",
+            success: function (result) {
+                var typeIDAssigned = result["strategyId"];
+                var nowDateTime = moment().toISOString();
+
+                var stratJson = {
+                    "type" : values["selectStrategy"].toLowerCase(),
+                    "typeId" : typeIDAssigned,
+                    "stock" : values["inputStock"].toUpperCase(),
+                    "size" : parseInt(values["inputQuantity"]),
+                    "status" : "PENDING",
+                    "addedTime" : nowDateTime
+                };
+
+                $.ajax({
+                    url: '/api/strategieses',
+                    type: 'POST',
+                    data: JSON.stringify(stratJson),
+                    contentType: "application/json",
+                    success: function (result) {
+                        console.log("Added strategy into DB.");
+                        console.log(result);
+                    }
+                });
+            }
+        });
+
+
+
+
+        console.log(values);
+
+
+    });
+
+    var selectStrat = $("#selectStrategy");
+    var stratVariableOneLabel = $("#stratVariableOneLabel");
+    var stratVariableTwoLabel = $("#stratVariableTwoLabel");
+
+    selectStrat.change(function() {
+        var currentSelected = selectStrat.val();
+
+        if (currentSelected === "BB") {
+            stratVariableOneLabel.html("Moving Avg Range (e.g. 20)");
+            stratVariableTwoLabel.html("Standard Dev (e.g. 1.75)");
+        } else if (currentSelected === "2MA") {
+            stratVariableOneLabel.html("Low Range (e.g. 15)");
+            stratVariableTwoLabel.html("High Range (e.g. 50)");
+        } else {}
+    });
 }
 
 
@@ -331,3 +495,11 @@ String.prototype.format = String.prototype.f = function () {
     }
     return s;
 };
+
+
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
