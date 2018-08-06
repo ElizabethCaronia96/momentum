@@ -3,6 +3,7 @@ package com.momentum.algo;
 import com.momentum.rest.entities.Order;
 import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
+import com.momentum.rest.service.StrategiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class AlgoTwoMovingAverages implements Runnable {
 
     PriceService ps;
     OrderService os;
+    StrategiesService ss;
 
     SMA shortSMA;
     SMA longSMA;
@@ -57,7 +59,7 @@ public class AlgoTwoMovingAverages implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps the PriceService object for getting prices.
      */
-    public AlgoTwoMovingAverages(String algoType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, int strategyId, PriceService ps, OrderService os) {
+    public AlgoTwoMovingAverages(String algoType, String stock, int shortSMAPeriod, int longSMAPeriod, double exitPercent, int strategyId, PriceService ps, OrderService os, StrategiesService ss) {
 
         this.algoType = algoType;
         this.stock = stock;
@@ -67,6 +69,7 @@ public class AlgoTwoMovingAverages implements Runnable {
         this.strategyId = strategyId;
         this.ps = ps;
         this.os = os;
+        this.ss = ss;
     }
 
     public AlgoTwoMovingAverages() {
@@ -157,9 +160,11 @@ public class AlgoTwoMovingAverages implements Runnable {
 
                 if(orderType.equalsIgnoreCase("Buy")) {
                     os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
+                    ss.updateStatus(strategyId, "in exit");
                 }
                 else {
                     os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
+                    ss.updateStatus(strategyId, "in exit");
                 }
             }
             // enter position
@@ -167,15 +172,18 @@ public class AlgoTwoMovingAverages implements Runnable {
 
                 if(orderType.equalsIgnoreCase("Buy")) {
                     order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
+                    ss.updateStatus(strategyId, "in entry");
                 }
                 else {
                     order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
+                    ss.updateStatus(strategyId, "in entry");
                 }
             }
             //todo else statement for odd trades, so insert into DB: type, date, price, on evens all of the above + profit
+            ss.updateStatus(strategyId,"finished", profit);
             exit = exitCondition(exitPercent);
         }
-
+        ss.updateStatus(strategyId, "finised", profit);
         System.out.println("The Two Moving Averages strategy generated a profit per share of: $" + profit);
     }
 
