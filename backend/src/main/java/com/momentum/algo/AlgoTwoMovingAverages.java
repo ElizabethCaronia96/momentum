@@ -280,6 +280,11 @@ public class AlgoTwoMovingAverages implements Runnable {
         return false;
     }
 
+    public void setShortSMAIsLower(boolean var) {
+
+        shortSMAIsLower = var;
+    }
+
     /**
      * This method is called to place the trade order when the strategy is triggered.
      * @param orderType buy or sell order.
