@@ -159,12 +159,13 @@ public class AlgoTwoMovingAverages implements Runnable {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
 
                 if(orderType.equalsIgnoreCase("Buy")) {
+
                     os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
-                    ss.updateStatus(strategyId, "in exit");
+                    ss.updateStatus(order.getStrategyId(), "in close");
                 }
                 else {
                     os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
-                    ss.updateStatus(strategyId, "in exit");
+                    ss.updateStatus(order.getStrategyId(), "in close");
                 }
             }
             // enter position
@@ -172,18 +173,18 @@ public class AlgoTwoMovingAverages implements Runnable {
 
                 if(orderType.equalsIgnoreCase("Buy")) {
                     order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
-                    ss.updateStatus(strategyId, "in entry");
+                    ss.updateStatus(order.getStrategyId(), "in entry");
                 }
                 else {
                     order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
-                    ss.updateStatus(strategyId, "in entry");
+                    ss.updateStatus(order.getStrategyId(), "in entry");
                 }
             }
             //todo else statement for odd trades, so insert into DB: type, date, price, on evens all of the above + profit
-            ss.updateStatus(strategyId,"finished", profit);
+            ss.updateStatus(order.getStrategyId(),"finished", profit);
             exit = exitCondition(exitPercent);
         }
-        ss.updateStatus(strategyId, "finised", profit);
+        ss.updateStatus(order.getStrategyId(), "finished", profit);
         System.out.println("The Two Moving Averages strategy generated a profit per share of: $" + profit);
     }
 

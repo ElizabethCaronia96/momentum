@@ -94,7 +94,7 @@ function initializeAllStrats() {
                             condInfoMain = '<h6 class="main-info">{0} ({1})</h6>'.f(movingAvgRange, stdDevMultiple);
                             condInfoSub = '<p class="font-small sub-info">M. RANGE (σ)</p>'
 
-                            var active = stratStatus !== "FINISHED";
+                            var active = stratStatus !== "finished";
                             var html = (active ? makeActiveStrat() : makeInactiveStrat());
 
                             if (active === true) {
@@ -452,7 +452,7 @@ function addNewStratFormInitialization() {
                     "typeId": typeIDAssigned,
                     "stock": values["inputStock"].toUpperCase(),
                     "size": parseInt(values["inputQuantity"]),
-                    "status": "PENDING",
+                    "status": "pending",
                     "addedTime": nowDateTime,
                     "profitLoss": 0.0
                 };

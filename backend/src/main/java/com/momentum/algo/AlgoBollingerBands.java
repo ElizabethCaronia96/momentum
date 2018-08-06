@@ -18,6 +18,8 @@ public class AlgoBollingerBands implements Runnable {
     SMAWithSD smaWithSD;
 
     OrderService os;
+
+    StrategiesService ss;
     /**
      * The number of trades that have been executed.
      */
@@ -72,6 +74,7 @@ public class AlgoBollingerBands implements Runnable {
         this.strategyId = strategyId;
         this.ps = ps;
         this.os = os;
+        this.ss = ss;
     }
 
     public AlgoBollingerBands() {
@@ -151,9 +154,11 @@ public class AlgoBollingerBands implements Runnable {
 
                 if(lastTrade.equalsIgnoreCase("Buy")) {
                     os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
+                    ss.updateStatus(order.getStrategyId(), "in close");
                 }
                 else {
                     os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
+                    ss.updateStatus(order.getStrategyId(), "in close");
                 }
             }
             // enter position
@@ -161,16 +166,18 @@ public class AlgoBollingerBands implements Runnable {
 
                 if(lastTrade.equalsIgnoreCase("Buy")) {
                     order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
+                    ss.updateStatus(order.getStrategyId(), "in entry");
                 }
                 else {
                     order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
-
+                    ss.updateStatus(order.getStrategyId(), "in entry");
                 }
             }
 
             exit = exitCondition(exitPercent);
         }
 
+        ss.updateStatus(order.getStrategyId(), "finished", profit);
         System.out.println("The Bollinger Bands strategy generated a profit per share of: $" + profit);
     }
 
@@ -279,7 +286,7 @@ public class AlgoBollingerBands implements Runnable {
      * @param price the purchase price.
      */
     public void placeOrder(String orderType, double price) {
-
+        //orderbroker call
         // place the trade order here
     }
 }

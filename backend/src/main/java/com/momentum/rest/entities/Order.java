@@ -1,6 +1,9 @@
 package com.momentum.rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.momentum.rest.dao.OrderRepository;
+import com.momentum.rest.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +15,7 @@ public class Order implements Serializable {
 
 
     public Order() {
+
     }
 
     public Order(int strategyId, String crossoverStartType, Timestamp crossoverStartDatetime, double crossoverStartPrice) {
