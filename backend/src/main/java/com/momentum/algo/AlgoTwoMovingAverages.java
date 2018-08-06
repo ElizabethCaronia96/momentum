@@ -69,6 +69,10 @@ public class AlgoTwoMovingAverages implements Runnable {
         this.os = os;
     }
 
+    public AlgoTwoMovingAverages() {
+
+    }
+
     /**
      * Executes the Two Moving Averages strategy.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
@@ -188,6 +192,16 @@ public class AlgoTwoMovingAverages implements Runnable {
             return true;
         }
         return false;
+    }
+
+    public void setProfit(double profit) {
+
+        this.profit = profit;
+    }
+
+    public void setInitialPrice(double initialPrice) {
+
+        this.initialPrice = initialPrice;
     }
 
     /**

@@ -81,7 +81,9 @@ public class OrderServiceImpl implements OrderService {
         o.setCrossoverEndDatetime(crossTime2);
         o.setCrossoverEndPrice(crossPrice2);
         o.setProfitLoss(profit_loss);
+
         orRp.save(o);
     }
+
 
 }

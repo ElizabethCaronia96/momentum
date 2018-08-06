@@ -5,6 +5,7 @@ import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,10 @@ public class AlgoBollingerBands implements Runnable {
         this.strategyId = strategyId;
         this.ps = ps;
         this.os = os;
+    }
+
+    public AlgoBollingerBands() {
+
     }
 
     /**
@@ -147,7 +152,7 @@ public class AlgoBollingerBands implements Runnable {
                     os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
                 }
                 else {
-                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit );
+                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
                 }
             }
             // enter position
@@ -181,6 +186,16 @@ public class AlgoBollingerBands implements Runnable {
             return true;
         }
         return false;
+    }
+
+    public void setProfit(double profit) {
+
+        this.profit = profit;
+    }
+
+    public void setInitialPrice(double initialPrice) {
+
+        this.initialPrice = initialPrice;
     }
 
     /**
