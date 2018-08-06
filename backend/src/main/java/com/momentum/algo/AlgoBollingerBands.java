@@ -6,6 +6,7 @@ import com.momentum.rest.service.PriceService;
 import com.momentum.rest.service.StrategiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +77,10 @@ public class AlgoBollingerBands implements Runnable {
         this.ss = ss;
     }
 
+    public AlgoBollingerBands() {
+
+    }
+
     /**
      * Executes the Bollinger Bands strategy.
      * @param orderType "Auto" order type will place buy and sell trades when the strategy is triggered.
@@ -105,7 +110,6 @@ public class AlgoBollingerBands implements Runnable {
         lastTrade = "Auto";
         profit = 0.0;
         Order order = new Order();
-//        os.addOrder(order);
         // loop on exit condition
         while(!exit) {
 
@@ -131,7 +135,6 @@ public class AlgoBollingerBands implements Runnable {
             // execute trade
             if(newPrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
                 lastTrade = "Buy";
-
                 placeOrder("Buy", newPrice);
                 buyPrices.add(newPrice);
             }
@@ -146,7 +149,6 @@ public class AlgoBollingerBands implements Runnable {
                 initialPrice = newPrice;
             }
             // exit position
-            System.out.println("order "+ order.getOrderID());
             if(tradeCounter % 2 == 0) {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
 
@@ -155,22 +157,23 @@ public class AlgoBollingerBands implements Runnable {
                     ss.updateStatus(order.getStrategyId(), "in close");
                 }
                 else {
-                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit );
+                    os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
                     ss.updateStatus(order.getStrategyId(), "in close");
                 }
             }
             // enter position
             else {
+
                 if(lastTrade.equalsIgnoreCase("Buy")) {
                     order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
                     ss.updateStatus(order.getStrategyId(), "in entry");
                 }
                 else {
-
                     order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
                     ss.updateStatus(order.getStrategyId(), "in entry");
                 }
             }
+
             exit = exitCondition(exitPercent);
         }
 
@@ -191,6 +194,16 @@ public class AlgoBollingerBands implements Runnable {
             return true;
         }
         return false;
+    }
+
+    public void setProfit(double profit) {
+
+        this.profit = profit;
+    }
+
+    public void setInitialPrice(double initialPrice) {
+
+        this.initialPrice = initialPrice;
     }
 
     /**
