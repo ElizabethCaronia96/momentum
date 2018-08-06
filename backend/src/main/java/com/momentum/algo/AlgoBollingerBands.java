@@ -3,6 +3,7 @@ package com.momentum.algo;
 import com.momentum.rest.entities.Order;
 import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
+import com.momentum.rest.service.StrategiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
@@ -16,6 +17,8 @@ public class AlgoBollingerBands implements Runnable {
     SMAWithSD smaWithSD;
 
     OrderService os;
+
+    StrategiesService ss;
     /**
      * The number of trades that have been executed.
      */
@@ -60,7 +63,7 @@ public class AlgoBollingerBands implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps The PriceService object for getting prices.
      */
-    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps, OrderService os) {
+    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps, OrderService os, StrategiesService ss) {
 
         this.algoType = algoType;
         this.stock = stock;
@@ -70,6 +73,7 @@ public class AlgoBollingerBands implements Runnable {
         this.strategyId = strategyId;
         this.ps = ps;
         this.os = os;
+        this.ss = ss;
     }
 
     /**
@@ -101,6 +105,7 @@ public class AlgoBollingerBands implements Runnable {
         lastTrade = "Auto";
         profit = 0.0;
         Order order = new Order();
+//        os.addOrder(order);
         // loop on exit condition
         while(!exit) {
 
@@ -126,6 +131,7 @@ public class AlgoBollingerBands implements Runnable {
             // execute trade
             if(newPrice <= smaWithSD.average - smaWithSD.stdDev * stdDevMult) {
                 lastTrade = "Buy";
+
                 placeOrder("Buy", newPrice);
                 buyPrices.add(newPrice);
             }
@@ -140,31 +146,35 @@ public class AlgoBollingerBands implements Runnable {
                 initialPrice = newPrice;
             }
             // exit position
+            System.out.println("order "+ order.getOrderID());
             if(tradeCounter % 2 == 0) {
                 profit += (sellPrices.get(tradeCounter/2 - 1) - buyPrices.get(tradeCounter/2 - 1));
 
                 if(lastTrade.equalsIgnoreCase("Buy")) {
                     os.updateOrderFromCross2(order, "buy",new Timestamp(System.currentTimeMillis()) , newPrice, profit);
+                    ss.updateStatus(order.getStrategyId(), "in close");
                 }
                 else {
                     os.updateOrderFromCross2(order, "sell",new Timestamp(System.currentTimeMillis()) , newPrice, profit );
+                    ss.updateStatus(order.getStrategyId(), "in close");
                 }
             }
             // enter position
             else {
-
                 if(lastTrade.equalsIgnoreCase("Buy")) {
                     order = os.createOrderFromCross1(strategyId,"buy",new Timestamp(System.currentTimeMillis()), newPrice);
+                    ss.updateStatus(order.getStrategyId(), "in entry");
                 }
                 else {
-                    order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
 
+                    order = os.createOrderFromCross1(strategyId,"sell",new Timestamp(System.currentTimeMillis()), newPrice);
+                    ss.updateStatus(order.getStrategyId(), "in entry");
                 }
             }
-
             exit = exitCondition(exitPercent);
         }
 
+        ss.updateStatus(order.getStrategyId(), "finished", profit);
         System.out.println("The Bollinger Bands strategy generated a profit per share of: $" + profit);
     }
 
@@ -263,7 +273,7 @@ public class AlgoBollingerBands implements Runnable {
      * @param price the purchase price.
      */
     public void placeOrder(String orderType, double price) {
-
+        //orderbroker call
         // place the trade order here
     }
 }
