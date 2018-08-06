@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity@Table(name="strat_2ma")
 public class TwoMA {
+
     public int getStrategyId() {
         return strategyId;
     }
