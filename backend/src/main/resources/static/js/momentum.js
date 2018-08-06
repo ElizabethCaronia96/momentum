@@ -64,6 +64,7 @@ function initializeAllStrats() {
         success: function (result) {
 
             var listOfStrats = result["_embedded"]["strategieses"];
+            var listStratsQueue = [];
 
             // get list of all Strategy objects, loop through and print each out
             $.each(listOfStrats, function (index, value) {
@@ -97,11 +98,12 @@ function initializeAllStrats() {
                             condInfoMain = '<h6 class="main-info">{0} ({1})</h6>'.f(movingAvgRange, stdDevMultiple);
                             condInfoSub = '<p class="font-small sub-info">M. RANGE (σ)</p>'
 
-                            if (stratStatus === "FINISHED") {
-                                addNewInactiveStratCard();
-                            } else {
-                                addNewActiveStratCard();
-                            }
+                            var active = stratStatus !== "FINISHED";
+                            var html = (active ? makeActiveStrat() : makeInactiveStrat());
+
+                            listStratsQueue.push({
+                                "id": strategyId, "html": html, "active": false
+                            });
                         }
                     });
                 } else {
@@ -114,18 +116,19 @@ function initializeAllStrats() {
                             percentToExit = result["percentToExit"];
 
                             condInfoMain = '<h6 class="main-info">{0}/{1}</h6>'.f(shortAvgRange, longAvgRange);
-                            condInfoSub = '<p class="font-small sub-info">SHORT/LONG</p>'
+                            condInfoSub = '<p class="font-small sub-info">SHORT/LONG</p>';
 
-                            if (stratStatus === "FINISHED") {
-                                addNewInactiveStratCard();
-                            } else {
-                                addNewActiveStratCard();
-                            }
+                            var active = stratStatus !== "FINISHED";
+                            var html = (active ? makeActiveStrat() : makeInactiveStrat());
+
+                            listStratsQueue.push({
+                                "id": strategyId, "html": html, "active": false
+                            });
                         }
                     });
                 }
 
-                function addNewActiveStratCard() {
+                function makeActiveStrat() {
                     var newActiveStratCard = '<!-- STRAT CARD -->' +
                         '<div class="col-12 strategy-card-active">' +
                         '<div class="row">' +
@@ -168,12 +171,12 @@ function initializeAllStrats() {
                         '</div>' +
                         '<!-- STRAT CARD -->'
 
-                    activeStrategyCardsRow.append(newActiveStratCard);
-                    plotCharts(strategyId);
+                    return newActiveStratCard;
+
                 }
 
 
-                function addNewInactiveStratCard() {
+                function makeInactiveStrat() {
                     var newInactiveStratCard = '<!-- STRAT CARD -->' +
                         '<div class="col-12 strategy-card-inactive">' +
                         '<div class="row">' +
@@ -207,12 +210,33 @@ function initializeAllStrats() {
                         '</div>' +
                         '</div>' +
                         '</div>' +
-                        '<!-- STRAT CARD -->'
+                        '<!-- STRAT CARD -->';
 
-                    inactiveStrategyCardsRow.append(newInactiveStratCard);
+                    return newInactiveStratCard;
                 }
 
             });
+
+
+            $(document).ajaxStop(function () {
+
+                $.each(listStratsQueue, function (index, value) {
+
+                    var id = value["id"];
+                    var html = value["html"];
+                    var active = value["active"];
+
+                    if (active) {
+                        activeStrategyCardsRow.append(html);
+                        plotCharts(id);
+                    } else {
+                        inactiveStrategyCardsRow.append(html);
+                    }
+                });
+            });
+
+
+
         }
     });
 
@@ -266,6 +290,7 @@ function initializeOpenPositions() {
 
 function plotCharts(id) {
 
+    console.log("Plotting chart for strat id # " + id);
     Chart.defaults.global.defaultFontFamily = "Roboto";
     var ctx = document.getElementById('canvas-{0}'.f(id)).getContext('2d');
 
@@ -417,8 +442,8 @@ function addNewStratFormInitialization() {
             console.log("Adding 2MA strategy to DB...");
             urlToSend = "/api/twoMAs";
             jsonToSend = {
-                "longAvgRange" : parseInt(values["stratVariableOne"]),
-                "shortAvgRange" : parseInt(values["stratVariableTwo"]),
+                "shortAvgRange" : parseInt(values["stratVariableOne"]),
+                "longAvgRange" : parseInt(values["stratVariableTwo"]),
                 "percentToExit" : parseFloat(values["inputExitPercent"])
             }
         } else {
@@ -442,7 +467,8 @@ function addNewStratFormInitialization() {
                     "stock" : values["inputStock"].toUpperCase(),
                     "size" : parseInt(values["inputQuantity"]),
                     "status" : "PENDING",
-                    "addedTime" : nowDateTime
+                    "addedTime" : nowDateTime,
+                    "profitLoss" : 0.0
                 };
 
                 $.ajax({
@@ -453,12 +479,11 @@ function addNewStratFormInitialization() {
                     success: function (result) {
                         console.log("Added strategy into DB.");
                         console.log(result);
+                        location.reload();
                     }
                 });
             }
         });
-
-
 
 
         console.log(values);
