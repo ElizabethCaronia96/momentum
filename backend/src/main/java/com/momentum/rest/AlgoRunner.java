@@ -53,17 +53,18 @@ public class AlgoRunner {
         boolean exitMomentum = false;
 
         // get all strategies from database
-        Map<Strategies, Object> allStrategiesMap = ss.getAllActive();
+        Map<Strategies, Object> strategiesMap;
 
-        Map.Entry<Strategies,Object> tempEntry = allStrategiesMap.entrySet().iterator().next();
-        Strategies key = tempEntry.getKey();
-        Object value = tempEntry.getValue();
-
-        Map<Strategies, Object> strategiesMap = new HashMap<Strategies, Object>();
-        strategiesMap.put(key, value);
+        //Map.Entry<Strategies,Object> tempEntry = allStrategiesMap.entrySet().iterator().next();
+        //Strategies key = tempEntry.getKey();
+        //Object value = tempEntry.getValue();
+        //Map<Strategies, Object> strategiesMap = new HashMap<Strategies, Object>();
+        //strategiesMap.put(key, value);
 
         // Momentum trading platform keeps running
         while (!exitMomentum) {
+
+            strategiesMap = ss.getAllActive();
 
             // iterate through strategies in database
             for (Map.Entry<Strategies, Object> entry : strategiesMap.entrySet()) {
