@@ -9,7 +9,6 @@ $(document).ready(function () {
     addNewStratFormInitialization();
 
 
-
 });
 
 function smoothScroll() {
@@ -52,8 +51,6 @@ function smoothScroll() {
 }
 
 
-
-
 function initializeAllStrats() {
     var activeStrategyCardsRow = $("#active-strategies-row .strategy-cards");
     var inactiveStrategyCardsRow = $("#inactive-strategies-row .strategy-cards");
@@ -64,7 +61,6 @@ function initializeAllStrats() {
         success: function (result) {
 
             var listOfStrats = result["_embedded"]["strategieses"];
-            var listStratsQueue = [];
 
             // get list of all Strategy objects, loop through and print each out
             $.each(listOfStrats, function (index, value) {
@@ -101,9 +97,12 @@ function initializeAllStrats() {
                             var active = stratStatus !== "FINISHED";
                             var html = (active ? makeActiveStrat() : makeInactiveStrat());
 
-                            listStratsQueue.push({
-                                "id": strategyId, "html": html, "active": false
-                            });
+                            if (active === true) {
+                                activeStrategyCardsRow.append(html);
+                                plotCharts(strategyId);
+                            } else {
+                                inactiveStrategyCardsRow.append(html);
+                            }
                         }
                     });
                 } else {
@@ -121,12 +120,18 @@ function initializeAllStrats() {
                             var active = stratStatus !== "FINISHED";
                             var html = (active ? makeActiveStrat() : makeInactiveStrat());
 
-                            listStratsQueue.push({
-                                "id": strategyId, "html": html, "active": false
-                            });
+                            if (active === true) {
+                                activeStrategyCardsRow.append(html);
+                                plotCharts(strategyId);
+                            } else {
+                                inactiveStrategyCardsRow.append(html);
+                            }
                         }
+
                     });
                 }
+
+
 
                 function makeActiveStrat() {
                     var newActiveStratCard = '<!-- STRAT CARD -->' +
@@ -217,26 +222,6 @@ function initializeAllStrats() {
 
             });
 
-
-            $(document).ajaxStop(function () {
-
-                $.each(listStratsQueue, function (index, value) {
-
-                    var id = value["id"];
-                    var html = value["html"];
-                    var active = value["active"];
-
-                    if (active) {
-                        activeStrategyCardsRow.append(html);
-                        plotCharts(id);
-                    } else {
-                        inactiveStrategyCardsRow.append(html);
-                    }
-                });
-            });
-
-
-
         }
     });
 
@@ -281,13 +266,6 @@ function initializeOpenPositions() {
 }
 
 
-
-
-
-
-
-
-
 function plotCharts(id) {
 
     console.log("Plotting chart for strat id # " + id);
@@ -316,21 +294,29 @@ function plotCharts(id) {
                 var crossoverSTime = crossoverSTimeObj.format("HH:mm:ss")
                 var crossoverSPrice = value["crossoverStartPrice"];
 
-                listOfTimesAndCrossovers.push({"time": crossoverSTime, "type": crossoverSType, "price": crossoverSPrice});
+                listOfTimesAndCrossovers.push({
+                    "time": crossoverSTime,
+                    "type": crossoverSType,
+                    "price": crossoverSPrice
+                });
 
                 if (value["crossoverEndType"] !== undefined) {
                     var crossoverEType = value["crossoverEndType"];
                     var crossoverETimeObj = moment(value["crossoverEndDatetime"]);
                     var crossoverETime = crossoverETimeObj.format("HH:mm:ss")
                     var crossoverEPrice = value["crossoverEndPrice"];
-                    listOfTimesAndCrossovers.push({"time": crossoverETime, "type": crossoverEType, "price": crossoverEPrice});
+                    listOfTimesAndCrossovers.push({
+                        "time": crossoverETime,
+                        "type": crossoverEType,
+                        "price": crossoverEPrice
+                    });
                 }
             });
 
             var sortedCrossOvers = sortByKey(listOfTimesAndCrossovers, "time");
             var listOfTimes = [];
-            var listOfBuys =[];
-            var listOfSells =[];
+            var listOfBuys = [];
+            var listOfSells = [];
 
             $.each(sortedCrossOvers, function (index, value) {
                 listOfTimes.push(value["time"]);
@@ -418,12 +404,12 @@ function plotCharts(id) {
 
 function addNewStratFormInitialization() {
 
-    $( "#addStrategyForm" ).submit(function(event) {
+    $("#addStrategyForm").submit(function (event) {
 
         event.preventDefault();
 
         var values = {};
-        $.each($(this).serializeArray(), function() {
+        $.each($(this).serializeArray(), function () {
             values[this.name] = this.value;
         });
 
@@ -434,17 +420,17 @@ function addNewStratFormInitialization() {
             console.log("Adding BB strategy to DB...");
             urlToSend = "/api/bBs";
             jsonToSend = {
-                "movingAvgRange" : parseInt(values["stratVariableOne"]),
-                "stdDevMultiple" : parseFloat(values["stratVariableTwo"]),
-                "percentToExit" : parseFloat(values["inputExitPercent"])
+                "movingAvgRange": parseInt(values["stratVariableOne"]),
+                "stdDevMultiple": parseFloat(values["stratVariableTwo"]),
+                "percentToExit": parseFloat(values["inputExitPercent"])
             }
         } else if (values["selectStrategy"] === "2MA") {
             console.log("Adding 2MA strategy to DB...");
             urlToSend = "/api/twoMAs";
             jsonToSend = {
-                "shortAvgRange" : parseInt(values["stratVariableOne"]),
-                "longAvgRange" : parseInt(values["stratVariableTwo"]),
-                "percentToExit" : parseFloat(values["inputExitPercent"])
+                "shortAvgRange": parseInt(values["stratVariableOne"]),
+                "longAvgRange": parseInt(values["stratVariableTwo"]),
+                "percentToExit": parseFloat(values["inputExitPercent"])
             }
         } else {
             console.log("Error adding strat to DB. EXITING.");
@@ -462,13 +448,13 @@ function addNewStratFormInitialization() {
                 var nowDateTime = moment().toISOString();
 
                 var stratJson = {
-                    "type" : values["selectStrategy"].toLowerCase(),
-                    "typeId" : typeIDAssigned,
-                    "stock" : values["inputStock"].toUpperCase(),
-                    "size" : parseInt(values["inputQuantity"]),
-                    "status" : "PENDING",
-                    "addedTime" : nowDateTime,
-                    "profitLoss" : 0.0
+                    "type": values["selectStrategy"].toLowerCase(),
+                    "typeId": typeIDAssigned,
+                    "stock": values["inputStock"].toUpperCase(),
+                    "size": parseInt(values["inputQuantity"]),
+                    "status": "PENDING",
+                    "addedTime": nowDateTime,
+                    "profitLoss": 0.0
                 };
 
                 $.ajax({
@@ -485,9 +471,7 @@ function addNewStratFormInitialization() {
             }
         });
 
-
         console.log(values);
-
 
     });
 
@@ -495,7 +479,7 @@ function addNewStratFormInitialization() {
     var stratVariableOneLabel = $("#stratVariableOneLabel");
     var stratVariableTwoLabel = $("#stratVariableTwoLabel");
 
-    selectStrat.change(function() {
+    selectStrat.change(function () {
         var currentSelected = selectStrat.val();
 
         if (currentSelected === "BB") {
@@ -504,7 +488,8 @@ function addNewStratFormInitialization() {
         } else if (currentSelected === "2MA") {
             stratVariableOneLabel.html("Low Range (e.g. 15)");
             stratVariableTwoLabel.html("High Range (e.g. 50)");
-        } else {}
+        } else {
+        }
     });
 }
 
@@ -523,8 +508,9 @@ String.prototype.format = String.prototype.f = function () {
 
 
 function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
+    return array.sort(function (a, b) {
+        var x = a[key];
+        var y = b[key];
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }

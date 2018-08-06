@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -33,7 +34,10 @@ public class PriceServiceImpl implements PriceService{
     }
 
     public List<Double> getLastNPricesOfStock(String stock, int n) {
-
+        List defaultStocks = Arrays.asList("GOOG", "AAPL", "NSC", "MSFT", "BRK-A");
+        if (!defaultStocks.contains(stock.toUpperCase())) {
+            stock = "OTHER";
+        }
         String q = String.format("SELECT p.price FROM Price p WHERE p.stock=\'%s\' ORDER BY p.priceID DESC", stock);
         Query query = em.createQuery(q).setMaxResults(n);
 
