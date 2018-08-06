@@ -3,6 +3,7 @@ package com.momentum.algo;
 import com.momentum.rest.entities.Order;
 import com.momentum.rest.service.OrderService;
 import com.momentum.rest.service.PriceService;
+import com.momentum.rest.service.StrategiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
@@ -61,7 +62,7 @@ public class AlgoBollingerBands implements Runnable {
      * @param exitPercent the profit or loss percent for the exit condition.
      * @param ps The PriceService object for getting prices.
      */
-    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps, OrderService os) {
+    public AlgoBollingerBands(String algoType, String stock, int smaPeriod, double stdDevMult, double exitPercent, int strategyId, PriceService ps, OrderService os, StrategiesService ss) {
 
         this.algoType = algoType;
         this.stock = stock;
