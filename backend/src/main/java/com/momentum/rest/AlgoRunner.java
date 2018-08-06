@@ -100,7 +100,7 @@ public class AlgoRunner {
 
                         System.out.println(stock + " / " + shortSMAPeriod + " / " + longSMAPeriod + " / " + exitPercent);
 
-                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, strategyId, ps, os);
+                        Runnable r = new AlgoTwoMovingAverages("Auto", stock, shortSMAPeriod, longSMAPeriod, exitPercent, strategyId, ps, os, ss);
                         pool.execute(r);
                     }
                     else if (entry.getValue() instanceof BB) {
@@ -115,7 +115,7 @@ public class AlgoRunner {
 
                         System.out.println(stock + " / " + smaPeriod + " / " + stdDevMult + " / " + exitPercent);
 
-                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, strategyId, ps, os);
+                        Runnable r = new AlgoBollingerBands("Auto", stock, smaPeriod, stdDevMult, exitPercent, strategyId, ps, os, ss);
                         pool.execute(r);
                     }
 

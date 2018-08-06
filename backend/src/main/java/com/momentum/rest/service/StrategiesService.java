@@ -26,4 +26,10 @@ public interface StrategiesService {
     public List<Strategies> getAllStrats();
 
    public Map<Strategies, Object> getAllDone();
+
+   public void updateStatus(int strategyId, String status);
+
+    public void updateStatus(int strategyId, String status, Double profit);
+
+
 }

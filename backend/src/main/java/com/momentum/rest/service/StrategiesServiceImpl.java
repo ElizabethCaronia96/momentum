@@ -106,6 +106,23 @@ public class StrategiesServiceImpl implements StrategiesService{
 
     }
 
+    @Override
+    public void updateStatus(int strategyId, String status) {
+        List<Strategies> s = getStratByStrategyId(strategyId);
+        s.get(0).setStatus(status);
+        stratRepo.save(s.get(0));
+    }
+
+    @Override
+    public void updateStatus(int strategyId, String status, Double profit) {
+        List<Strategies> s = getStratByStrategyId(strategyId);
+        s.get(0).setStatus(status);
+        s.get(0).setProfitLoss(profit);
+        stratRepo.save(s.get(0));
+    }
+
+
+
     public Map<Strategies, Object> getAllActiveHelper(List<Strategies> allActive) {
         Map map = new HashMap<Strategies, Object>();
         for (Strategies a : allActive) {
@@ -124,4 +141,6 @@ public class StrategiesServiceImpl implements StrategiesService{
     public List<Strategies> getAllStrats(){
         return  stratRepo.findAll();
     }
+
+
 }
